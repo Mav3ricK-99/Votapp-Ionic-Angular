@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="ion-text-center"> {{'app.slogans.first' | translate | uppercase}} </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ion-grid [fixed]="true">
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="auto">
+        <ion-img src="/assets/logo/votapp-logo.jpg"></ion-img>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size-lg="5" size-sm="5">
+        <form [formGroup]="loginForm">
+          <ion-list class="mb-4">
+            <ion-item>
+              <ion-input formControlName="email" class="text-lg" color="primary"
+                placeholder="Ingresa su correo electronico" label="{{'app.forms.auth.email' | translate }}" type="email"
+                labelPlacement="floating" />
+            </ion-item>
+          </ion-list>
+          <div class="mt-3 w-50 py-1 text-sm text-red-500/[.85] text-center"
+            *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)">
+            <div *ngIf="loginForm.get('email')?.errors?.['required']">
+              El correo electronico es requerido.
+            </div>
+            <div *ngIf="loginForm.get('email')?.errors?.['email']">
+              El correo electronico debe ser valido.
+            </div>
+          </div>
+
+          <ion-list class="mb-4">
+            <ion-item>
+              <ion-input formControlName="password" class="text-lg" color="primary" placeholder="Escribi tu contraseña"
+                label="{{'app.forms.auth.password' | translate }}" [maxlength]="20" type="password"
+                labelPlacement="floating" />
+            </ion-item>
+          </ion-list>
+          <div class="mt-3 w-50 py-1 text-sm text-red-500/[.85] text-center"
+            *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)">
+            <div *ngIf="loginForm.get('password')?.errors?.['required']">
+              El campo contraseña es requerido.
+            </div>
+            <div *ngIf="loginForm.get('password')?.errors?.['minlength']">
+              El campo contraseña debe ser de al menos 6 caracteres.
+            </div>
+          </div>
+        </form>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-justify-content-center">
+      <ion-col class="text-center" size-lg="4" size-xs="8">
+        <ion-button type="submit" class="text-lg font-medium mb-4" (click)="submitLoginForm()" expand="block"
+          size="medium" expand="full" color="tertiary">{{'app.forms.util.submit' | translate}}</ion-button>
+        <div class="mb-3">
+          <a href="#" class="no-underline text-orange-500/[.85]">{{'app.forms.auth.forgotPassword'
+            | translate}}</a>
+        </div>
+        <div class="mb-2">
+          <a href="#" class="mb-3 no-underline text-orange-500/[.85]">{{'app.forms.auth.newUserButton'
+            | translate}}</a>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-title class="text-base ion-text-center"> {{'app.slogans.second' | translate | uppercase}} </ion-title>
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,20 @@
+{
+    "app": {
+        "name": "Votapp",
+        "slogans": {
+            "first": "lo que importa es tu voto",
+            "second": "que nadie decida por vos"
+        },
+        "forms": {
+            "auth": {
+                "email": "email",
+                "password": "password",
+                "forgotPassword": "forgot my password",
+                "newUserButton": "i am new to votapp" 
+            },
+            "util": {
+                "submit": "enter"
+            }
+        }
+    }
+}
