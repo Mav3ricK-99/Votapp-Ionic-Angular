@@ -19,7 +19,6 @@ import { JwtHelperService, JwtModule } from "@auth0/angular-jwt";
     TranslateModule,
     FormsModule,
     ReactiveFormsModule,
-    JwtModule
   ], providers: [JwtHelperService]
 })
 export class AuthenticationModule { }

@@ -14,6 +14,7 @@ import { AuthenticationService } from './services/authentication/authentication.
 import { AuthorizationRequestInterceptor } from './interceptors/AuthorizationRequest/authorization-request.interceptor';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { StorageService } from './services/storage/storage.service';
+import { JwtModule } from '@auth0/angular-jwt';
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
 }
@@ -34,7 +35,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     }),
     FormsModule,
     ReactiveFormsModule,
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
+    JwtModule
   ],
   providers: [TranslateStore, AuthenticationService, StorageService, { provide: HTTP_INTERCEPTORS, useClass: AuthorizationRequestInterceptor, multi: true },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
