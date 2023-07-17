@@ -10,7 +10,6 @@ import {
 import { Observable, catchError, switchMap, throwError } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { EventBusService, EventData } from 'src/app/services/eventBus/event-bus.service';
-import { StorageService } from 'src/app/services/storage/storage.service';
 import { JWT } from 'src/app/interfaces/jwt/jwt';
 
 @Injectable()
@@ -19,7 +18,7 @@ export class AuthorizationRequestInterceptor implements HttpInterceptor {
   private isRefreshing = false;
   private AUTH_HEADER = "Authorization";
 
-  constructor(private storageService: StorageService, private authService: AuthenticationService, private eventBusService: EventBusService) { }
+  constructor(private authService: AuthenticationService, private eventBusService: EventBusService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     req = req.clone({
