@@ -1,0 +1,15 @@
+.mat-mdc-form-field {
+    display: flex;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.mat-form-field-valid {
+    color: green !important;
+    border-width: 2px;
+
+    &.mat-form-field-label {
+        color: green;
+    }
+
+}

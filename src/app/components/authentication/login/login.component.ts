@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { JWT } from 'src/app/interfaces/jwt/jwt';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
-import { StorageService } from 'src/app/services/storage/storage.service';
 
 @Component({
   selector: 'app-login',
@@ -14,12 +13,11 @@ import { StorageService } from 'src/app/services/storage/storage.service';
 export class LoginComponent {
 
   public loginForm: FormGroup;
-  constructor(formBuilder: FormBuilder, private authService: AuthenticationService, private storage: StorageService, private router: Router) {
+  constructor(formBuilder: FormBuilder, private authService: AuthenticationService, private router: Router) {
     this.loginForm = formBuilder.group({
-      email: new FormControl('federico_99@live.com.ar', { validators: [Validators.required, Validators.email], updateOn: 'blur' }),
+      email: new FormControl('federico_99@live.com.ar', { validators: [Validators.required, Validators.email, Validators.max(60)], updateOn: 'blur' }),
       password: new FormControl('votapp9090..', { validators: [Validators.required, Validators.minLength(6)], updateOn: 'blur' }),
     });
-
   }
 
   submitLoginForm() {
