@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TranslateLoader, TranslateModule, TranslateStore } from '@ngx-translate/core';
@@ -13,7 +13,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthenticationService } from './services/authentication/authentication.service';
 import { AuthorizationRequestInterceptor } from './interceptors/AuthorizationRequest/authorization-request.interceptor';
 import { IonicStorageModule } from '@ionic/storage-angular';
-import { StorageService } from './services/storage/storage.service';
 import { JwtModule } from '@auth0/angular-jwt';
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -36,9 +35,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     FormsModule,
     ReactiveFormsModule,
     IonicStorageModule.forRoot(),
-    JwtModule
+    JwtModule,
+    BrowserAnimationsModule
   ],
-  providers: [TranslateStore, AuthenticationService, StorageService, { provide: HTTP_INTERCEPTORS, useClass: AuthorizationRequestInterceptor, multi: true },
+  providers: [TranslateStore, AuthenticationService, { provide: HTTP_INTERCEPTORS, useClass: AuthorizationRequestInterceptor, multi: true },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })
