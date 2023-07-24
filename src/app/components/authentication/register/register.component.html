@@ -68,10 +68,10 @@
                 <mat-error class="text-sm"
                   *ngIf="signUpForm.get('residenceCountry')?.invalid && (signUpForm.get('residenceCountry')?.dirty || signUpForm.get('residenceCountry')?.touched)">{{getResidenceCountryErrorMessage()}}</mat-error>
                 <mat-autocomplete #auto="matAutocomplete">
-                  <mat-option *ngFor="let country of filteredCountries | async" [value]="country.name">
-                    <img *ngIf="country.flagImage" alt="" class="example-option-img" [src]="country.flagImage"
+                  <mat-option *ngFor="let country of countries | async" [value]="country.name">
+                    <span>{{country.name}}</span> | 
+                    <img *ngIf="country.flagImage" alt="country.name" class="example-option-img" src="https://flagcdn.com/48x36/{{country.flagImage | lowercase}}.png"
                       height="25">
-                    <span>{{country.name}}</span> |
                   </mat-option>
                 </mat-autocomplete>
               </mat-form-field>
@@ -86,7 +86,7 @@
                   placeholder="Elegi tu idioma preferido" [matAutocomplete]="auto2" autocomplete="disabled">
                 <mat-error class="text-sm">{{getLanguageErrorMessage()}}</mat-error>
                 <mat-autocomplete autoActiveFirstOption #auto2="matAutocomplete">
-                  <mat-option *ngFor="let option of filteredLangs | async" [value]="option">
+                  <mat-option *ngFor="let option of langs | async" [value]="option">
                     {{option}}
                   </mat-option>
                 </mat-autocomplete>
@@ -149,7 +149,7 @@
       </ion-col>
     </ion-row>
     <ion-row class="ion-justify-content-center">
-      <ion-col class="text-center" size-lg="3" size-xs="8">
+      <ion-col class="text-center" size-lg="3" size-xs="10">
         <ion-button type="submit" class="text-lg font-medium mb-4" (click)="submitSignUpForm()" expand="block"
           [disabled]="!signUpForm.valid" size="medium" expand="full" color="tertiary">{{'app.forms.auth.signup.submit' |
           translate}}</ion-button>

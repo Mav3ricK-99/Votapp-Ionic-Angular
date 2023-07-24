@@ -3,7 +3,7 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors,
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, map, startWith } from 'rxjs';
+import { Observable, map, of, startWith } from 'rxjs';
 import { User } from 'src/app/classes/user/user';
 import { passwordsMustMatch } from 'src/app/customValidators/PasswordsMustMatch/passwords-must-match';
 import { Country } from 'src/app/interfaces/country/country';
@@ -15,16 +15,14 @@ import { AuthenticationService } from 'src/app/services/authentication/authentic
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
 
   public hidePassword: boolean = true;
   public hideRepeatPassword: boolean = true;
 
-  langs: string[] = [];
-  countries: Country[] = [];
-
-  filteredLangs: Observable<string[]>;
-  filteredCountries: Observable<Country[]>;
+  langsArray: string[] = [];
+  langs: Observable<string[]>;;
+  countries: Observable<Country[]>;
 
   public signUpForm: FormGroup;
   constructor(formBuilder: FormBuilder, private authService: AuthenticationService, private router: Router, private _translate: TranslateService) {
@@ -39,48 +37,14 @@ export class RegisterComponent implements OnInit {
       repeatPassword: new FormControl('votapp9090..', { validators: [Validators.required, Validators.minLength(6)] }),
     }, { validators: [passwordsMustMatch, this.languageIsValid()] });
 
-    this._translate.get('countries').forEach((countries: Array<Country>) => {
+    this.countries = this._translate.get('countries');
+    this.countries.forEach((countries: Country[]) => {
       countries.forEach((c: Country) => {
-        this.countries.push(c);
-        if (c.language && this.langs.filter((lang) => c.language == lang).length < 1)
-          this.langs.push(c.language)
+        if (c.language && this.langsArray.filter((lang) => c.language == lang).length < 1)
+          this.langsArray.push(c.language);
       })
-    });
-  }
-
-  ngOnInit() {
-    this.filteredLangs = this.signUpForm.controls['language'].valueChanges.pipe(
-      startWith(''),
-      map(value => {
-        return this._filterLangs(value || '')
-      })
-    )
-
-    this.filteredCountries = this.signUpForm.controls['residenceCountry'].valueChanges.pipe(
-      startWith(''),
-      map(value => {
-        return this._filterCountries(value || '')
-      })
-    )
-
-    this.signUpForm.controls['residenceCountry'].valueChanges.subscribe((countryName: string) => {
-      let country: Country = this.countries.filter((c: Country) => c.name == countryName)[0];
-      if (country) {
-        this.signUpForm.controls['language'].setValue(country.language);
-      }
     })
-  }
-
-  private _filterLangs(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.langs.filter(option => option.toLowerCase().includes(filterValue));
-  }
-
-  private _filterCountries(value: string): Country[] {
-    const filterValue = value.toLowerCase();
-
-    return this.countries.filter(country => country.name.toLowerCase().includes(filterValue));
+    this.langs = of(this.langsArray);
   }
 
   submitSignUpForm() {
@@ -105,7 +69,7 @@ export class RegisterComponent implements OnInit {
         }
         /* console.log(helper.decodeToken(jwt.access_token)); */
         localStorage.setItem('jwt', JSON.stringify(jwt));
-        this.router.navigateByUrl('/dashboard/misVottaps');
+        this.router.navigateByUrl('/mis-votapps');
       },
       error: err => {
         if (err.error.detalleError.includes('email_unique')) {
@@ -121,7 +85,7 @@ export class RegisterComponent implements OnInit {
   languageIsValid(): ValidatorFn {
     return (signUpForm: AbstractControl): ValidationErrors | null => {
       let languageInput = signUpForm.get('language');
-      if (languageInput?.value && this.langs.filter((lang) => languageInput?.value == lang).length < 1) {
+      if (languageInput?.value && this.langsArray.filter((lang) => languageInput?.value == lang).length < 1) {
         return {
           invalidLanguage: true
         }
@@ -133,7 +97,7 @@ export class RegisterComponent implements OnInit {
   /* getEmailErrorMessage() {
     let emailInput = this.signUpForm.get('email');
     if (!emailInput || !emailInput?.errors) return;
-
+  
     let firstError = Object.keys(emailInput.errors)[0]
     let errorMsg = '';
     switch (firstError) {
