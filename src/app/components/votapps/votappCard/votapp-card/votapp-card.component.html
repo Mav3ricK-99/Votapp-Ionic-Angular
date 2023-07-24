@@ -1,0 +1,28 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar class="logo"></div>
+  </mat-card-header>
+  <div class="card-content-box flex-col justify-center">
+    <mat-card-content>
+      <mat-card-title>{{ votapp.comunidad.nombre }}</mat-card-title>
+      <mat-card-subtitle class="text-center">{{ votapp.votacionPunto }}</mat-card-subtitle>
+    </mat-card-content>
+    <mat-card-actions>
+      <ion-row class="ion-justify-content-center">
+        <ion-col class="text-center" size-lg="12" size-xs="12">
+          <ion-button size="small" color="warning">Dias restantes<br>1</ion-button>
+          <ion-button color="medium">Medium</ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-justify-content-center">
+        <ion-col class="text-center" size-lg="12" size-xs="12">
+          <ion-button size="small" color="danger">Voto pendiente</ion-button><br>
+          <ion-button color="medium">Medium</ion-button>
+        </ion-col>
+      </ion-row>
+    </mat-card-actions>
+  </div>
+  <mat-card-footer>
+    <!-- <mat-progress-bar mode="indeterminate"></mat-progress-bar> -->
+  </mat-card-footer>
+</mat-card>
