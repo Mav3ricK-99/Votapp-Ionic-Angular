@@ -15,7 +15,7 @@ export class LoginComponent {
   public loginForm: FormGroup;
   constructor(formBuilder: FormBuilder, private authService: AuthenticationService, private router: Router) {
     this.loginForm = formBuilder.group({
-      email: new FormControl('federico_99@live.com.ar', { validators: [Validators.required, Validators.email, Validators.max(60)], updateOn: 'blur' }),
+      email: new FormControl('federico1999g@gmail.com', { validators: [Validators.required, Validators.email, Validators.max(60)], updateOn: 'blur' }),
       password: new FormControl('votapp9090..', { validators: [Validators.required, Validators.minLength(6)], updateOn: 'blur' }),
     });
   }
@@ -33,9 +33,10 @@ export class LoginComponent {
           access_token: obj.access_token,
           refresh_token: obj.refresh_token,
         }
-        /* console.log(helper.decodeToken(jwt.access_token)); */
+        let currentUser = helper.decodeToken(jwt.access_token); //Este en realidad es el payload
         localStorage.setItem('jwt', JSON.stringify(jwt));
-        this.router.navigateByUrl('/dashboard/misVottaps');
+        localStorage.setItem('current_user', JSON.stringify(currentUser));
+        this.router.navigateByUrl('/mis-votapps');
       },
       error: err => {
         console.log(err);
