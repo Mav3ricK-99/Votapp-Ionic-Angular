@@ -33,7 +33,7 @@ export class PasswordResetTokenComponent {
             ['/auth/reset-password'],
             { queryParams: { email: email } }
           );
-        }, 2000);
+        }, 6000);
       },
       error: err => {
         console.log(err);
