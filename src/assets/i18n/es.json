@@ -27,6 +27,25 @@
             "residenceCountry": "pais de residencia",
             "language": "idioma preferido",
             "birthYear": "año de nacimiento"
+        },
+        "dashboard": {
+            "buttons": {
+                "myVotapps": "mis votapps",
+                "newVotapp": "nueva votapp",
+                "open": "abiertas",
+                "completed": "finalizadas"
+            },
+            "texts": {
+                "remainingDays": "dias restantes",
+                "totalVoters": "total votantes",
+                "votes": "votos",
+                "myVote": "mi voto"
+            }
+        },
+        "votes": {
+            "states": {
+                "pending": "pending"
+            }
         }
     },
     "countries": [

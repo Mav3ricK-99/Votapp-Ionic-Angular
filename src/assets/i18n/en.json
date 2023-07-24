@@ -27,6 +27,25 @@
             "residenceCountry": "country of residence",
             "language": "preferred language",
             "birthYear": "year of birth"
+        },
+        "dashboard": {
+            "buttons": {
+                "myVotapps": "my votapps",
+                "newVotapp": "new votapp",
+                "open": "open",
+                "completed": "completed"
+            },
+            "texts": {
+                "remainingDays": "remaining days",
+                "totalVoters": "total voters",
+                "votes": "votes",
+                "myVote": "my vote"
+            }
+        },
+        "votes": {
+            "states": {
+                "pending": "pending"
+            }
         }
     },
     "countries": [
