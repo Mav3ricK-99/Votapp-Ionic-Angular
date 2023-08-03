@@ -4,20 +4,23 @@
   </mat-card-header>
   <div class="card-content-box flex-col justify-center">
     <mat-card-content>
-      <mat-card-title>{{ votapp.comunidad.nombre }}</mat-card-title>
+      <mat-card-title class="text-center">{{ votapp.comunidad.nombre }}</mat-card-title>
       <mat-card-subtitle class="text-center">{{ votapp.votacionPunto }}</mat-card-subtitle>
     </mat-card-content>
     <mat-card-actions>
       <ion-row class="ion-justify-content-center">
         <ion-col class="text-center" size-lg="12" size-xs="12">
-          <ion-button size="small" color="warning">Dias restantes<br>1</ion-button>
-          <ion-button color="medium">Medium</ion-button>
+          <ion-button size="medium" color="warning">Dias restantes<br>{{votapp.remainingDays()}}</ion-button>
+          <ion-button size="medium" expand="block" color="medium">Total
+            votantes<br>{{votapp.totalMembers()}}</ion-button>
         </ion-col>
       </ion-row>
       <ion-row class="ion-justify-content-center">
         <ion-col class="text-center" size-lg="12" size-xs="12">
-          <ion-button size="small" color="danger">Voto pendiente</ion-button><br>
-          <ion-button color="medium">Medium</ion-button>
+          <ion-button size="medium" color="green">Mi voto
+            {{'app.votes.states.'+ votapp.myVoteState() | translate }}</ion-button><br>
+          <ion-button size="medium" expand="block" color="medium">{{votapp.totalVoters()}}
+            votos<br>{{votapp.votersPercentage()}}%</ion-button>
         </ion-col>
       </ion-row>
     </mat-card-actions>

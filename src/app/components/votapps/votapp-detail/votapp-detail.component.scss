@@ -1,0 +1,70 @@
+.mdc-card {
+    flex-direction: row !important;
+    width: 100%;
+}
+
+.openVotappsButton {
+    width: 100%;
+    padding: 1.3rem .5rem 1.3rem .5rem;
+}
+
+mat-card {
+    margin-top: .5rem;
+}
+
+.mat-mdc-card-header {
+    align-items: center;
+}
+
+.logo {
+    width: 64px;
+    height: 64px;
+    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+    background-size: cover;
+}
+
+mat-card-subtitle {
+    margin-top: 1px;
+    margin-bottom: 4px;
+}
+
+.mat-mdc-card-header {
+    padding: 8px 8px;
+}
+
+.card-content-box {
+    width: 100%;
+}
+
+.mat-mdc-card-avatar {
+    margin-bottom: 0 !important;
+}
+
+.votapp-content {
+    width: 100%;
+    background-color: rgb(246, 246, 246);
+    border-radius: .3rem;
+}
+
+.text-v {
+    font-size: .85rem;
+}
+
+.text-xxs {
+    font-size: .6rem;
+}
+
+.votesOptions {
+    width: 100px;
+    height: 100px;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+
+    -webkit-user-drag: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+#remainingDaysButton {
+    background-color: var(--ion-color-warning);
+}

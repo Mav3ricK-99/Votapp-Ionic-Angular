@@ -42,12 +42,11 @@ export class AuthorizationRequestInterceptor implements HttpInterceptor {
     if (jwtStr) {
       let jwt: JWT = JSON.parse(jwtStr);
       req = this.addAuthenticationToken(req, jwt);
-      console.log(req);
     }
 
     return next.handle(req).pipe(
       catchError((error) => {
-        if (error instanceof HttpErrorResponse && !req.url.includes('auth/signin') && error.status === 401
+        if (error instanceof HttpErrorResponse && !req.url.includes('auth/login') && error.status === 401
         ) {
           return this.handle401Error(req, next);
         }
@@ -92,7 +91,7 @@ export class AuthorizationRequestInterceptor implements HttpInterceptor {
     }
 
     return request = request.clone({
-      headers: request.headers.set(this.AUTH_HEADER, "Bearer " + jwt.access_token)
+      headers: request.headers.set(this.AUTH_HEADER, "Bearer " + jwt.refresh_token)
     });
   }
 }

@@ -43,8 +43,15 @@
             }
         },
         "votes": {
+            "detail": {
+                "partialResults": "resultados parciales"
+            },
             "states": {
-                "pending": "pending"
+                "pending": "pendiente",
+                "yes": "si",
+                "no": "no",
+                "noquorum": "no doy quorum",
+                "abstention": "abstención"
             }
         }
     },
@@ -231,7 +238,7 @@
             "flagImage": "CL"
         },
         {
-            "name": "porcelana",
+            "name": "China",
             "flagImage": "CN"
         },
         {
@@ -1059,6 +1066,16 @@
         {
             "name": "Zimbabue",
             "flagImage": "ZW"
+        }
+    ],
+    "languages": [
+        {
+            "shortLanguage": "en",
+            "language": "Ingles"
+        },
+        {
+            "shortLanguage": "es",
+            "language": "Español"
         }
     ]
 }

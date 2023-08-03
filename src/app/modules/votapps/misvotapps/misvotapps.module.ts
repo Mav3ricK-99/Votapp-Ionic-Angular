@@ -6,14 +6,16 @@ import { MisVotappsComponent } from 'src/app/components/mis-votapps/mis-votapps.
 import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatButtonModule } from '@angular/material/button';
-import { VotappCardComponent } from 'src/app/components/votapps/votappCard/votapp-card/votapp-card.component';
-import {MatCardModule} from '@angular/material/card';
-
+import { VotappCardComponent } from 'src/app/components/votapps/votapp-card/votapp-card.component';
+import { MatCardModule } from '@angular/material/card';
+import { VotappDetailComponent } from 'src/app/components/votapps/votapp-detail/votapp-detail.component';
+import { MatRippleModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
     MisVotappsComponent,
     VotappCardComponent,
+    VotappDetailComponent
   ],
   imports: [
     IonicModule,
@@ -21,7 +23,8 @@ import {MatCardModule} from '@angular/material/card';
     MisvotappsRoutingModule,
     TranslateModule,
     MatButtonModule,
-    MatCardModule
+    MatCardModule,
+    MatRippleModule
   ]
 })
 export class MisvotappsModule { }

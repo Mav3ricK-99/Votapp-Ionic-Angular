@@ -20,7 +20,7 @@
 
 /* @import 'tailwindcss/base';*/
 @import 'tailwindcss/components';
-@import 'tailwindcss/utilities'; 
+@import 'tailwindcss/utilities';
 
 /* Optional CSS utils that can be commented out */
 @import "@ionic/angular/css/padding.css";
@@ -28,3 +28,22 @@
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
+
+ion-grid {
+    --ion-grid-padding: 0px;
+}
+
+.ion-no-padding {
+    --ion-grid-column-padding: 0px !important;
+}
+
+.mat-mdc-form-field-hint-wrapper,
+.mat-mdc-form-field-error-wrapper {
+    padding: 0 10px !important;
+}
+
+.mat-mdc-form-field {
+    display: flex !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}

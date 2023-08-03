@@ -16,6 +16,10 @@ export class User {
         this.yearOfBirth = yearOfBirth;
     }
 
+    public get getId(): number {
+        return this.id;
+    }
+
     public get getName(): string {
         return this.name;
     }

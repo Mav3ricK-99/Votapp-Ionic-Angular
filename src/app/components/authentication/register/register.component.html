@@ -69,9 +69,9 @@
                   *ngIf="signUpForm.get('residenceCountry')?.invalid && (signUpForm.get('residenceCountry')?.dirty || signUpForm.get('residenceCountry')?.touched)">{{getResidenceCountryErrorMessage()}}</mat-error>
                 <mat-autocomplete #auto="matAutocomplete">
                   <mat-option *ngFor="let country of countries | async" [value]="country.name">
-                    <span>{{country.name}}</span> | 
-                    <img *ngIf="country.flagImage" alt="country.name" class="example-option-img" src="https://flagcdn.com/48x36/{{country.flagImage | lowercase}}.png"
-                      height="25">
+                    <span>{{country.name}}</span> |
+                    <img *ngIf="country.flagImage" alt="country.name" class="example-option-img"
+                      src="https://flagcdn.com/48x36/{{country.flagImage | lowercase}}.png" height="25">
                   </mat-option>
                 </mat-autocomplete>
               </mat-form-field>
@@ -86,8 +86,8 @@
                   placeholder="Elegi tu idioma preferido" [matAutocomplete]="auto2" autocomplete="disabled">
                 <mat-error class="text-sm">{{getLanguageErrorMessage()}}</mat-error>
                 <mat-autocomplete autoActiveFirstOption #auto2="matAutocomplete">
-                  <mat-option *ngFor="let option of langs | async" [value]="option">
-                    {{option}}
+                  <mat-option *ngFor="let option of langs | async" [value]="option.language">
+                    {{option.language}}
                   </mat-option>
                 </mat-autocomplete>
               </mat-form-field>
@@ -121,7 +121,7 @@
             </ion-col>
           </ion-row>
 
-          <ion-row class="ion-justify-content-center">
+          <ion-row class="ion-justify-content-center mb-3">
             <ion-col size-lg="8" size-sm="5">
               <mat-form-field appearance="outline">
                 <mat-label>{{'app.forms.auth.signup.repeatPassword' | translate }}</mat-label>
@@ -150,9 +150,9 @@
     </ion-row>
     <ion-row class="ion-justify-content-center">
       <ion-col class="text-center" size-lg="3" size-xs="10">
-        <ion-button type="submit" class="text-lg font-medium mb-4" (click)="submitSignUpForm()" expand="block"
-          [disabled]="!signUpForm.valid" size="medium" expand="full" color="tertiary">{{'app.forms.auth.signup.submit' |
-          translate}}</ion-button>
+        <button class="registerButton tracking-wider mb-4 text-xl font-medium" mat-raised-button
+          (click)="submitSignUpForm()" color="primary">{{'app.forms.auth.signup.submit' |
+          translate | uppercase}}</button>
         <div class="mb-2">
           <a href="#" [routerLink]="['/auth/login']" class="no-underline text-orange-500/[.80]">Ya formas parte?
             Ingresa!.</a>

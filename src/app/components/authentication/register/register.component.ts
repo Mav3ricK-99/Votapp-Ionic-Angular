@@ -3,7 +3,7 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors,
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, map, of, startWith } from 'rxjs';
+import { Observable, filter, map, of, startWith, toArray } from 'rxjs';
 import { User } from 'src/app/classes/user/user';
 import { passwordsMustMatch } from 'src/app/customValidators/PasswordsMustMatch/passwords-must-match';
 import { Country } from 'src/app/interfaces/country/country';
@@ -20,8 +20,7 @@ export class RegisterComponent {
   public hidePassword: boolean = true;
   public hideRepeatPassword: boolean = true;
 
-  langsArray: string[] = [];
-  langs: Observable<string[]>;;
+  langs: Observable<any>;
   countries: Observable<Country[]>;
 
   public signUpForm: FormGroup;
@@ -38,13 +37,26 @@ export class RegisterComponent {
     }, { validators: [passwordsMustMatch, this.languageIsValid()] });
 
     this.countries = this._translate.get('countries');
-    this.countries.forEach((countries: Country[]) => {
-      countries.forEach((c: Country) => {
-        if (c.language && this.langsArray.filter((lang) => c.language == lang).length < 1)
-          this.langsArray.push(c.language);
+    this.langs = this._translate.get('languages');
+
+    this.signUpForm.get('language')?.valueChanges.subscribe(pickedLang => {
+      this.langs.pipe(map((data: any) => {
+        return data.map((language: any) => {
+          if (language.language == pickedLang) {
+            return language;
+          }
+        });
+      })).forEach((langs) => {
+        langs.forEach((l: any) => {
+          if (l && l.shortLanguage) {
+            this._translate.use(l.shortLanguage);
+            this.countries = this._translate.get('countries');
+            this.langs = this._translate.get('languages');
+            this.signUpForm.get('language')?.setValue(l.language);
+          }
+        })
       })
     })
-    this.langs = of(this.langsArray);
   }
 
   submitSignUpForm() {
@@ -67,7 +79,6 @@ export class RegisterComponent {
           access_token: obj.access_token,
           refresh_token: obj.refresh_token,
         }
-        /* console.log(helper.decodeToken(jwt.access_token)); */
         localStorage.setItem('jwt', JSON.stringify(jwt));
         this.router.navigateByUrl('/mis-votapps');
       },
@@ -85,7 +96,7 @@ export class RegisterComponent {
   languageIsValid(): ValidatorFn {
     return (signUpForm: AbstractControl): ValidationErrors | null => {
       let languageInput = signUpForm.get('language');
-      if (languageInput?.value && this.langsArray.filter((lang) => languageInput?.value == lang).length < 1) {
+      if (languageInput?.value) { //Falta validar lenguage
         return {
           invalidLanguage: true
         }

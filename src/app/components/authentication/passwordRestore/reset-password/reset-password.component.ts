@@ -9,13 +9,15 @@ import { AuthenticationService } from 'src/app/services/authentication/authentic
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.scss'],
 })
-export class ResetPasswordComponent implements OnInit {
+export class ResetPasswordComponent {
 
   public hidePassword: boolean = true;
   public hideRepeatPassword: boolean = true;
 
-  email: string;
+  private email: string;
   public passwordResetForm: FormGroup;
+
+  public disabledButton: boolean;
 
   constructor(formBuilder: FormBuilder, private authService: AuthenticationService, private activatedRoute: ActivatedRoute, private router: Router) {
     this.passwordResetForm = formBuilder.group({
@@ -24,26 +26,24 @@ export class ResetPasswordComponent implements OnInit {
       repeatPassword: new FormControl('', { validators: [Validators.required, Validators.minLength(6)], updateOn: 'blur' }),
     }, { validators: [passwordsMustMatch] });
 
-  }
-
-  ngOnInit() {
-    this.activatedRoute.queryParams.subscribe((params) => {
-      this.email = params['email'];
-    });
+    const navigation = this.router.getCurrentNavigation();
+    const state = navigation?.extras.state as { email: string };
+    this.email = state.email;
   }
 
   submitResetPassword() {
+    this.passwordResetForm.markAllAsTouched();
     if (!this.passwordResetForm.valid) return;
 
     let token = this.passwordResetForm.get('token')?.value;
     let password = this.passwordResetForm.get('password')?.value;
 
+    this.disabledButton = true;
     this.authService.resetPassword(this.email, token, password).subscribe({
       next: (obj: any) => {
         this.router.navigateByUrl('/auth/login');
       },
       error: err => {
-        console.log(err)
         switch (err.error.codigoError) {
           case 404: {
             this.passwordResetForm.get('token')?.setErrors({
@@ -56,7 +56,10 @@ export class ResetPasswordComponent implements OnInit {
             });
           }; break;
         }
-      }
+        this.passwordResetForm.markAllAsTouched();
+      },
+    }).add(() => {
+      this.disabledButton = false;
     });
   }
 }

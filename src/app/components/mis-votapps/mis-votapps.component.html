@@ -17,22 +17,36 @@
   </ion-row>
   <ion-row class="ion-justify-content-center">
     <ion-col class="warning-border text-center" size="6">
-      <button mat-stroked-button id="orangeButton" color="warn">{{'app.dashboard.buttons.open' | translate | uppercase}}</button>
+      <button mat-stroked-button id="orangeButton" (click)="showVotapps('opened')"
+        color="warn">{{'app.dashboard.buttons.open' | translate | uppercase}}</button>
     </ion-col>
     <ion-col class="text-center" size="6">
-      <button mat-stroked-button color="primary">{{'app.dashboard.buttons.completed' | translate |
+      <button mat-stroked-button id="blueButton" (click)="showVotapps('closed')"
+        color="primary">{{'app.dashboard.buttons.completed' | translate |
         uppercase}}</button>
     </ion-col>
   </ion-row>
   <ion-row class="ion-justify-content-center ion-align-items-center">
     <ion-col class="text-center" size="10" size-xs="12">
-      <ng-container *ngIf="(votapps$ | async) as votapps; else loader">
-        <!-- <ng-container *ngIf="votapps.length > 0; else noVotapps"> -->
+      <div *ngIf="nowSeeing == 'opened'; else closed">
+        <ng-container *ngIf="(openedVotapps$ | async) as votapps; else loader">
+          <!-- <ng-container *ngIf="votapps.length > 0; else noVotapps"> -->
           <ng-container *ngFor="let votapp of votapps">
-            <app-votapp-card [votapp]="votapp" />
+            <app-votapp-card (click)="goToVotapp(votapp)" [votapp]="votapp" />
           </ng-container>
-        <!-- </ng-container> -->
-      </ng-container>
+          <!-- </ng-container> -->
+        </ng-container>
+      </div>
+      <ng-template #closed>
+        <ng-container *ngIf="(closedVotapps$ | async) as votapps; else loader">
+          <!-- <ng-container *ngIf="votapps.length > 0; else noVotapps"> -->
+          <ng-container *ngFor="let votapp of votapps">
+            <app-votapp-card (click)="goToVotapp(votapp)" [votapp]="votapp" />
+          </ng-container>
+          <!-- </ng-container> -->
+        </ng-container>
+      </ng-template>
+
       <ng-template #loader>
         <div role="status">
           <svg aria-hidden="true" class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"

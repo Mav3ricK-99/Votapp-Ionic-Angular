@@ -29,10 +29,9 @@ export class PasswordResetTokenComponent {
         this._bottomSheet.open(PasswordResetTokenBottomSheet);
         setTimeout(() => {
           this._bottomSheet.dismiss(PasswordResetTokenBottomSheet);
-          this.router.navigate(
-            ['/auth/reset-password'],
-            { queryParams: { email: email } }
-          );
+          this.router.navigate([`/auth/reset-password`], {
+            state: { email: email },
+          });
         }, 6000);
       },
       error: err => {

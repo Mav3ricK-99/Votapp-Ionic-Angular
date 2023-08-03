@@ -43,8 +43,15 @@
             }
         },
         "votes": {
+            "detail": {
+                "partialResults": "parial results"
+            },
             "states": {
-                "pending": "pending"
+                "pending": "pending",
+                "yes": "yes",
+                "no": "no",
+                "noquorum": "no quorum",
+                "abstention": "abstention"
             }
         }
     },
@@ -1059,6 +1066,16 @@
         {
             "name": "Zimbabwe",
             "flagImage": "ZW"
+        }
+    ],
+    "languages": [
+        {
+            "shortLanguage": "en",
+            "language": "English"
+        },
+        {
+            "shortLanguage": "es",
+            "language": "Spanish"
         }
     ]
 }

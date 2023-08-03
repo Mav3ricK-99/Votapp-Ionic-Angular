@@ -12,11 +12,12 @@ import { AuthenticationService } from 'src/app/services/authentication/authentic
 })
 export class LoginComponent {
 
+  public hidePassword: boolean = true;
   public loginForm: FormGroup;
   constructor(formBuilder: FormBuilder, private authService: AuthenticationService, private router: Router) {
     this.loginForm = formBuilder.group({
       email: new FormControl('federico1999g@gmail.com', { validators: [Validators.required, Validators.email, Validators.max(60)], updateOn: 'blur' }),
-      password: new FormControl('votapp9090..', { validators: [Validators.required, Validators.minLength(6)], updateOn: 'blur' }),
+      password: new FormControl('federico99', { validators: [Validators.required, Validators.minLength(6)], updateOn: 'blur' }),
     });
   }
 
@@ -39,7 +40,12 @@ export class LoginComponent {
         this.router.navigateByUrl('/mis-votapps');
       },
       error: err => {
-        console.log(err);
+        if (err.status === 401 || err.error.message.includes('Bad credentials')) {
+          this.loginForm.get('password')?.setErrors({
+            badCredentials: true,
+          });
+          this.loginForm.markAllAsTouched();
+        }
       }
     });
   }

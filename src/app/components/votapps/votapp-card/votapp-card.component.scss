@@ -18,8 +18,8 @@ mat-card {
 }
 
 mat-card-subtitle {
-    margin-top: .5rem;
-    margin-bottom: .5rem;
+    margin-top: 1px;
+    margin-bottom: 4px;
 }
 
 .mat-mdc-card-header {
@@ -27,8 +27,9 @@ mat-card-subtitle {
 }
 
 .mdc-card__actions {
-    width:200px;
+    width: 300px;
     padding: 0;
+    justify-content: space-around;
 }
 
 .card-content-box {
