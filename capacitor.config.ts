@@ -4,8 +4,11 @@ const config: CapacitorConfig = {
   appId: 'io.ionic.starter',
   appName: 'votapp-app',
   webDir: 'www',
+  bundledWebRuntime: false,
   server: {
-    androidScheme: 'https'
+    "androidScheme": 'http',
+    allowNavigation: ["localhost:8080"],
+    "cleartext": true
   }
 };
 

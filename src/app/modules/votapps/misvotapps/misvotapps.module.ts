@@ -10,6 +10,8 @@ import { VotappCardComponent } from 'src/app/components/votapps/votapp-card/vota
 import { MatCardModule } from '@angular/material/card';
 import { VotappDetailComponent } from 'src/app/components/votapps/votapp-detail/votapp-detail.component';
 import { MatRippleModule } from '@angular/material/core';
+import { MatDialogModule } from '@angular/material/dialog';
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { MatRippleModule } from '@angular/material/core';
     TranslateModule,
     MatButtonModule,
     MatCardModule,
-    MatRippleModule
+    MatRippleModule,
+    MatDialogModule,
+    MatIconModule
   ]
 })
 export class MisvotappsModule { }

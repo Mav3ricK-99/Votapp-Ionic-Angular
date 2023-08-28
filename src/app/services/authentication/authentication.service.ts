@@ -1,6 +1,6 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { retry } from 'rxjs';
+import { Device } from '@capacitor/device';
 import { User } from 'src/app/classes/user/user';
 
 @Injectable({
@@ -10,7 +10,14 @@ export class AuthenticationService {
 
   private AUTH_API_URL: string = 'http://localhost:8080/api/v1/auth/';
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {
+    Device.getInfo().then((res: any) => {
+      console.log(res.platform)
+      if(res.platform == 'android') {
+        this.AUTH_API_URL = 'http://10.0.2.2:8080/api/v1/auth/';
+      }
+    }).catch(e => { console.log(e); });
+  }
 
   authenticate(email: string, password: string) {
     return this.httpClient.post(this.AUTH_API_URL + 'login', {

@@ -1,6 +1,5 @@
 export enum Resultados {
-    Yes,
-    No,
-    NoQuorum,
-    Abstention
+    Afirmative = 'afirmative',
+    Negative = 'negative',
+    Tie = 'tie'
 }

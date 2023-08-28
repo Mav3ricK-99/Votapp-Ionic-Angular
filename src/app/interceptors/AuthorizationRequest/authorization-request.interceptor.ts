@@ -25,7 +25,7 @@ export class AuthorizationRequestInterceptor implements HttpInterceptor {
       withCredentials: true,
     });
 
-    if (req.url.includes("localhost:8080")) {
+    if (req.url.includes("localhost:8080") || req.url.includes("10.0.2.2:8080")) {
       let headers = new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Access-Control-Allow-Headers', 'Origin, Content-Type, X-Auth-Token')
@@ -86,7 +86,7 @@ export class AuthorizationRequestInterceptor implements HttpInterceptor {
 
   private addAuthenticationToken(request: HttpRequest<any>, jwt: JWT): HttpRequest<any> {
     // If you are calling an outside domain then do not add the token.
-    if (!request.url.includes("localhost:8080")) {
+    if (!request.url.includes("localhost:8080") && !request.url.includes("10.0.2.2:8080")) {
       return request;
     }
 

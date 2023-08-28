@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Device } from '@capacitor/device';
 import { JWT } from 'src/app/interfaces/jwt/jwt';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 
@@ -40,7 +41,7 @@ export class LoginComponent {
         this.router.navigateByUrl('/mis-votapps');
       },
       error: err => {
-        if (err.status === 401 || err.error.message.includes('Bad credentials')) {
+        if (err.status === 401 || err.error?.message?.includes('Bad credentials')) {
           this.loginForm.get('password')?.setErrors({
             badCredentials: true,
           });

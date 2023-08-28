@@ -44,14 +44,19 @@
         },
         "votes": {
             "detail": {
-                "partialResults": "parial results"
+                "partialResults": "partial results"
             },
             "states": {
-                "pending": "pending",
-                "yes": "yes",
+                "pendiente": "pending",
+                "si": "yes",
                 "no": "no",
                 "noquorum": "no quorum",
-                "abstention": "abstention"
+                "abstencion": "abstention"
+            },
+            "results": {
+                "afirmative": "afirmative",
+                "negative": "negative",
+                "tie": "unanimity"
             }
         }
     },

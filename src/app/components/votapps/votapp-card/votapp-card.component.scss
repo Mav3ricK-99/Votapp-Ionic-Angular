@@ -1,18 +1,11 @@
-.mdc-card {
-    flex-direction: row !important;
-}
 
 mat-card {
     margin-top: .5rem;
 }
 
-.mat-mdc-card-header {
-    align-items: center;
-}
-
 .logo {
-    width: 56px;
-    height: 56px;
+    width: 64px;
+    height: 64px;
     background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
     background-size: cover;
 }
@@ -23,15 +16,21 @@ mat-card-subtitle {
 }
 
 .mat-mdc-card-header {
-    padding: 8px 8px;
+    padding: 10px;
+}
+
+.mat-mdc-card-header-text {
+    min-width: 200px !important;
 }
 
 .mdc-card__actions {
-    width: 300px;
-    padding: 0;
     justify-content: space-around;
 }
 
 .card-content-box {
     width: 100%;
+}
+
+.mat-mdc-card-avatar {
+    margin-bottom: 0 !important;
 }

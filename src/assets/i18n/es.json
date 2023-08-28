@@ -47,11 +47,16 @@
                 "partialResults": "resultados parciales"
             },
             "states": {
-                "pending": "pendiente",
-                "yes": "si",
+                "pendiente": "pendiente",
+                "si": "si",
                 "no": "no",
                 "noquorum": "no doy quorum",
-                "abstention": "abstención"
+                "abstencion": "abstención"
+            },
+            "results": {
+                "afirmative": "afirmativo",
+                "negative": "negativo",
+                "tie": "unanimidad"
             }
         }
     },

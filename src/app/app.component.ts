@@ -42,7 +42,6 @@ export class AppComponent implements OnInit{
     }
     else {
       Device.getLanguageCode().then(res => {
-        console.log(res);
         this._initTranslate(res)
       }).catch(e => { console.log(e); });
     }

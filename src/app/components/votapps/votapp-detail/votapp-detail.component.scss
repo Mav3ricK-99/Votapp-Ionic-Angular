@@ -47,7 +47,15 @@ mat-card-subtitle {
 }
 
 .text-v {
-    font-size: .85rem;
+    font-size: .9rem;
+}
+
+.text-xv {
+    font-size: .75rem;
+}
+
+.text-xxv {
+    font-size: .65rem;
 }
 
 .text-xxs {
@@ -67,4 +75,20 @@ mat-card-subtitle {
 
 #remainingDaysButton {
     background-color: var(--ion-color-warning);
+}
+
+.arrow-py {
+    padding-top: 5px;
+}
+
+@media (max-width: 330px) {
+    #voteTypes {
+        flex-wrap: wrap !important;
+    }
+}
+
+@media only screen and (max-width: 330px) and (min-width: 200px) {
+    .votesOptions {
+        height: 80px !important;
+    }
 }

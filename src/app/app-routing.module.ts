@@ -11,6 +11,10 @@ const routes: Routes = [
     loadChildren: () => import('./modules/votapps/misvotapps/misvotapps.module').then(m => m.MisvotappsModule)
   },
   {
+    path: 'nueva-votapp',
+    loadChildren: () => import('./modules/votapps/nueva-votapp/nueva-votapp.module').then(m => m.NuevaVotappModule)
+  },
+  {
     path: '',
     redirectTo: 'auth/login',
     pathMatch: 'full'

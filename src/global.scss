@@ -39,11 +39,39 @@ ion-grid {
 
 .mat-mdc-form-field-hint-wrapper,
 .mat-mdc-form-field-error-wrapper {
-    padding: 0 10px !important;
+    //padding: 0 10px !important; //No poner en globa.scss!
 }
 
 .mat-mdc-form-field {
     display: flex !important;
-    margin-bottom: 0 !important;
-    padding-bottom: 0 !important;
+    /* margin-bottom: 0 !important;
+    padding-bottom: 0 !important; */
+}
+
+.mat-green {
+    color: #fff !important;
+    background-color: #4ade80 !important;
+}
+
+.mat-darkPrimary {
+    color: #fff !important;
+    background-color: darken(#3f51b5, 15%) !important;
+}
+
+.mat-tomato {
+    color: #fff !important;
+    background-color: #ff6055 !important;
+}
+
+.mat-mdc-outlined-button.mat-tomato {
+    color: #ff6055 !important;
+    background-color: transparent !important;
+}
+
+.min-height-2 {
+    min-height: 2rem;
+}
+
+.mat-mdc-card-title{
+    --mat-card-title-text-weight: 500
 }
