@@ -1,7 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Comunidad } from 'src/app/classes/comunidad/comunidad';
+import { User } from 'src/app/classes/user/user';
 import { Votacion } from 'src/app/classes/votacion/votacion';
 import { VotacionDecision } from 'src/app/classes/votacionDecision/votacion-decision';
 import { VotacionFrecuencia } from 'src/app/classes/votacionFrecuencia/votacion-frecuencia';
@@ -23,7 +27,7 @@ export class NuevaVotappComponent {
   public tipoDecisiones$: Observable<any>;
   public frecuenciasVotacion$: Observable<any>;
 
-  constructor(formBuilder: FormBuilder, private userService: UserService, private votacionService: VotacionService) {
+  constructor(formBuilder: FormBuilder, private userService: UserService, private votacionService: VotacionService, public dialog: MatDialog, public router: Router) {
 
     this.comunities$ = this.userService.getMyComunities();
     this.tipoDecisiones$ = this.votacionService.getTipoDecisiones();
@@ -37,8 +41,8 @@ export class NuevaVotappComponent {
       tipoDecision: new FormControl<VotacionDecision | null>(null, { validators: [Validators.required], updateOn: 'blur' }),
       titulo: new FormControl('Titulo', { validators: [Validators.required, Validators.minLength(3), Validators.maxLength(255)], updateOn: 'blur' }),
       detalle: new FormControl('Detalle', { validators: [Validators.minLength(3), Validators.maxLength(255)] }),
-      aceptacionRequerida: new FormControl('99.50', { validators: [Validators.required, Validators.min(0), Validators.max(99.99)], updateOn: 'blur' }),
-      quorumRequerido: new FormControl('50', { validators: [Validators.required, Validators.min(0), Validators.max(99.99)], updateOn: 'blur' }),
+      aceptacionRequerida: new FormControl('99.50', { validators: [Validators.required, Validators.min(0), Validators.max(100)], updateOn: 'blur' }),
+      quorumRequerido: new FormControl('50', { validators: [Validators.required, Validators.min(0), Validators.max(100)], updateOn: 'blur' }),
     });
 
     this.duracionForm = formBuilder.group({
@@ -61,7 +65,12 @@ export class NuevaVotappComponent {
   }
 
   pickComunidad(comunidad: Comunidad) {
-    this.comunidadForm.get('comunidad')?.setValue(comunidad);
+    let usuarioIngresado: User = this.userService.currentUser;
+    if (!comunidad.usuarioPuedeCrearVotacion(usuarioIngresado)) {
+      this.dialog.open(NuevaVotappNoPuedeCrearVotacionDialog);
+    } else {
+      this.comunidadForm.get('comunidad')?.setValue(comunidad);
+    }
   }
 
   /**
@@ -127,6 +136,9 @@ export class NuevaVotappComponent {
     this.votacionService.newVotapp(nuevaVotapp).subscribe({
       next: (obj: any) => {
         console.log(obj);
+        this.dialog.open(NuevaVotappConfirmarDialog).afterClosed().subscribe(() => {
+          this.router.navigateByUrl('/mis-votapps');
+        });
       },
       error: err => {
         console.log(err);
@@ -141,4 +153,28 @@ export class NuevaVotappComponent {
   continuarSegundoPaso() {
     this.puntoAVotarForm.markAllAsTouched();
   }
+}
+
+@Component({
+  selector: 'app-nueva-votapp-confirmar-dialog-component',
+  templateUrl: './nueva-votapp-confirmar-dialog.component.html',
+  standalone: true,
+  imports: [MatDialogModule, MatButtonModule],
+})
+export class NuevaVotappConfirmarDialog {
+
+  constructor(public dialogRef: MatDialogRef<NuevaVotappConfirmarDialog>) { }
+
+}
+
+@Component({
+  selector: 'app-nueva-votapp-no-puede-crear-votacion-dialog-component',
+  templateUrl: './nueva-votapp-no-puede-crear-votacion-dialog.component.html',
+  standalone: true,
+  imports: [MatDialogModule, MatButtonModule],
+})
+export class NuevaVotappNoPuedeCrearVotacionDialog {
+
+  constructor(public dialogRef: MatDialogRef<NuevaVotappNoPuedeCrearVotacionDialog>) { }
+
 }

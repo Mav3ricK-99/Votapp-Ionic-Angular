@@ -87,7 +87,7 @@
           <mat-step [stepControl]="puntoAVotarForm" errorMessage="Verifique los datos en este paso.">
             <ng-template matStepLabel>Punto a Votar</ng-template>
             <form [formGroup]="puntoAVotarForm" class="mt-1">
-              <mat-form-field [ngClass]="{'mb-4': !puntoAVotarForm.get('tipoDecision')?.valid && (puntoAVotarForm.get('tipoDecision')?.dirty || puntoAVotarForm.get('tipoDecision')?.touched)}">
+              <mat-form-field [ngClass]="{'mb-5': !puntoAVotarForm.get('tipoDecision')?.valid && (puntoAVotarForm.get('tipoDecision')?.dirty || puntoAVotarForm.get('tipoDecision')?.touched)}">
                 <mat-label>Tipo de decision</mat-label>
                 <mat-select formControlName="tipoDecision">
                   <ng-container *ngIf="(tipoDecisiones$ | async) as tipoDecisiones">
@@ -100,7 +100,7 @@
                   El campo Tipo de Decision de la votacion es requerido.
                 </mat-error>
               </mat-form-field>
-              <mat-form-field [ngClass]="{'mb-4': !puntoAVotarForm.get('titulo')?.valid && (puntoAVotarForm.get('titulo')?.dirty || puntoAVotarForm.get('titulo')?.touched)}">
+              <mat-form-field [ngClass]="{'mb-5': !puntoAVotarForm.get('titulo')?.valid && (puntoAVotarForm.get('titulo')?.dirty || puntoAVotarForm.get('titulo')?.touched)}">
                 <mat-label>Titulo</mat-label>
                 <input matInput placeholder="Punto de votacion" formControlName="titulo">
                 <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('titulo')?.errors?.['required']">
@@ -113,7 +113,7 @@
                   El campo Titulo de la votacion debe tener como maximo 255 caracteres.
                 </mat-error>
               </mat-form-field>
-              <mat-form-field [ngClass]="{'mb-4': !puntoAVotarForm.get('detalle')?.valid && (puntoAVotarForm.get('detalle')?.dirty || puntoAVotarForm.get('detalle')?.touched)}">
+              <mat-form-field [ngClass]="{'mb-5': !puntoAVotarForm.get('detalle')?.valid && (puntoAVotarForm.get('detalle')?.dirty || puntoAVotarForm.get('detalle')?.touched)}">
                 <mat-label>Detalle</mat-label>
                 <textarea matInput maxlength="255" formControlName="detalle"></textarea>
                 <mat-hint align="end">{{puntoAVotarForm.get('detalle')?.value?.length}}/255</mat-hint>
@@ -124,7 +124,7 @@
                   El campo Detalle de la votacion debe tener como maximo 255 caracteres.
                 </mat-error>
               </mat-form-field>
-              <mat-form-field [ngClass]="{'mb-4': !puntoAVotarForm.get('aceptacionRequerida')?.valid && (puntoAVotarForm.get('aceptacionRequerida')?.dirty || puntoAVotarForm.get('aceptacionRequerida')?.touched)}" floatLabel="always">
+              <mat-form-field [ngClass]="{'mb-5': !puntoAVotarForm.get('aceptacionRequerida')?.valid && (puntoAVotarForm.get('aceptacionRequerida')?.dirty || puntoAVotarForm.get('aceptacionRequerida')?.touched)}" floatLabel="always">
                 <mat-label>Aceptacion requerida</mat-label>
                 <input matInput type="number" class="text-right" placeholder="0" formControlName="aceptacionRequerida">
                 <span matTextPrefix>%&nbsp;</span>
@@ -135,10 +135,10 @@
                   El campo Aceptacion Requerida debe ser como minimo 0.
                 </mat-error>
                 <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('aceptacionRequerida')?.errors?.['max']">
-                  El campo Aceptacion Requerida debe ser 99,99% como maximo.
+                  El campo Aceptacion Requerida debe ser 100% como maximo.
                 </mat-error>
               </mat-form-field>
-              <mat-form-field [ngClass]="{'mb-4': !puntoAVotarForm.get('quorumRequerido')?.valid && (puntoAVotarForm.get('quorumRequerido')?.dirty || puntoAVotarForm.get('quorumRequerido')?.touched)}" floatLabel="always">
+              <mat-form-field [ngClass]="{'mb-5': !puntoAVotarForm.get('quorumRequerido')?.valid && (puntoAVotarForm.get('quorumRequerido')?.dirty || puntoAVotarForm.get('quorumRequerido')?.touched)}" floatLabel="always">
                 <mat-label>Quorum requerido</mat-label>
                 <input matInput type="number" class="text-right" placeholder="0" formControlName="quorumRequerido">
                 <span matTextPrefix>%&nbsp;</span>
@@ -149,7 +149,7 @@
                   El campo Quorum Requerido debe ser como minimo 0.
                 </mat-error>
                 <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('quorumRequerido')?.errors?.['max']">
-                  El campo Quorum Requerido debe ser 99,99% como maximo.
+                  El campo Quorum Requerido debe ser 100% como maximo.
                 </mat-error>
               </mat-form-field>
               <div class="flex justify-around py-3 items-center">
@@ -158,10 +158,10 @@
               </div>
             </form>
           </mat-step>
-          <mat-step [stepControl]="duracionForm">
+          <mat-step [stepControl]="duracionForm" errorMessage="Verifique los datos en este paso.">
             <ng-template matStepLabel>Duracion</ng-template>
             <form [formGroup]="duracionForm" class="mt-2">
-              <mat-form-field class="mb-2" [ngClass]="{'mb-4': !duracionForm.get('fechaVencimiento')?.valid && (duracionForm.get('fechaVencimiento')?.dirty || duracionForm.get('fechaVencimiento')?.touched)}">
+              <mat-form-field class="mb-2" [ngClass]="{'mb-5': !duracionForm.get('fechaVencimiento')?.valid && (duracionForm.get('fechaVencimiento')?.dirty || duracionForm.get('fechaVencimiento')?.touched)}">
                 <mat-label>Fecha fin de Votacion</mat-label>
                 <input matInput [matDatepicker]="picker" formControlName="fechaVencimiento">
                 <mat-hint>DD/MM/YYYY</mat-hint>
@@ -176,7 +176,7 @@
               </mat-form-field>
               <mat-label>Hora de fin de votacion</mat-label>
               <ion-datetime style="max-width:100%;" presentation="time" formControlName="horaVencimiento"></ion-datetime>
-              <mat-form-field [ngClass]="{'mb-4': !duracionForm.get('frecuenciasVotacion')?.valid && (duracionForm.get('frecuenciasVotacion')?.dirty || duracionForm.get('frecuenciasVotacion')?.touched)}">
+              <mat-form-field [ngClass]="{'mb-5': !duracionForm.get('frecuenciasVotacion')?.valid && (duracionForm.get('frecuenciasVotacion')?.dirty || duracionForm.get('frecuenciasVotacion')?.touched)}">
                 <mat-label>Frecuencia de votacion</mat-label>
                 <mat-select formControlName="frecuenciaVotacion">
                   <ng-container *ngIf="(frecuenciasVotacion$ | async) as frecuenciasVotacion">

@@ -47,7 +47,7 @@ mat-card-subtitle {
 }
 
 .text-v {
-    font-size: .9rem;
+    font-size: 1rem;
 }
 
 .text-xv {
@@ -62,18 +62,17 @@ mat-card-subtitle {
     font-size: .6rem;
 }
 
-.votesOptions {
+.opcionesVoto {
     width: 100px;
     height: 100px;
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
-
     -webkit-user-drag: none;
     -webkit-tap-highlight-color: transparent;
 }
 
-#remainingDaysButton {
+#botonDiasRestantes {
     background-color: var(--ion-color-warning);
 }
 
@@ -87,8 +86,8 @@ mat-card-subtitle {
     }
 }
 
-@media only screen and (max-width: 330px) and (min-width: 200px) {
-    .votesOptions {
+@media only screen and (max-width: 400px) and (min-width: 335px) {
+    .cuatroOpcionesVoto {
         height: 80px !important;
     }
 }

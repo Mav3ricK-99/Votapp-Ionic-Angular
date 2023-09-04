@@ -11,38 +11,49 @@ import { UserService } from 'src/app/services/user/user.service';
 })
 export class MisVotappsComponent implements OnInit {
 
-  public votapps$: Observable<any>;
+  public mostrarVista: boolean = false;
 
-  public closedVotapps$: Observable<any>;
-  public openedVotapps$: Observable<any>;
+  public votappsAbiertas: Votacion[] = [];
+  public votappsCerradas: Votacion[] = [];
 
-  public nowSeeing: string;
+  public ahoraViendo: string;
 
   constructor(private userService: UserService, private router: Router) {
-    this.votapps$ = this.userService.getMyVotes();
-
-    this.closedVotapps$ = this.votapps$.pipe(map((votaciones: any) => {
-      let votacionesCerradas = votaciones.filter((votacion: Votacion) => votacion.isEnded() ? true : false);
-      return (votacionesCerradas.length > 0) ? votacionesCerradas : [];
-    }));
-
-    this.openedVotapps$ = this.votapps$.pipe(map((votaciones: any) => {
-      let votacionesAbiertas = votaciones.filter((votacion: Votacion) => !votacion.isEnded() ? true : false);
-      return (votacionesAbiertas.length > 0) ? votacionesAbiertas : [];
-    }));
+    this.llamarVotapps();
   }
 
   ngOnInit() {
-    this.nowSeeing = 'opened';
+    this.ahoraViendo = 'abiertas';
   }
 
-  public showVotapps(state: string) {
-    this.nowSeeing = state;
+  public mostrarVotapps(estado: string) {
+    this.ahoraViendo = estado;
   }
 
   public goToVotapp(votapp: Votacion) {
-    this.router.navigate([`mis-votapps/${votapp.id}`], {
-      state: { votapp: votapp },
+    this.router.navigate([`mis-votapps/${votapp.id}`]);
+  }
+
+  handleRefresh(event: any) {
+    setTimeout(() => {
+      this.mostrarVista = false;
+      this.llamarVotapps();
+      event.target.complete();
+    }, 500);
+  }
+
+  private llamarVotapps() {
+    this.userService.getMyVotes().subscribe({
+      next: (votaciones: Votacion[]) => {
+        this.mostrarVista = true;
+        votaciones.forEach((votapp: Votacion) => {
+          if (!votapp.estaFinalizada()) {
+            this.votappsAbiertas.push(votapp);
+          } else {
+            this.votappsCerradas.push(votapp);
+          }
+        })
+      }
     });
   }
 }

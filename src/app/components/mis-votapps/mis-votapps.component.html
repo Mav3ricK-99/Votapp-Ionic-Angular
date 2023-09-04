@@ -4,6 +4,9 @@
   </ion-toolbar>
 </ion-header>
 <ion-content [scrollEvents]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-grid>
     <ion-row class="ion-justify-content-center ion-align-items-center">
       <ion-col size-xs="4">
@@ -19,49 +22,47 @@
       </ion-col>
     </ion-row>
     <ion-row class="ion-justify-content-center bg-gray-100 py-2">
-      <ng-container *ngIf="nowSeeing == 'opened'; else strokedOpenButton">
+      <ng-container *ngIf="ahoraViendo == 'abiertas'; else strokedOpenButton">
         <ion-col class="warning-border text-center" size="6">
-          <button mat-flat-button id="orangeButton" (click)="showVotapps('opened')"
+          <button mat-flat-button id="orangeButton" (click)="mostrarVotapps('abiertas')"
             color="tomato">{{'app.dashboard.buttons.open' | translate | uppercase}}</button>
         </ion-col>
         <ion-col class="text-center" size="6">
-          <button mat-button mat-stroked-button id="blueButton"
-            (click)="showVotapps('closed')" color="primary">{{'app.dashboard.buttons.completed' | translate |
+          <button mat-button mat-stroked-button id="blueButton" (click)="mostrarVotapps('cerradas')"
+            color="primary">{{'app.dashboard.buttons.completed' | translate |
             uppercase}}</button>
         </ion-col>
       </ng-container>
       <ng-template #strokedOpenButton>
         <ion-col class="warning-border text-center" size="6">
-          <button mat-stroked-button id="orangeButton" (click)="showVotapps('opened')"
+          <button mat-stroked-button id="orangeButton" (click)="mostrarVotapps('abiertas')"
             color="tomato">{{'app.dashboard.buttons.open' | translate | uppercase}}</button>
         </ion-col>
         <ion-col class="text-center" size="6">
-          <button mat-button mat-flat-button id="blueButton"
-            (click)="showVotapps('closed')" color="primary">{{'app.dashboard.buttons.completed' | translate |
+          <button mat-button mat-flat-button id="blueButton" (click)="mostrarVotapps('cerradas')"
+            color="primary">{{'app.dashboard.buttons.completed' | translate |
             uppercase}}</button>
-          </ion-col>
+        </ion-col>
       </ng-template>
     </ion-row>
     <ion-row class="ion-justify-content-center ion-align-items-center">
       <ion-col class="text-center" size-lg="5" size-md="6" size-xs="12">
-        <div *ngIf="nowSeeing == 'opened'; else closed">
-          <ng-container *ngIf="(openedVotapps$ | async) as votapps; else loader">
-            <ng-container *ngIf="votapps.length > 0; else noVotapps">
-              <ng-container *ngFor="let votapp of votapps">
+        <ng-container *ngIf='mostrarVista; else loader'>
+          <div *ngIf="ahoraViendo == 'abiertas'; else cerradas">
+            <ng-container *ngIf="votappsAbiertas.length > 0; else noVotapps">
+              <ng-container *ngFor="let votapp of votappsAbiertas">
                 <app-votapp-card (click)="goToVotapp(votapp)" [votapp]="votapp" />
               </ng-container>
             </ng-container>
-          </ng-container>
-        </div>
-        <ng-template #closed>
-          <ng-container *ngIf="(closedVotapps$ | async) as votapps; else loader">
-            <!-- <ng-container *ngIf="votapps.length > 0; else noVotapps"> -->
-            <ng-container *ngFor="let votapp of votapps">
-              <app-votapp-card (click)="goToVotapp(votapp)" [votapp]="votapp" />
+          </div>
+          <ng-template #cerradas>
+            <ng-container *ngIf="votappsCerradas.length > 0; else noVotapps">
+              <ng-container *ngFor="let votapp of votappsCerradas">
+                <app-votapp-card (click)="goToVotapp(votapp)" [votapp]="votapp" />
+              </ng-container>
             </ng-container>
-            <!-- </ng-container> -->
-          </ng-container>
-        </ng-template>
+          </ng-template>
+        </ng-container>
 
         <ng-template #loader>
           <div role="status">
@@ -79,10 +80,10 @@
         </ng-template>
 
         <ng-template #noVotapps>
-          <h4 *ngIf="nowSeeing == 'opened'; else noClosedVotapps">
+          <h4 *ngIf="ahoraViendo == 'abiertas'; else nocerradasVotapps">
             No hay votapps abiertas en las que hayas participado.
           </h4>
-          <ng-template #noClosedVotapps>
+          <ng-template #nocerradasVotapps>
             <h4>No hay votapps cerradas en las que hayas participado.</h4>
           </ng-template>
         </ng-template>

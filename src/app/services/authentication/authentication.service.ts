@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Device } from '@capacitor/device';
 import { User } from 'src/app/classes/user/user';
 
 @Injectable({
@@ -10,14 +9,7 @@ export class AuthenticationService {
 
   private AUTH_API_URL: string = 'http://localhost:8080/api/v1/auth/';
 
-  constructor(private httpClient: HttpClient) {
-    Device.getInfo().then((res: any) => {
-      console.log(res.platform)
-      if(res.platform == 'android') {
-        this.AUTH_API_URL = 'http://10.0.2.2:8080/api/v1/auth/';
-      }
-    }).catch(e => { console.log(e); });
-  }
+  constructor(private httpClient: HttpClient) { }
 
   authenticate(email: string, password: string) {
     return this.httpClient.post(this.AUTH_API_URL + 'login', {
@@ -28,12 +20,12 @@ export class AuthenticationService {
 
   signUpUser(newUser: User, password: string) {
     return this.httpClient.post(this.AUTH_API_URL + 'register', {
-      email: newUser.getEmail,
-      nombre: newUser.getName,
-      apellido: newUser.getSurname,
+      email: newUser.email,
+      nombre: newUser.name,
+      apellido: newUser.surname,
       password: password,
-      paisResidencia: newUser.getResidenceCountry,
-      fechaNacimiento: newUser.getYearOfBirth
+      paisResidencia: newUser.country,
+      fechaNacimiento: newUser.yearOfBirth
     });
   }
 

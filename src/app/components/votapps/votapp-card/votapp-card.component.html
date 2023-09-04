@@ -5,21 +5,21 @@
     <mat-card-subtitle class="text-justify">{{ votapp.votacionPunto }}</mat-card-subtitle>
   </mat-card-header>
   <div class="card-content-box">
-    <mat-card-actions *ngIf="votapp.isEnded(); else openVotappCard">
+    <mat-card-actions *ngIf="votapp.estaFinalizada(); else openVotappCard">
       <ion-grid>
         <ion-row>
           <ion-col size="6">
-            <ion-button class="mb-2" expand="block" color="green">Mi voto {{'app.votes.states.'+
-              votapp.myVoteStatePretty() | translate
+            <ion-button class="mb-2 text-wrap" expand="block" color="green">Mi voto {{'app.votes.states.'+
+              votapp.estadoVotoParticipantePretty(this.userService.currentUser) | translate
               }}</ion-button>
-            <ion-button expand="block" color="medium">{{votapp.totalVoters()}}
-              votos<br>{{votapp.votersPercentage()}}%</ion-button>
+            <ion-button expand="block" color="medium">{{votapp.totalVotosQuorum()}}
+              votos<br>{{votapp.porcentajeVotosQuorum()}}%</ion-button>
           </ion-col>
           <ion-col size="6">
             <ion-button class="mb-2" expand="block" color="medium">Resultado<br>{{'app.votes.results.' +
-              votapp.finalResult() | translate}}</ion-button>
+              votapp.resultadoFinal() | translate}}</ion-button>
             <ion-button expand="block" size="medium" color="medium">Total
-              votantes<br>{{votapp.totalMembers()}}</ion-button>
+              votantes<br>{{votapp.totalMiembros()}}</ion-button>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -30,16 +30,17 @@
           <ion-row>
             <ion-col size="6">
               <ion-button class="mb-2" expand="block" color="warning">Dias
-                restantes<br>{{votapp.remainingDays()}}</ion-button>
+                restantes<br>{{votapp.diasRestantes()}}</ion-button>
               <ion-button expand="block" size="medium" color="medium">Total
-                votantes<br>{{votapp.totalMembers()}}</ion-button>
+                votantes<br>{{votapp.totalMiembros()}}</ion-button>
             </ion-col>
             <ion-col size="6">
-              <ion-button class="mb-2" expand="block" color="green">Mi voto {{'app.votes.states.'+ votapp.myVoteStatePretty()
+              <ion-button class="mb-2 text-wrap" expand="block" color="green">Mi voto {{'app.votes.states.'+
+                votapp.estadoVotoParticipantePretty(this.userService.currentUser)
                 | translate
                 }}</ion-button>
-              <ion-button expand="block" color="medium">{{votapp.totalVoters()}}
-                votos<br>{{votapp.votersPercentage()}}%</ion-button>
+              <ion-button expand="block" color="medium">{{votapp.totalVotosQuorum()}}
+                votos<br>{{votapp.porcentajeVotosQuorum()}}%</ion-button>
             </ion-col>
           </ion-row>
         </ion-grid>

@@ -1,11 +1,11 @@
 export class User {
-    private id: number;
-    private name: string;
-    private surname: string;
-    private email: string;
-    private country: string;
-    private yearOfBirth: number;
-    private createdAt: Date = new Date();
+    public id: number;
+    public name: string;
+    public surname: string;
+    public email: string;
+    public country: string;
+    public yearOfBirth: number;
+    public createdAt: Date = new Date();
 
     constructor(id: number, name: string, surname: string, email: string, country: string, yearOfBirth: number) {
         this.id = id;
@@ -15,29 +15,4 @@ export class User {
         this.country = country;
         this.yearOfBirth = yearOfBirth;
     }
-
-    public get getId(): number {
-        return this.id;
-    }
-
-    public get getName(): string {
-        return this.name;
-    }
-
-    public get getEmail(): string {
-        return this.email;
-    }
-
-    public get getSurname(): string {
-        return this.surname;
-    }
-
-    public get getResidenceCountry(): string {
-        return this.country;
-    }
-
-    public get getYearOfBirth(): number {
-        return this.yearOfBirth;
-    }
-
 }

@@ -1,4 +1,5 @@
 import { ComunidadIntegrantes } from "../comunidadIntegrantes/comunidad-integrantes";
+import { User } from "../user/user";
 import { VotacionTipo } from "../votacionTipo/votacion-tipo";
 
 export class Comunidad {
@@ -11,13 +12,28 @@ export class Comunidad {
     public votacionTipo: VotacionTipo;
     public comunidadIntegrantes: ComunidadIntegrantes[];
 
-    constructor(id: number, nombre: string, descripcion: string, comunidadLogo: string | null, votacionTipo: VotacionTipo, created_at: Date | null) {
+    constructor(id: number, nombre: string, descripcion: string, comunidadLogo: string | null, votacionTipo: VotacionTipo, comunidadIntegrantes: ComunidadIntegrantes[], created_at: Date | null) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.comunidadLogo = comunidadLogo;
         this.votacionTipo = votacionTipo;
         this.created_at = created_at;
-        this.comunidadIntegrantes = [];
+        this.comunidadIntegrantes = comunidadIntegrantes;
+    }
+
+    /**
+     * Funcion que retorna si un determinado usuario puede o no crear votacion en esta comunidad
+     * @returns boolean
+     */
+    public usuarioPuedeCrearVotacion(user: User): boolean {
+        var usuarioPuedeCrearVotacion: boolean = false;
+        this.comunidadIntegrantes.forEach((comunidadIntegrante: ComunidadIntegrantes) => {
+            if (comunidadIntegrante.puedeCrearVotacion(user)) {
+                usuarioPuedeCrearVotacion = true;
+            }
+        });
+
+        return usuarioPuedeCrearVotacion;
     }
 }

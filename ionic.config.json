@@ -1,5 +1,5 @@
 {
-  "name": "votapp-app",
+  "name": "Votapp",
   "integrations": {
     "capacitor": {},
     "cordova": {}
