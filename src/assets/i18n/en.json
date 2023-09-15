@@ -104,7 +104,7 @@
         {
             "name": "Argentina",
             "flagImage": "AR",
-            "language": "Spanish"
+            "language": "Español"
         },
         {
             "name": "Armenia",
@@ -1038,7 +1038,7 @@
         {
             "name": "Venezuela",
             "flagImage": "VE",
-            "language": "Spanish"
+            "language": "Español"
         },
         {
             "name": "Viet Nam",
@@ -1080,7 +1080,7 @@
         },
         {
             "shortLanguage": "es",
-            "language": "Spanish"
+            "language": "Español"
         }
     ]
 }

@@ -1,17 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Comunidad } from 'src/app/classes/comunidad/comunidad';
+import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { TipoVoto } from 'src/app/classes/tipoVoto/tipo-voto';
 import { Votacion } from 'src/app/classes/votacion/votacion';
-import { VotacionDecision } from 'src/app/classes/votacionDecision/votacion-decision';
 import { VotacionIntegrantes } from 'src/app/classes/votacionIntegrantes/votacion-integrantes';
 import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { VotacionService } from 'src/app/services/votacion/votacion.service';
-import { VotacionTipo } from 'src/app/classes/votacionTipo/votacion-tipo';
-import { VotacionFrecuencia } from 'src/app/classes/votacionFrecuencia/votacion-frecuencia';
 import { UserService } from 'src/app/services/user/user.service';
-import { Observable } from 'rxjs';
 @Component({
   selector: 'app-votapp-detail',
   templateUrl: './votapp-detail.component.html',
@@ -90,8 +85,8 @@ export class VotappDetailComponent {
     }, 500);
   }
 
-  public openDialog(voto: TipoVoto) {
-    this.dialog.open(ConfirmVoteChangeDialog, { maxWidth: '90vw' })
+  public abrirDialog(voto: TipoVoto) {
+    this.dialog.open(ConfirmarCambioVotoDialog, { maxWidth: '90vw', panelClass: 'cambiarVotoDialog' })
       .afterClosed().subscribe(dialogResult => {
         if (dialogResult) {
           this.votacionService.changeVote(this.votapp.id, voto.nombre).subscribe({
@@ -124,15 +119,15 @@ export class VotappDetailComponent {
 }
 
 @Component({
-  selector: 'confirm-vote-change-dialog',
-  templateUrl: 'confirm-vote-change-dialog.html',
-  styleUrls: ['./confirm-vote-change-dialog.scss'],
+  selector: 'confirmar-cambio-voto-dialog',
+  templateUrl: 'confirmar-cambio-voto-dialog.html',
+  styleUrls: ['./confirmar-cambio-voto-dialog.scss'],
   standalone: true,
   imports: [MatDialogModule, MatButtonModule],
 })
-export class ConfirmVoteChangeDialog {
+export class ConfirmarCambioVotoDialog {
 
-  constructor(public dialogRef: MatDialogRef<ConfirmVoteChangeDialog>) { }
+  constructor(public dialogRef: MatDialogRef<ConfirmarCambioVotoDialog>) { }
 
   public confirm(): void {
     this.dialogRef.close(true);

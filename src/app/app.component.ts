@@ -1,16 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Optional } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Device } from '@capacitor/device';
+import { IonRouterOutlet, Platform } from '@ionic/angular';
+import { App } from '@capacitor/app';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
 
   public language: string = '';
 
-  constructor(private _translate: TranslateService) {
+  constructor(private _translate: TranslateService, private platform: Platform, @Optional() private routerOutlet?: IonRouterOutlet) {
+    this.platform.backButton.subscribeWithPriority(-1, () => {
+      if (this.routerOutlet && !this.routerOutlet.canGoBack()) {
+        App.exitApp();
+      }
+    });
   }
 
   ngOnInit(): void {

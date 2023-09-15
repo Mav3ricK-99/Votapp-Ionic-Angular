@@ -14,17 +14,16 @@
       <ion-col size-lg="6" size-sm="5">
         <h2 class="text-center font-light mb-3">Contanos de vos para poder ingresar</h2>
         <form [formGroup]="signUpForm">
-          <ion-row class="ion-justify-content-center mb-1">
+          <ion-row class="ion-justify-content-center">
             <ion-col size-lg="8" size-sm="5">
-              <mat-form-field appearance="outline">
-                <mat-label>{{'app.forms.auth.email' | translate }}</mat-label>
+              <mat-form-field [ngClass]="{'mb-3': !signUpForm.get('email')?.valid && (signUpForm.get('email')?.dirty || signUpForm.get('email')?.touched)}" appearance="outline">
+                <mat-label>{{'app.forms.auth.email' | translate | titlecase}}</mat-label>
                 <input type="email" formControlName="email" matInput placeholder="Ingresa su correo electronico">
                 <mat-error class="text-sm"
                   *ngIf="signUpForm.get('email')?.errors?.['email'] && !signUpForm.get('email')?.errors?.['required'] && !signUpForm.get('email')?.errors?.['maxlength']">
                   El correo electronico debe ser valido.
                 </mat-error>
-                <mat-error class="text-sm"
-                  *ngIf="signUpForm.get('email')?.errors?.['required'] && !signUpForm.get('email')?.errors?.['maxlength']">
+                <mat-error class="text-sm" *ngIf="signUpForm.get('email')?.errors?.['required'] && !signUpForm.get('email')?.errors?.['maxlength']">
                   El correo electronico es requerido.
                 </mat-error>
                 <mat-error class="text-sm" *ngIf="signUpForm.get('email')?.errors?.['maxlength']">
@@ -39,34 +38,51 @@
 
           <ion-row class="ion-justify-content-center mb-1">
             <ion-col size-lg="8" size-sm="5">
-              <mat-form-field appearance="outline">
-                <mat-label>{{'app.userInfo.name' | translate }}</mat-label>
+              <mat-form-field [ngClass]="{'mb-3': !signUpForm.get('name')?.valid && (signUpForm.get('name')?.dirty || signUpForm.get('name')?.touched)}" appearance="outline">
+                <mat-label>{{'app.userInfo.name' | translate | titlecase}}</mat-label>
                 <input formControlName="name" matInput placeholder="Ingresa tu nombre">
                 <mat-error class="text-sm"
-                  *ngIf="signUpForm.get('name')?.invalid && (signUpForm.get('name')?.dirty || signUpForm.get('name')?.touched)">{{getNameErrorMessage()}}</mat-error>
+                  *ngIf="signUpForm.get('name')?.errors?.['required'] && !signUpForm.get('name')?.errors?.['maxlength'] && !signUpForm.get('name')?.errors?.['minlength']">
+                  El nombre es requerido.
+                </mat-error>
+                <mat-error class="text-sm" *ngIf="signUpForm.get('name')?.errors?.['maxlength']">
+                  El nombre debe tener como maximo 45 caracteres.
+                </mat-error>
+                <mat-error class="text-sm" *ngIf="signUpForm.get('name')?.errors?.['minlength']">
+                  El nombre debe tener al menos 6 caracteres.
+                </mat-error>
               </mat-form-field>
             </ion-col>
           </ion-row>
 
           <ion-row class="ion-justify-content-center mb-1">
             <ion-col size-lg="8" size-sm="5">
-              <mat-form-field appearance="outline">
-                <mat-label>{{'app.userInfo.surname' | translate }}</mat-label>
+              <mat-form-field [ngClass]="{'mb-3': !signUpForm.get('surname')?.valid && (signUpForm.get('surname')?.dirty || signUpForm.get('surname')?.touched)}" appearance="outline">
+                <mat-label>{{'app.userInfo.surname' | translate | titlecase}}</mat-label>
                 <input formControlName="surname" matInput placeholder="Ingresa tu apellido">
                 <mat-error class="text-sm"
-                  *ngIf="signUpForm.get('surname')?.invalid && (signUpForm.get('surname')?.dirty || signUpForm.get('surname')?.touched)">{{getSurnameErrorMessage()}}</mat-error>
+                  *ngIf="signUpForm.get('surname')?.errors?.['required'] && !signUpForm.get('surname')?.errors?.['maxlength'] && !signUpForm.get('surname')?.errors?.['minlength']">
+                  El apellido es requerido.
+                </mat-error>
+                <mat-error class="text-sm" *ngIf="signUpForm.get('surname')?.errors?.['maxlength']">
+                  El apellido debe tener como maximo 45 caracteres.
+                </mat-error>
+                <mat-error class="text-sm" *ngIf="signUpForm.get('surname')?.errors?.['minlength']">
+                  El apellido debe tener al menos 6 caracteres.
+                </mat-error>
               </mat-form-field>
             </ion-col>
           </ion-row>
 
           <ion-row class="ion-justify-content-center mb-1">
             <ion-col size-lg="8" size-sm="5">
-              <mat-form-field appearance="outline">
-                <mat-label>{{'app.userInfo.residenceCountry' | translate }}</mat-label>
+              <mat-form-field [ngClass]="{'mb-2': !signUpForm.get('residenceCountry')?.valid && (signUpForm.get('residenceCountry')?.dirty || signUpForm.get('residenceCountry')?.touched)}" appearance="outline">
+                <mat-label>{{'app.userInfo.residenceCountry' | translate | titlecase}}</mat-label>
                 <input type="text" formControlName="residenceCountry" matInput placeholder="Elegi tu pais de residencia"
                   [matAutocomplete]="auto" autocomplete="disabled">
-                <mat-error class="text-sm"
-                  *ngIf="signUpForm.get('residenceCountry')?.invalid && (signUpForm.get('residenceCountry')?.dirty || signUpForm.get('residenceCountry')?.touched)">{{getResidenceCountryErrorMessage()}}</mat-error>
+                  <mat-error class="text-sm" *ngIf="signUpForm.get('residenceCountry')?.errors?.['required']">
+                    El pais de residencia es requerido.
+                  </mat-error>
                 <mat-autocomplete #auto="matAutocomplete">
                   <mat-option *ngFor="let country of countries | async" [value]="country.name">
                     <span>{{country.name}}</span> |
@@ -81,10 +97,15 @@
           <ion-row class="ion-justify-content-center mb-1">
             <ion-col size-lg="8" size-sm="5">
               <mat-form-field appearance="outline">
-                <mat-label>{{'app.userInfo.language' | translate }}</mat-label>
+                <mat-label>{{'app.userInfo.language' | translate | titlecase}}</mat-label>
                 <input type="text" aria-label="Number" formControlName="language" matInput
                   placeholder="Elegi tu idioma preferido" [matAutocomplete]="auto2" autocomplete="disabled">
-                <mat-error class="text-sm">{{getLanguageErrorMessage()}}</mat-error>
+                <mat-error class="text-sm" *ngIf="signUpForm.get('language')?.errors?.['required']">
+                  El idioma es requerido.
+                </mat-error>
+                <mat-error class="text-sm" *ngIf="signUpForm.get('language')?.errors?.['idiomaInvalido']">
+                  El idioma especificado no es valido.
+                </mat-error>
                 <mat-autocomplete autoActiveFirstOption #auto2="matAutocomplete">
                   <mat-option *ngFor="let option of langs | async" [value]="option.language">
                     {{option.language}}
@@ -97,18 +118,19 @@
           <ion-row class="ion-justify-content-center mb-1">
             <ion-col size-lg="8" size-sm="5">
               <mat-form-field appearance="outline">
-                <mat-label>{{'app.userInfo.birthYear' | translate }}</mat-label>
+                <mat-label>{{'app.userInfo.birthYear' | translate | titlecase}}</mat-label>
                 <input type="number" formControlName="yearBirth" matInput placeholder="Escribi tu año de nacimiento">
-                <mat-error class="text-sm"
-                  *ngIf="signUpForm.get('yearBirth')?.invalid && (signUpForm.get('yearBirth')?.dirty || signUpForm.get('yearBirth')?.touched)">{{getYearBirthErrorMessage()}}</mat-error>
+                <mat-error class="text-sm" *ngIf="signUpForm.get('yearBirth')?.errors?.['required']">
+                  El campo año de nacimiento es requerido.
+                </mat-error>
               </mat-form-field>
             </ion-col>
           </ion-row>
 
           <ion-row class="ion-justify-content-center mb-1">
             <ion-col size-lg="8" size-sm="5">
-              <mat-form-field appearance="outline">
-                <mat-label>{{'app.forms.auth.password' | translate }}</mat-label>
+              <mat-form-field [ngClass]="{'mb-3': !signUpForm.get('password')?.valid && (signUpForm.get('password')?.dirty || signUpForm.get('password')?.touched)}" appearance="outline">
+                <mat-label>{{'app.forms.auth.password' | translate | titlecase}}</mat-label>
                 <input type="password" [type]="hidePassword ? 'password' : 'text'" formControlName="password" matInput
                   placeholder="Escribi tu contraseña">
                 <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword"
@@ -116,15 +138,21 @@
                   <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                 </button>
                 <mat-error class="text-sm"
-                  *ngIf="(signUpForm.touched || signUpForm.dirty)">{{getPasswordErrorMessage()}}</mat-error>
+                  *ngIf="signUpForm.get('password')?.errors?.['required'] && !signUpForm.get('password')?.errors?.['minlength']">
+                  La campo contraseña es requerido.
+                </mat-error>
+                <mat-error class="text-sm"
+                  *ngIf="signUpForm.get('password')?.errors?.['minlength'] && !signUpForm.get('password')?.errors?.['required']">
+                  La campo contraseña debe tener como minimo 6 caracteres.
+                </mat-error>
               </mat-form-field>
             </ion-col>
           </ion-row>
 
-          <ion-row class="ion-justify-content-center mb-3">
+          <ion-row class="ion-justify-content-center mb-1">
             <ion-col size-lg="8" size-sm="5">
-              <mat-form-field appearance="outline">
-                <mat-label>{{'app.forms.auth.signup.repeatPassword' | translate }}</mat-label>
+              <mat-form-field [ngClass]="{'mb-3': !signUpForm.get('repeatPassword')?.valid && (signUpForm.get('repeatPassword')?.dirty || signUpForm.get('repeatPassword')?.touched)}" appearance="outline">
+                <mat-label>{{'app.forms.auth.signup.repeatPassword' | translate | titlecase}}</mat-label>
                 <input type="password" [type]="hideRepeatPassword ? 'password' : 'text'"
                   formControlName="repeatPassword" matInput placeholder="Escribi tu contraseña">
                 <button mat-icon-button matSuffix (click)="hideRepeatPassword = !hideRepeatPassword"
@@ -150,7 +178,7 @@
     </ion-row>
     <ion-row class="ion-justify-content-center">
       <ion-col class="text-center" size-lg="3" size-xs="10">
-        <button class="registerButton tracking-wider mb-4 text-xl font-medium" mat-raised-button
+        <button class="registerButton tracking-wider mb-3 text-xl font-medium" mat-raised-button
           (click)="submitSignUpForm()" color="primary">{{'app.forms.auth.signup.submit' |
           translate | uppercase}}</button>
         <div class="mb-2">

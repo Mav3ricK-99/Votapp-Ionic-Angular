@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, filter, map, of, startWith, toArray } from 'rxjs';
+import { Observable } from 'rxjs';
 import { User } from 'src/app/classes/user/user';
 import { passwordsMustMatch } from 'src/app/customValidators/PasswordsMustMatch/passwords-must-match';
 import { Country } from 'src/app/interfaces/country/country';
@@ -26,37 +26,31 @@ export class RegisterComponent {
   public signUpForm: FormGroup;
   constructor(formBuilder: FormBuilder, private authService: AuthenticationService, private router: Router, private _translate: TranslateService) {
     this.signUpForm = formBuilder.group({
-      email: new FormControl('federico_99@live.com.ar', { validators: [Validators.required, Validators.email, Validators.maxLength(60)] }),
-      name: new FormControl('Federico', { validators: [Validators.required, Validators.minLength(3), Validators.maxLength(45)] }),
-      surname: new FormControl('Gutierrez', { validators: [Validators.required, Validators.minLength(3), Validators.maxLength(45)] }),
-      residenceCountry: new FormControl('Argentina', { validators: [Validators.required] }),
-      language: new FormControl('Español', { validators: [Validators.required] }),
-      yearBirth: new FormControl('1999', { validators: [Validators.required] }),
+      email: new FormControl('federico_99@live.com.ar', { validators: [Validators.required, Validators.email, Validators.maxLength(60)], updateOn: 'blur' }),
+      name: new FormControl('Federico', { validators: [Validators.required, Validators.minLength(3), Validators.maxLength(45)], updateOn: 'blur' }),
+      surname: new FormControl('Gutierrez', { validators: [Validators.required, Validators.minLength(3), Validators.maxLength(45)], updateOn: 'blur' }),
+      residenceCountry: new FormControl('Argentina', { validators: [Validators.required], updateOn: 'blur' }),
+      language: new FormControl('', { validators: [Validators.required], updateOn: 'blur' }),
+      yearBirth: new FormControl('1999', { validators: [Validators.required], updateOn: 'blur' }),
       password: new FormControl('votapp9090..', { validators: [Validators.required, Validators.minLength(6)] }),
       repeatPassword: new FormControl('votapp9090..', { validators: [Validators.required, Validators.minLength(6)] }),
-    }, { validators: [passwordsMustMatch, this.languageIsValid()] });
+    }, { validators: [passwordsMustMatch, this.validarIdioma()] });
 
     this.countries = this._translate.get('countries');
     this.langs = this._translate.get('languages');
 
-    this.signUpForm.get('language')?.valueChanges.subscribe(pickedLang => {
-      this.langs.pipe(map((data: any) => {
-        return data.map((language: any) => {
-          if (language.language == pickedLang) {
-            return language;
-          }
-        });
-      })).forEach((langs) => {
-        langs.forEach((l: any) => {
-          if (l && l.shortLanguage) {
-            this._translate.use(l.shortLanguage);
+    this.signUpForm.get('language')?.valueChanges.subscribe(langValue => {
+      this.langs.forEach((lenguajes: any) => {
+        lenguajes.forEach((lenguaje: any) => {
+          if (lenguaje.language.toLowerCase() == langValue.toLowerCase()) {
+            this._translate.use(lenguaje.shortLanguage);
             this.countries = this._translate.get('countries');
             this.langs = this._translate.get('languages');
-            this.signUpForm.get('language')?.setValue(l.language);
+            this.signUpForm.get('language')?.setValue(lenguaje.language);
           }
         })
       })
-    })
+    });
   }
 
   submitSignUpForm() {
@@ -79,7 +73,10 @@ export class RegisterComponent {
           access_token: obj.access_token,
           refresh_token: obj.refresh_token,
         }
+        let currentUser = helper.decodeToken(jwt.access_token);
+
         localStorage.setItem('jwt', JSON.stringify(jwt));
+        localStorage.setItem('current_user', JSON.stringify(currentUser));
         this.router.navigateByUrl('/mis-votapps');
       },
       error: err => {
@@ -93,130 +90,24 @@ export class RegisterComponent {
     })
   }
 
-  languageIsValid(): ValidatorFn {
+  validarIdioma(): ValidatorFn {
     return (signUpForm: AbstractControl): ValidationErrors | null => {
-      let languageInput = signUpForm.get('language');
-      if (languageInput?.value) { //Falta validar lenguage
-        return {
-          invalidLanguage: true
+      let idioma = signUpForm.get('language');
+      if (idioma?.value) {
+        let idiomaIngresado: string = idioma.value.toLowerCase();
+        let idiomaInvalido: boolean = false;
+        if (idiomaIngresado != 'español' && idiomaIngresado != 'spanish' && idiomaIngresado != 'ingles' && idiomaIngresado != 'english') {
+          idiomaInvalido = true;
+        }
+
+        if (idiomaInvalido) {
+          this.signUpForm.get('language')?.setErrors({
+            idiomaInvalido: true,
+          });
         }
       }
+
       return null;
     }
-  }
-
-  /* getEmailErrorMessage() {
-    let emailInput = this.signUpForm.get('email');
-    if (!emailInput || !emailInput?.errors) return;
-  
-    let firstError = Object.keys(emailInput.errors)[0]
-    let errorMsg = '';
-    switch (firstError) {
-      case 'required': errorMsg = 'El correo electronico es requerido.'; break;
-      case 'email': errorMsg = 'El correo electronico debe ser valido.'; break;
-      case 'maxlength': errorMsg = 'El correo electronico debe tener como maximo 60 caracteres.'; break;
-      case 'duplicateEmail': errorMsg = 'Correo electronico ya en uso.'; break;
-    }
-    return errorMsg;
-  } */
-
-  getNameErrorMessage() {
-    let nameInput = this.signUpForm.get('name');
-    if (!nameInput || !nameInput?.errors) return;
-
-    let firstError = Object.keys(nameInput.errors)[0]
-    let errorMsg = '';
-    switch (firstError) {
-      case 'required': errorMsg = 'El nombre es requerido.'; break;
-      case 'minlength': errorMsg = 'El nombre debe tener al menos 6 caracteres.'; break;
-      case 'maxlength': errorMsg = 'El nombre debe tener como maximo 45 caracteres.'; break;
-    }
-    return errorMsg;
-  }
-
-  getSurnameErrorMessage() {
-    let surnameInput = this.signUpForm.get('surname');
-    if (!surnameInput || !surnameInput?.errors) return;
-
-    let firstError = Object.keys(surnameInput.errors)[0]
-    let errorMsg = '';
-    switch (firstError) {
-      case 'required': errorMsg = 'El apellido es requerido.'; break;
-      case 'minlength': errorMsg = 'El apellido debe tener al menos 6 caracteres.'; break;
-      case 'maxlength': errorMsg = 'El apellido debe tener como maximo 45 caracteres.'; break;
-    }
-    return errorMsg;
-  }
-
-  getResidenceCountryErrorMessage() {
-    let residenceInput = this.signUpForm.get('residenceCountry');
-    if (!residenceInput || !residenceInput?.errors) return;
-
-    let firstError = Object.keys(residenceInput.errors)[0]
-    let errorMsg = '';
-    switch (firstError) {
-      case 'required': errorMsg = 'El pais de residencia es requerido.'; break;
-    }
-    return errorMsg;
-  }
-
-  getLanguageErrorMessage() {
-    let languageInput = this.signUpForm.get('language');
-    if (!languageInput) return;
-
-    let errorMsg = '';
-    if (languageInput?.errors) {
-
-      let firstError = Object.keys(languageInput.errors)[0]
-      switch (firstError) {
-        case 'required': errorMsg = 'El idioma es requerido.'; break;
-      }
-    } else if (this.signUpForm.errors?.['invalidLanguage']) {
-      errorMsg = 'Idioma no valido.';
-    }
-    return errorMsg;
-  }
-
-  getYearBirthErrorMessage() {
-    let birthYearInput = this.signUpForm.get('yearBirth');
-    if (!birthYearInput || !birthYearInput?.errors) return;
-
-    let firstError = Object.keys(birthYearInput.errors)[0]
-    let errorMsg = '';
-    switch (firstError) {
-      case 'required': errorMsg = 'El campo año de nacimiento es requerido.'; break;
-    }
-    return errorMsg;
-  }
-
-  getPasswordErrorMessage() {
-    let passwordInput = this.signUpForm.get('password');
-    if (!passwordInput) return;
-
-    let errorMsg = '';
-    if (passwordInput.errors) {
-      let firstError = Object.keys(passwordInput.errors)[0]
-      switch (firstError) {
-        case 'required': errorMsg = 'El campo contraseña es requerido.'; break;
-        case 'minlength': errorMsg = 'El campo contraseña debe ser de al menos 6 caracteres.'; break;
-      }
-    } else if (this.signUpForm.errors?.['passwordsMustMatch']) {
-      errorMsg = 'Las contraseñas deben coincidir.';
-    }
-    return errorMsg;
-  }
-
-  getRepeatPasswordErrorMessage() {
-    let repeatPasswordInput = this.signUpForm.get('repeatPassword');
-    if (!repeatPasswordInput || !repeatPasswordInput?.errors) return;
-
-    let firstError = Object.keys(repeatPasswordInput.errors)[0]
-    let errorMsg = '';
-    switch (firstError) {
-      case 'required': errorMsg = 'El campo repetir contraseña es requerido.'; break;
-      case 'minlength': errorMsg = 'El campo repetir contraseña debe ser de al menos 6 caracteres.'; break;
-    }
-
-    return errorMsg;
   }
 }

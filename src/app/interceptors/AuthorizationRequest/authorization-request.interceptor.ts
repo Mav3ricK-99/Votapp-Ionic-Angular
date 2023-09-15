@@ -11,6 +11,7 @@ import { Observable, catchError, switchMap, throwError } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { EventBusService, EventData } from 'src/app/services/eventBus/event-bus.service';
 import { JWT } from 'src/app/interfaces/jwt/jwt';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class AuthorizationRequestInterceptor implements HttpInterceptor {
@@ -25,7 +26,7 @@ export class AuthorizationRequestInterceptor implements HttpInterceptor {
       withCredentials: true,
     });
 
-    if (req.url.includes("localhost:8080") || req.url.includes("10.0.2.2:8080") || req.url.includes("192.168.100.31:8080")) {
+    if (req.url.includes(environment.BASE_API_URL)) {
       let headers = new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Access-Control-Allow-Headers', 'Origin, Content-Type, X-Auth-Token')
@@ -86,7 +87,7 @@ export class AuthorizationRequestInterceptor implements HttpInterceptor {
 
   private addAuthenticationToken(request: HttpRequest<any>, jwt: JWT): HttpRequest<any> {
     // If you are calling an outside domain then do not add the token.
-    if (!request.url.includes("localhost:8080") && !request.url.includes("10.0.2.2:8080") && !request.url.includes("192.168.100.31:8080")) {
+    if (!request.url.includes(environment.BASE_API_URL)) {
       return request;
     }
 

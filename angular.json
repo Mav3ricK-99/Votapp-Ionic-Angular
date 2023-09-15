@@ -31,7 +31,10 @@
                 "output": "./svg"
               }
             ],
-            "styles": ["src/theme/variables.scss", "src/global.scss"],
+            "styles": [
+              "src/theme/variables.scss",
+              "src/global.scss"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -64,6 +67,34 @@
               "sourceMap": true,
               "namedChunks": true
             },
+            "dev-fg": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev.fg.ts"
+                }
+              ]
+            },
+            "dev-leo": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev.leo.ts"
+                }
+              ]
+            },
             "ci": {
               "progress": false
             }
@@ -78,6 +109,12 @@
             },
             "development": {
               "browserTarget": "app:build:development"
+            },
+            "dev-fg": {
+              "browserTarget": "app:build:dev-fg"
+            },
+            "dev-leo": {
+              "browserTarget": "app:build:dev-leo"
             },
             "ci": {
               "progress": false
@@ -111,7 +148,10 @@
                 "output": "./svg"
               }
             ],
-            "styles": ["src/theme/variables.scss", "src/global.scss"],
+            "styles": [
+              "src/theme/variables.scss",
+              "src/global.scss"
+            ],
             "scripts": []
           },
           "configurations": {

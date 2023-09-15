@@ -284,6 +284,10 @@ $app-theme: mat.define-light-theme((color: (primary: $app-primary,
   --ion-color-tint: #5ce18d;
 }
 
+ion-content {
+  --ion-background-color: rgb(249 250 251);
+}
+
 html,
 body {
   height: 100%;

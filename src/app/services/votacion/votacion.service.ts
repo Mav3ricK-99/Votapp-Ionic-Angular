@@ -11,15 +11,17 @@ import { VotacionDecision } from 'src/app/classes/votacionDecision/votacion-deci
 import { VotacionFrecuencia } from 'src/app/classes/votacionFrecuencia/votacion-frecuencia';
 import { VotacionIntegrantes } from 'src/app/classes/votacionIntegrantes/votacion-integrantes';
 import { VotacionTipo } from 'src/app/classes/votacionTipo/votacion-tipo';
+import { ComunidadService } from '../comunidad/comunidad.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VotacionService {
 
-  private VOTAPP_API_URL: string = 'http://localhost:8080/api/votapp/';
+  private VOTAPP_API_URL: string = `${environment.BASE_API_URL}/api/votapp/`;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, private comunidadService: ComunidadService) { }
 
   newVotapp(votapp: Votacion) {
     return this.httpClient.post(this.VOTAPP_API_URL, {
@@ -28,7 +30,6 @@ export class VotacionService {
       comunidad_id: votapp.comunidad.id,
       votacionTipo: votapp.comunidad.votacionTipo.nombre,
       votacionDecision: votapp.votacionDecision.nombre,
-      votacionIntegrantes: {}, //Lo obtiene el backend (se pueden elegir prcntes?)
       votacionFrecuencia: votapp.votacionFrecuencia?.nombre ?? '',
       aceptacionRequerida: votapp.aceptacionRequerida,
       quorumRequerido: votapp.quorumRequerido,
@@ -42,11 +43,17 @@ export class VotacionService {
       let votacion = data.votacion;
       let votacionTipoComunidad: VotacionTipo = new VotacionTipo(votacion.comunidad.votacionTipo.nombre, votacion.comunidad.votacionTipo.habilitado);
       let comunidadIntegrantes: ComunidadIntegrantes[] = [];
-        votacion.comunidad.comunidadIntegrantes.forEach((comunidadIntegrante: any) => {
-          let nuevaComunidadIntegrante: ComunidadIntegrantes = new ComunidadIntegrantes(comunidadIntegrante.id, comunidadIntegrante.votar, comunidadIntegrante.user, comunidadIntegrante.crearVotacion, comunidadIntegrante.porcentaje, comunidadIntegrante.requiereAceptacion, comunidadIntegrante.fEnvioInvitacion, comunidadIntegrante.fDecision, comunidadIntegrante.aceptacion, comunidadIntegrante.habilitado, comunidadIntegrante.created_at);
-          comunidadIntegrantes.push(nuevaComunidadIntegrante);
-        });
-      let comunidad: Comunidad = new Comunidad(votacion.comunidad.id, votacion.comunidad.nombre, votacion.comunidad.descripcion, votacion.comunidad.comunidadLogo, votacionTipoComunidad, comunidadIntegrantes, new Date(votacion.comunidad.created_at));
+      votacion.comunidad.comunidadIntegrantes.forEach((comunidadIntegrante: any) => {
+        let nuevaComunidadIntegrante: ComunidadIntegrantes = new ComunidadIntegrantes(comunidadIntegrante.id, comunidadIntegrante.votar, comunidadIntegrante.user, comunidadIntegrante.crearVotacion, comunidadIntegrante.porcentaje, comunidadIntegrante.requiereAceptacion, comunidadIntegrante.fEnvioInvitacion, comunidadIntegrante.fDecision, comunidadIntegrante.aceptacion, comunidadIntegrante.habilitado, comunidadIntegrante.created_at);
+        comunidadIntegrantes.push(nuevaComunidadIntegrante);
+      });
+      let comunidad: Comunidad = new Comunidad(votacion.comunidad.id, votacion.comunidad.nombre, votacion.comunidad.descripcion, votacionTipoComunidad, comunidadIntegrantes, new Date(votacion.comunidad.created_at));
+
+      this.comunidadService.getLogo(votacion.comunidad.id).subscribe({
+        next: (data: any) => { comunidad.logo = data.logo },
+        error: (error: any) => { }
+      });
+
       let votacionDecision: VotacionDecision = new VotacionDecision(votacion.votacionDecision.nombre, votacion.votacionDecision.habilitado);
       let votacionIntegrantes: VotacionIntegrantes[] = votacion.votacionIntegrantes.map((votacionIntegrante: any) => {
         let tipoVoto: TipoVoto | null = null;

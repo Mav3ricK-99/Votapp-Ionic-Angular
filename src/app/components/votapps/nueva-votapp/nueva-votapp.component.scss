@@ -1,8 +1,3 @@
-.openVotappsButton {
-    width: 100%;
-    padding: 1.3rem .5rem 1.3rem .5rem;
-}
-
 #orangeButton {
     --mdc-outlined-button-outline-color: #f44336 !important;
 }
@@ -18,3 +13,8 @@
 .justify-start {
     justify-content: start !important;
 }
+
+ion-datetime {
+    --background: rgb(249 250 251);
+    --background-rgb: rgb(249 250 251);
+  }

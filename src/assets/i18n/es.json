@@ -1017,7 +1017,7 @@
         {
             "name": "Estados Unidos",
             "flagImage": "US",
-            "language": "Ingles"
+            "language": "English"
         },
         {
             "name": "Islas menores alejadas de los Estados Unidos",
@@ -1076,7 +1076,7 @@
     "languages": [
         {
             "shortLanguage": "en",
-            "language": "Ingles"
+            "language": "English"
         },
         {
             "shortLanguage": "es",

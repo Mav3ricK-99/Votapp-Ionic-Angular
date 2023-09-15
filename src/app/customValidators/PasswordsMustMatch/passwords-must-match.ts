@@ -1,7 +1,7 @@
-import { AbstractControl, ValidationErrors } from '@angular/forms';
+import { AbstractControl, FormControl, ValidationErrors } from '@angular/forms';
 export function passwordsMustMatch(form: AbstractControl): ValidationErrors | null {
     let password = form.get('password');
-    let repeatPassword = form.get('repeatPassword');
+    let repeatPassword = <FormControl>form.get('repeatPassword');
     if (password?.value != repeatPassword?.value) {
         repeatPassword?.setErrors({
             passwordsMustMatch: true,
@@ -9,6 +9,10 @@ export function passwordsMustMatch(form: AbstractControl): ValidationErrors | nu
         return {
             passwordsMustMatch: true,
         }
+    } else {
+        repeatPassword.setErrors({
+            passwordsMustMatch: false,
+        });
     }
     return null;
 }

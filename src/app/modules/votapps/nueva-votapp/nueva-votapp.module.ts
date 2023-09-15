@@ -18,7 +18,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
-
+import { UtilSharedModule } from '../../shared/util-shared/util-shared.module';
 @NgModule({
   declarations: [
     NuevaVotappComponent,
@@ -26,6 +26,7 @@ import { MatDialogModule } from '@angular/material/dialog';
   imports: [
     CommonModule,
     NuevaVotappRoutingModule,
+    UtilSharedModule,
     IonicModule,
     CommonModule,
     TranslateModule,

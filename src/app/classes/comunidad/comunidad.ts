@@ -1,5 +1,6 @@
 import { ComunidadIntegrantes } from "../comunidadIntegrantes/comunidad-integrantes";
 import { User } from "../user/user";
+import { Votacion } from "../votacion/votacion";
 import { VotacionTipo } from "../votacionTipo/votacion-tipo";
 
 export class Comunidad {
@@ -7,19 +8,22 @@ export class Comunidad {
     public id: number;
     public nombre: string;
     public descripcion: string;
-    public comunidadLogo: string | null;
     public created_at: Date | null;
     public votacionTipo: VotacionTipo;
     public comunidadIntegrantes: ComunidadIntegrantes[];
 
-    constructor(id: number, nombre: string, descripcion: string, comunidadLogo: string | null, votacionTipo: VotacionTipo, comunidadIntegrantes: ComunidadIntegrantes[], created_at: Date | null) {
+    public votaciones: Votacion[];
+
+    public logo: string | null;
+
+    constructor(id: number, nombre: string, descripcion: string, votacionTipo: VotacionTipo, comunidadIntegrantes: ComunidadIntegrantes[], created_at: Date | null) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.comunidadLogo = comunidadLogo;
         this.votacionTipo = votacionTipo;
         this.created_at = created_at;
         this.comunidadIntegrantes = comunidadIntegrantes;
+        this.votaciones = [];
     }
 
     /**
@@ -35,5 +39,17 @@ export class Comunidad {
         });
 
         return usuarioPuedeCrearVotacion;
+    }
+
+    public votacionesAbiertas() {
+        return this.votaciones.filter((votacion: Votacion) => {
+            return !votacion.estaFinalizada() ? votacion : null;
+        });
+    }
+
+    public votacionesCerradas() {
+        return this.votaciones.filter((votacion: Votacion) => {
+            return votacion.estaFinalizada() ? votacion : null;
+        });
     }
 }

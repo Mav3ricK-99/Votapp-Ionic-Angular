@@ -37,11 +37,6 @@ ion-grid {
     --ion-grid-column-padding: 0px !important;
 }
 
-.mat-mdc-form-field-hint-wrapper,
-.mat-mdc-form-field-error-wrapper {
-    //padding: 0 10px !important; //No poner en globa.scss!
-}
-
 .mat-mdc-form-field {
     display: flex !important;
     /* margin-bottom: 0 !important;
@@ -56,11 +51,24 @@ ion-grid {
 .mat-darkPrimary {
     color: #fff !important;
     background-color: darken(#3f51b5, 15%) !important;
+    border: 2px solid darken(#3f51b5, 15%) !important;
 }
 
 .mat-tomato {
     color: #fff !important;
     background-color: #ff6055 !important;
+}
+
+.mat-white {
+    color: #3f51b5 !important;
+    background-color: white !important;
+    border: 2px solid #3f51b5 !important;
+}
+
+.mat-white-g {
+    color: darken(#4ade80, 10%) !important;
+    background-color: white !important;
+    border: 2px solid darken(#4ade80, 5%) !important;
 }
 
 .mat-mdc-outlined-button.mat-tomato {
@@ -73,9 +81,22 @@ ion-grid {
 }
 
 .mat-mdc-card-title{
-    --mat-card-title-text-weight: 500
+    --mat-card-title-text-weight: 500;
+    
+}
+
+.mat-stepper-vertical, .mat-stepper-horizontal {
+    --mat-stepper-container-color: rgb(249 250 251) !important;
 }
 
 .text-wrap {
     text-wrap: wrap;
+}
+
+.text-1r {
+    font-size: 1rem !important;
+}
+
+.border-radius-1r {
+    border-radius: .8rem !important;
 }

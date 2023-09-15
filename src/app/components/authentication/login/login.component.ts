@@ -17,8 +17,8 @@ export class LoginComponent {
   public loginForm: FormGroup;
   constructor(formBuilder: FormBuilder, private authService: AuthenticationService, private router: Router) {
     this.loginForm = formBuilder.group({
-      email: new FormControl('federico1999g@gmail.com', { validators: [Validators.required, Validators.email, Validators.max(60)], updateOn: 'blur' }),
-      password: new FormControl('federico99.', { validators: [Validators.required, Validators.minLength(6)], updateOn: 'blur' }),
+      email: new FormControl('', { validators: [Validators.required, Validators.email, Validators.max(60)], updateOn: 'blur' }),
+      password: new FormControl('', { validators: [Validators.required, Validators.minLength(6)], updateOn: 'blur' }),
     });
   }
 

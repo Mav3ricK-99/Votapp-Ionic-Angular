@@ -8,62 +8,54 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <ion-grid>
-    <ion-row class="ion-justify-content-center ion-align-items-center">
-      <ion-col size-xs="4">
-        <ion-img src="/assets/logo/votapp-logo.jpg"></ion-img>
-      </ion-col>
-      <ion-col>
-        <button class="mt-1 mb-1 openVotappsButton text-base font-medium" mat-raised-button
-          [routerLink]="['/mis-votapps']" color="darkPrimary">{{'app.dashboard.buttons.myVotapps' | translate |
-          uppercase}}</button>
-        <button class="mt-1 mb-1 openVotappsButton text-base font-medium" mat-raised-button
-          [routerLink]="['/nueva-votapp']" color="primary">{{'app.dashboard.buttons.newVotapp' | translate |
-          uppercase}}</button>
-      </ion-col>
-    </ion-row>
-    <ion-row class="ion-justify-content-center bg-gray-100 py-2">
+    <app-botones-inicio [botonPresionado]="'misVotapps'"></app-botones-inicio>
+    <ion-row class="ion-justify-content-center bg-gray-50 py-2">
       <ng-container *ngIf="ahoraViendo == 'abiertas'; else strokedOpenButton">
         <ion-col class="warning-border text-center" size="6">
-          <button mat-flat-button id="orangeButton" (click)="mostrarVotapps('abiertas')"
-            color="tomato">{{'app.dashboard.buttons.open' | translate | uppercase}}</button>
+          <button mat-flat-button id="botonAzul" (click)="mostrarVotapps('abiertas')"
+            color="primary">{{'app.dashboard.buttons.open' | translate | uppercase}}</button>
         </ion-col>
         <ion-col class="text-center" size="6">
-          <button mat-button mat-stroked-button id="blueButton" (click)="mostrarVotapps('cerradas')"
-            color="primary">{{'app.dashboard.buttons.completed' | translate |
+          <button mat-button mat-stroked-button id="botonNaranja" (click)="mostrarVotapps('cerradas')"
+            color="tomato">{{'app.dashboard.buttons.completed' | translate |
             uppercase}}</button>
         </ion-col>
       </ng-container>
       <ng-template #strokedOpenButton>
         <ion-col class="warning-border text-center" size="6">
-          <button mat-stroked-button id="orangeButton" (click)="mostrarVotapps('abiertas')"
-            color="tomato">{{'app.dashboard.buttons.open' | translate | uppercase}}</button>
+          <button mat-stroked-button id="botonAzul" (click)="mostrarVotapps('abiertas')"
+            color="primary">{{'app.dashboard.buttons.open' | translate | uppercase}}</button>
         </ion-col>
         <ion-col class="text-center" size="6">
-          <button mat-button mat-flat-button id="blueButton" (click)="mostrarVotapps('cerradas')"
-            color="primary">{{'app.dashboard.buttons.completed' | translate |
+          <button mat-button mat-flat-button id="botonNaranja" (click)="mostrarVotapps('cerradas')"
+            color="tomato">{{'app.dashboard.buttons.completed' | translate |
             uppercase}}</button>
         </ion-col>
       </ng-template>
     </ion-row>
     <ion-row class="ion-justify-content-center ion-align-items-center">
-      <ion-col class="text-center" size-lg="5" size-md="6" size-xs="12">
-        <ng-container *ngIf='mostrarVista; else loader'>
+      <ion-col class="text-center bg-gray-100" size-lg="7" size-md="8" size-xs="12">
+        <ng-container *ngIf='comunidades$ | async as comunidades'>
           <div *ngIf="ahoraViendo == 'abiertas'; else cerradas">
-            <ng-container *ngIf="votappsAbiertas.length > 0; else noVotapps">
-              <ng-container *ngFor="let votapp of votappsAbiertas">
-                <app-votapp-card (click)="goToVotapp(votapp)" [votapp]="votapp" />
+            <ng-container *ngFor="let comunidad of comunidades">
+              <ng-container *ngIf="comunidad.votacionesAbiertas().length > 0; else noVotapps">
+                <ng-container *ngFor="let votapp of comunidad.votacionesAbiertas()">
+                  <app-votapp-card (click)="goToVotapp(votapp)" [votapp]="votapp" [comunidad]="comunidad" />
+                </ng-container>
               </ng-container>
             </ng-container>
           </div>
+
           <ng-template #cerradas>
-            <ng-container *ngIf="votappsCerradas.length > 0; else noVotapps">
-              <ng-container *ngFor="let votapp of votappsCerradas">
-                <app-votapp-card (click)="goToVotapp(votapp)" [votapp]="votapp" />
+            <ng-container *ngFor="let comunidad of comunidades">
+              <ng-container *ngIf="comunidad.votacionesCerradas().length > 0; else noVotapps">
+                <ng-container *ngFor="let votapp of comunidad.votacionesCerradas()">
+                  <app-votapp-card (click)="goToVotapp(votapp)" [votapp]="votapp" [comunidad]="comunidad" />
+                </ng-container>
               </ng-container>
             </ng-container>
           </ng-template>
         </ng-container>
-
         <ng-template #loader>
           <div role="status">
             <svg aria-hidden="true" class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"

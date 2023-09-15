@@ -8,7 +8,7 @@ const routes: Routes = [
     component: MisVotappsComponent,
   }, {
     path: ':id',
-    component: VotappDetailComponent
+    component: VotappDetailComponent,
   }
 ];
 

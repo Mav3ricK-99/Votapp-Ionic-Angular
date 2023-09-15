@@ -12,12 +12,12 @@
     </ion-row>
     <ion-row class="ion-justify-content-center">
       <ion-col size-lg="6" size-sm="5">
-        <h2 class="text-center font-light mb-3">Ingresa tu correo electronico y nombre</h2>
+        <h2 class="text-center text-1r font-light mb-2">Ingresa tu correo electronico y contraseña</h2>
         <form [formGroup]="loginForm">
           <ion-row class="ion-justify-content-center mb-1">
             <ion-col size-lg="8" size-sm="5">
               <mat-form-field appearance="outline">
-                <mat-label>{{'app.forms.auth.email' | translate }}</mat-label>
+                <mat-label>{{'app.forms.auth.email' | translate | titlecase}}</mat-label>
                 <input type="email" formControlName="email" matInput placeholder="Ingresa su correo electronico">
                 <mat-error class="text-sm"
                   *ngIf="loginForm.get('email')?.errors?.['email'] && !loginForm.get('email')?.errors?.['required'] && !loginForm.get('email')?.errors?.['maxlength']">
@@ -37,20 +37,19 @@
           <ion-row class="ion-justify-content-center mb-4">
             <ion-col size-lg="8" size-sm="5">
               <mat-form-field appearance="outline">
-                <mat-label>{{'app.forms.auth.password' | translate }}</mat-label>
-                <input formControlName="password" matInput placeholder="Ingresa tu contraseña" type="password"
-                  class="mb-2" [type]="hidePassword ? 'password' : 'text'">
+                <mat-label>{{'app.forms.auth.password' | translate | titlecase}}</mat-label>
+                <input formControlName="password" matInput placeholder="Ingresa tu contraseña" type="password" [type]="hidePassword ? 'password' : 'text'">
                 <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword"
                   [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
                   <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                 </button>
                 <mat-error class="text-sm"
                   *ngIf="loginForm.get('password')?.errors?.['required'] && !loginForm.get('password')?.errors?.['minlength']">
-                  El campo contraseña es requrido.
+                  La contraseña es requrido.
                 </mat-error>
                 <mat-error class="text-sm"
                   *ngIf="loginForm.get('password')?.errors?.['minlength'] && !loginForm.get('password')?.errors?.['required']">
-                  El campo contraseña debe tener como minimo 6 caracteres.
+                  La contraseña debe tener como minimo 6 caracteres.
                 </mat-error>
                 <mat-error class="text-sm" *ngIf="loginForm.get('password')?.errors?.['badCredentials']">
                   El correo electronico o contraseña son incorrectos.
@@ -68,12 +67,12 @@
         <div class="mb-3">
           <a href="#" [routerLink]="['/auth/password-reset-token']"
             class="no-underline text-orange-500/[.80]">{{'app.forms.auth.forgotPassword'
-            | translate}}</a>
+            | translate | uppercase}}</a>
         </div>
         <div class="mb-2">
           <a href="#" [routerLink]="['/auth/register']"
-            class="mb-3 no-underline text-orange-500/[.80]">{{'app.forms.auth.newUserButton'
-            | translate}}</a>
+            class="mb-2 no-underline text-orange-500/[.80]">{{'app.forms.auth.newUserButton'
+            | translate | uppercase}}</a>
         </div>
       </ion-col>
     </ion-row>

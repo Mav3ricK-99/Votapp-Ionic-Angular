@@ -12,6 +12,7 @@ import { VotappDetailComponent } from 'src/app/components/votapps/votapp-detail/
 import { MatRippleModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import {MatIconModule} from '@angular/material/icon';
+import { UtilSharedModule } from '../../shared/util-shared/util-shared.module';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import {MatIconModule} from '@angular/material/icon';
     IonicModule,
     CommonModule,
     MisvotappsRoutingModule,
+    UtilSharedModule,
     TranslateModule,
     MatButtonModule,
     MatCardModule,
