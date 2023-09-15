@@ -71,6 +71,11 @@ ion-grid {
     border: 2px solid darken(#4ade80, 5%) !important;
 }
 
+.mat-green:disabled {
+    color: var(--mdc-protected-button-disabled-container-color) !important;
+    background-color: var(--mdc-protected-button-container-color) !important;
+}
+
 .mat-mdc-outlined-button.mat-tomato {
     color: #ff6055 !important;
     background-color: transparent !important;
