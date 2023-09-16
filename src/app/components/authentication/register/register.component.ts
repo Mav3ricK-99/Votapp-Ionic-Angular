@@ -26,14 +26,14 @@ export class RegisterComponent {
   public signUpForm: FormGroup;
   constructor(formBuilder: FormBuilder, private authService: AuthenticationService, private router: Router, private _translate: TranslateService) {
     this.signUpForm = formBuilder.group({
-      email: new FormControl('federico_99@live.com.ar', { validators: [Validators.required, Validators.email, Validators.maxLength(60)], updateOn: 'blur' }),
-      name: new FormControl('Federico', { validators: [Validators.required, Validators.minLength(3), Validators.maxLength(45)], updateOn: 'blur' }),
-      surname: new FormControl('Gutierrez', { validators: [Validators.required, Validators.minLength(3), Validators.maxLength(45)], updateOn: 'blur' }),
+      email: new FormControl('', { validators: [Validators.required, Validators.email, Validators.maxLength(60)], updateOn: 'blur' }),
+      name: new FormControl('', { validators: [Validators.required, Validators.minLength(3), Validators.maxLength(45)], updateOn: 'blur' }),
+      surname: new FormControl('', { validators: [Validators.required, Validators.minLength(3), Validators.maxLength(45)], updateOn: 'blur' }),
       residenceCountry: new FormControl('Argentina', { validators: [Validators.required], updateOn: 'blur' }),
       language: new FormControl('', { validators: [Validators.required], updateOn: 'blur' }),
-      yearBirth: new FormControl('1999', { validators: [Validators.required], updateOn: 'blur' }),
-      password: new FormControl('votapp9090..', { validators: [Validators.required, Validators.minLength(6)] }),
-      repeatPassword: new FormControl('votapp9090..', { validators: [Validators.required, Validators.minLength(6)] }),
+      yearBirth: new FormControl('', { validators: [Validators.required], updateOn: 'blur' }),
+      password: new FormControl('', { validators: [Validators.required, Validators.minLength(6)] }),
+      repeatPassword: new FormControl('', { validators: [Validators.required, Validators.minLength(6)] }),
     }, { validators: [passwordsMustMatch, this.validarIdioma()] });
 
     this.countries = this._translate.get('countries');

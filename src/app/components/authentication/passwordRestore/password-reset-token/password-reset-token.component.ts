@@ -14,8 +14,7 @@ export class PasswordResetTokenComponent {
   public passwordResetTokenForm: FormGroup;
   constructor(formBuilder: FormBuilder, private authService: AuthenticationService, private _bottomSheet: MatBottomSheet, private router: Router) {
     this.passwordResetTokenForm = formBuilder.group({
-      email: new FormControl('federico_99@live.com.ar', { validators: [Validators.required, Validators.email, Validators.max(60)], updateOn: 'blur' }),
-      //password: new FormControl('votapp9090..', { validators: [Validators.required, Validators.minLength(6)], updateOn: 'blur' }),
+      email: new FormControl('', { validators: [Validators.required, Validators.email, Validators.max(60)], updateOn: 'blur' }),
     });
   }
 
