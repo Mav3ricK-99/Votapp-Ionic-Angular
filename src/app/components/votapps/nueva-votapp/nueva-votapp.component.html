@@ -84,7 +84,7 @@
                   </ng-container>
                 </mat-select>
                 <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('tipoDecision')?.errors?.['required']">
-                  El campo Tipo de Decision de la votacion es requerido.
+                  El tipo de Decision de la votacion es requerido.
                 </mat-error>
               </mat-form-field>
               <mat-form-field
@@ -92,13 +92,13 @@
                 <mat-label>Titulo</mat-label>
                 <input matInput placeholder="Punto de votacion" formControlName="titulo">
                 <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('titulo')?.errors?.['required']">
-                  El campo Titulo de la votacion es requerido.
+                  El titulo de la votacion es requerido.
                 </mat-error>
                 <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('titulo')?.errors?.['minlength']">
-                  El campo Titulo de la votacion debe tener al menos 3 caracteres.
+                  El titulo de la votacion debe tener al menos 3 caracteres.
                 </mat-error>
                 <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('titulo')?.errors?.['maxlength']">
-                  El campo Titulo de la votacion debe tener como maximo 255 caracteres.
+                  El titulo de la votacion debe tener como maximo 255 caracteres.
                 </mat-error>
               </mat-form-field>
               <mat-form-field
@@ -107,10 +107,10 @@
                 <textarea matInput maxlength="255" formControlName="detalle"></textarea>
                 <mat-hint align="end">{{puntoAVotarForm.get('detalle')?.value?.length}}/255</mat-hint>
                 <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('detalle')?.errors?.['minlength']">
-                  El campo Detalle de la votacion debe tener al menos 3 caracteres.
+                  El detalle de la votacion debe tener al menos 3 caracteres.
                 </mat-error>
                 <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('detalle')?.errors?.['maxlength']">
-                  El campo Detalle de la votacion debe tener como maximo 255 caracteres.
+                  El detalle de la votacion debe tener como maximo 255 caracteres.
                 </mat-error>
               </mat-form-field>
               <mat-form-field
@@ -120,13 +120,13 @@
                 <input matInput type="number" class="text-right" placeholder="0" formControlName="aceptacionRequerida">
                 <span matTextPrefix>%&nbsp;</span>
                 <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('aceptacionRequerida')?.errors?.['required']">
-                  El campo Aceptacion Requerida de la votacion es requerido
+                  La aceptacion requerida de la votacion es requerida.
                 </mat-error>
                 <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('aceptacionRequerida')?.errors?.['min']">
-                  El campo Aceptacion Requerida debe ser como minimo 0.
+                  La aceptacion requerida debe ser como minimo 0.
                 </mat-error>
                 <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('aceptacionRequerida')?.errors?.['max']">
-                  El campo Aceptacion Requerida debe ser 100% como maximo.
+                  La aceptacion requerida debe ser 100% como maximo.
                 </mat-error>
               </mat-form-field>
               <mat-form-field
@@ -136,13 +136,13 @@
                 <input matInput type="number" class="text-right" placeholder="0" formControlName="quorumRequerido">
                 <span matTextPrefix>%&nbsp;</span>
                 <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('quorumRequerido')?.errors?.['required']">
-                  El campo Quorum Requerido de la votacion es requerido
+                  El quorum requerido de la votacion es requerido.
                 </mat-error>
                 <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('quorumRequerido')?.errors?.['min']">
-                  El campo Quorum Requerido debe ser como minimo 0.
+                  El quorum requerido debe ser como minimo 0.
                 </mat-error>
                 <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('quorumRequerido')?.errors?.['max']">
-                  El campo Quorum Requerido debe ser 100% como maximo.
+                  El quorum requerido debe ser 100% como maximo.
                 </mat-error>
               </mat-form-field>
               <div class="flex justify-around py-3 items-center">
@@ -163,7 +163,7 @@
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
                 <mat-error class="text-sm" *ngIf="duracionForm.get('fechaVencimiento')?.errors?.['required']">
-                  El campo fecha Fin de la votacion de la votacion es requerido.
+                  La fecha fin de la votacion de la votacion es requerida.
                 </mat-error>
                 <mat-error class="text-sm"
                   *ngIf="duracionForm.get('fechaVencimiento')?.errors?.['invalidFechaVencimiento']">
@@ -179,12 +179,12 @@
                 <mat-select formControlName="frecuenciaVotacion">
                   <ng-container *ngIf="(frecuenciasVotacion$ | async) as frecuenciasVotacion">
                     <ng-container *ngFor="let frecuencia of frecuenciasVotacion">
-                      <mat-option value="{{frecuencia.nombre}}" selected>{{frecuencia.nombre | titlecase}}</mat-option>
+                      <mat-option value="{{frecuencia.nombre}}">{{frecuencia.nombre | titlecase}}</mat-option>
                     </ng-container>
                   </ng-container>
                 </mat-select>
                 <mat-error class="text-sm" *ngIf="duracionForm.get('frecuenciaVotacion')?.errors?.['required']">
-                  El campo Frecuencia de la votacion es requerido.
+                  La frecuencia de la votacion es requerida.
                 </mat-error>
               </mat-form-field>
               <mat-form-field [ngClass]="{'mb-4': duracionForm.get('nuevaVotacion')?.errors?.['invalidNuevaFecha']}">
@@ -194,18 +194,20 @@
                 <mat-datepicker-toggle matIconSuffix [for]="nuevaVotacionPicker"></mat-datepicker-toggle>
                 <mat-datepicker #nuevaVotacionPicker></mat-datepicker>
                 <mat-error class="text-sm" *ngIf="duracionForm.get('nuevaVotacion')?.errors?.['invalidNuevaFecha']">
-                  La fecha de Nueva Votacion debe ser posterior a la del vencimiento.
+                  La fecha de la nueva votacion debe ser posterior a la del vencimiento.
                 </mat-error>
               </mat-form-field>
             </form>
             <div class="flex flex-col justify-around py-3">
               <div class="mb-2 flex justify-evenly">
-                <button mat-button mat-raised-button color="darkPrimary" matStepperPrevious>Regresar</button>
-                <button mat-button mat-raised-button color="darkPrimary"
+                <button mat-button mat-raised-button class="ultimosBotones" color="darkPrimary"
+                  matStepperPrevious>Regresar</button>
+                <button mat-button mat-raised-button class="ultimosBotones" color="darkPrimary"
                   (click)="comunidadForm.reset();puntoAVotarForm.reset();duracionForm.reset();">Reiniciar</button>
               </div>
               <button class="self-center" mat-button mat-raised-button [color]="colorCrearVotacion" matStepperNext
-                [disabled]="crearVotacionDeshabilitado" (click)="crearNuevaVotacion()">Confirmar y enviar invitaciones</button>
+                [disabled]="crearVotacionDeshabilitado" (click)="crearNuevaVotacion()">Confirmar y enviar
+                invitaciones</button>
             </div>
           </mat-step>
         </mat-vertical-stepper>

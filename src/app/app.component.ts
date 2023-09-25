@@ -1,8 +1,10 @@
-import { Component, OnInit, Optional } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Device } from '@capacitor/device';
-import { IonRouterOutlet, Platform } from '@ionic/angular';
-import { App } from '@capacitor/app';
+import { ParametrosService } from './services/parametros/parametros.service';
+import { UserService } from './services/user/user.service';
+import { Preferences } from '@capacitor/preferences';
+import { Platform } from '@ionic/angular';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -12,16 +14,21 @@ export class AppComponent implements OnInit {
 
   public language: string = '';
 
-  constructor(private _translate: TranslateService, private platform: Platform, @Optional() private routerOutlet?: IonRouterOutlet) {
-    this.platform.backButton.subscribeWithPriority(-1, () => {
-      if (this.routerOutlet && !this.routerOutlet.canGoBack()) {
-        App.exitApp();
-      }
-    });
-  }
+  constructor(private _translate: TranslateService, private parametrosService: ParametrosService, private userService: UserService, public platform: Platform) { }
 
   ngOnInit(): void {
-    this.getDeviceLanguage()
+    this.getDeviceLanguage();
+
+    this.platform.ready().then(() => {
+      if (this.userService.hayUsuarioIngresado()) {
+        this.parametrosService.getParametros().subscribe((params: any) => {
+          Preferences.set({
+            key: 'parametros',
+            value: JSON.stringify(params),
+          });
+        });
+      }
+    })
   }
 
   public changeLanguage(): void {

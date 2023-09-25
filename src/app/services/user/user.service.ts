@@ -22,13 +22,7 @@ export class UserService {
   public currentUser: User;
 
   constructor(private httpClient: HttpClient, private comunidadService: ComunidadService) {
-    let currentUserStr = localStorage.getItem('current_user');
-    if (currentUserStr) {
-      let currentUser = JSON.parse(currentUserStr);
-      this.currentUser = new User(currentUser.id, currentUser.nombre, currentUser.apellido, currentUser.sub, currentUser.paisResidencia, currentUser.fechaNacimiento)
-    } else {
-      this.currentUser = new User(-1, '', '', '', '', 0);
-    }
+    this.getLocalUser();
   }
 
   getMisVotos() {
@@ -71,6 +65,16 @@ export class UserService {
     }));
   }
 
+  getLocalUser() {
+    let currentUserStr = localStorage.getItem('current_user');
+    if (currentUserStr) {
+      let currentUser = JSON.parse(currentUserStr);
+      this.currentUser = new User(currentUser.id, currentUser.nombre, currentUser.apellido, currentUser.sub, currentUser.paisResidencia, currentUser.fechaNacimiento)
+    } else {
+      this.currentUser = new User(-1, '', '', '', '', 0);
+    }
+  }
+
   getMisComunidades() {
     return this.httpClient.get(this.USER_API_URL + `${this.currentUser.id}/comunidades`).pipe(map((data: any) => {
       return data.comunidades.map((comunidad: any) => {
@@ -89,6 +93,7 @@ export class UserService {
   }
 
   hayUsuarioIngresado() {
+    this.getLocalUser();
     return this.currentUser.id > -1 ? true : false;
   }
 }

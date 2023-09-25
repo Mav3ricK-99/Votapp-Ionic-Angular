@@ -12,10 +12,14 @@
     <ion-row class="bg-gray-50 py-1">
       <ion-col size-xs="12">
         <mat-card>
-          <mat-card-header class="flex flex-wrap items-center justify-center">
-            <div mat-card-avatar class="logo"
+          <mat-card-header class="flex items-center justify-center">
+            <div *ngIf="votapp.comunidad.logo; else noTieneLogo" mat-card-avatar class="logo"
               style="background-image: url('data:image/png;base64,{{votapp.comunidad.logo}}')"></div>
-            <div class="flex flex-col justify-center items-start px-2">
+            <ng-template #noTieneLogo>
+              <mat-icon class="icon-logo" mat-card-avatar aria-hidden="false" aria-label="Comunidad"
+                fontIcon="groups"></mat-icon>
+            </ng-template>
+            <div class="flex flex-col justify-center items-start px-2 titulos">
               <mat-card-title class="text-justify text-lg">{{ votapp.comunidad.nombre | uppercase }}</mat-card-title>
               <mat-card-subtitle class="text-justify">{{ votapp.votacionPunto }}</mat-card-subtitle>
             </div>
@@ -30,7 +34,8 @@
             <h3 class="text-xxs text-neutral-600">SU VOTO PUEDE SER MODIFICADO MIENTRAS LA VOTACION ESTA ABIERTA</h3>
             <h3 class="uppercase text-neutral-700">Mi Voto</h3>
             <div class="flex justify-center pb-2">
-              <div [ngClass]="{'text-v': votapp.estadoVotoParticipantePretty(this.userService.currentUser) == 'abstencion'}"
+              <div
+                [ngClass]="{'text-v': votapp.estadoVotoParticipantePretty(this.userService.currentUser) == 'abstencion'}"
                 class="flex justify-center mat-elevation-z2 w-28 h-28 text-xl tracking-wide font-semibold rounded-full uppercase bg-black">
                 <p class="self-center text-white">
                   {{'app.votes.states.' + votapp.estadoVotoParticipantePretty(this.userService.currentUser) |
@@ -66,7 +71,7 @@
     <ion-row class="bg-gray-50">
       <ion-col size-xs="12">
         <div class="text-center flex justify-around py-2">
-          <div id="botonDiasRestantes"
+          <div [ngClass]="{'botonDiasRestantesWarning': pocosDiasRestantes > votapp.diasRestantes(), 'botonDiasRestantes': pocosDiasRestantes < votapp.diasRestantes()}" id="botonDiasRestantes"
             class="flex justify-center mat-elevation-z2 w-28 h-28 text-xv rounded-full uppercase text-neutral-50">
             <p class="self-center">Dias restantes<br><span
                 class="font-semibold text-2xl">{{votapp.diasRestantes()}}</span></p>

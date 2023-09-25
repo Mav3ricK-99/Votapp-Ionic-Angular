@@ -10,19 +10,18 @@ import { JwtHelperService } from "@auth0/angular-jwt";
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatButtonModule } from '@angular/material/button';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatListModule } from '@angular/material/list';
 import { RegisterComponent } from 'src/app/components/authentication/register/register.component';
-import { PasswordResetTokenBottomSheet, PasswordResetTokenComponent } from 'src/app/components/authentication/passwordRestore/password-reset-token/password-reset-token.component';
+import { PasswordResetTokenComponent } from 'src/app/components/authentication/passwordRestore/password-reset-token/password-reset-token.component';
 import { ResetPasswordComponent } from 'src/app/components/authentication/passwordRestore/reset-password/reset-password.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 @NgModule({
   declarations: [
     LoginComponent,
     RegisterComponent,
     PasswordResetTokenComponent,
-    PasswordResetTokenBottomSheet,
     ResetPasswordComponent
   ],
   imports: [
@@ -37,8 +36,7 @@ import { ResetPasswordComponent } from 'src/app/components/authentication/passwo
     MatButtonModule,
     MatIconModule,
     MatAutocompleteModule,
-    MatBottomSheetModule,
-    MatListModule
+    MatDialogModule,
   ], providers: [JwtHelperService]
 })
 export class AuthenticationModule { }

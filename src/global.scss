@@ -37,6 +37,10 @@ ion-grid {
     --ion-grid-column-padding: 0px !important;
 }
 
+.ion-no-top-padding {
+    --ion-grid-column-padding: 5px 0px 5px 5px !important;
+}
+
 .mat-mdc-form-field {
     display: flex !important;
     /* margin-bottom: 0 !important;
@@ -85,12 +89,21 @@ ion-grid {
     min-height: 2rem;
 }
 
-.mat-mdc-card-title{
+.mat-mdc-card-title {
     --mat-card-title-text-weight: 500;
-    
+
 }
 
-.mat-stepper-vertical, .mat-stepper-horizontal {
+.mat-mdc-tab-list {
+    background-color: rgb(249 250 251) !important;
+}
+
+.mat-mdc-tab.mdc-tab {
+    flex-grow: 1 !important;
+}
+
+.mat-stepper-vertical,
+.mat-stepper-horizontal {
     --mat-stepper-container-color: rgb(249 250 251) !important;
 }
 

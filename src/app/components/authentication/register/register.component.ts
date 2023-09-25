@@ -5,7 +5,6 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { User } from 'src/app/classes/user/user';
-import { passwordsMustMatch } from 'src/app/customValidators/PasswordsMustMatch/passwords-must-match';
 import { Country } from 'src/app/interfaces/country/country';
 import { JWT } from 'src/app/interfaces/jwt/jwt';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
@@ -31,10 +30,10 @@ export class RegisterComponent {
       surname: new FormControl('', { validators: [Validators.required, Validators.minLength(3), Validators.maxLength(45)], updateOn: 'blur' }),
       residenceCountry: new FormControl('Argentina', { validators: [Validators.required], updateOn: 'blur' }),
       language: new FormControl('', { validators: [Validators.required], updateOn: 'blur' }),
-      yearBirth: new FormControl('', { validators: [Validators.required], updateOn: 'blur' }),
-      password: new FormControl('', { validators: [Validators.required, Validators.minLength(6)] }),
-      repeatPassword: new FormControl('', { validators: [Validators.required, Validators.minLength(6)] }),
-    }, { validators: [passwordsMustMatch, this.validarIdioma()] });
+      yearBirth: new FormControl('', { validators: [Validators.required, Validators.max(2023)], updateOn: 'blur' }),
+      password: new FormControl('', { validators: [Validators.required, Validators.minLength(6)], updateOn: 'blur' }),
+      repeatPassword: new FormControl('', { validators: [Validators.required, Validators.minLength(6)], updateOn: 'blur' }),
+    }, { validators: [this.validarContraseñas(), this.validarIdioma()] });
 
     this.countries = this._translate.get('countries');
     this.langs = this._translate.get('languages');
@@ -103,6 +102,23 @@ export class RegisterComponent {
         if (idiomaInvalido) {
           this.signUpForm.get('language')?.setErrors({
             idiomaInvalido: true,
+          });
+        }
+      }
+
+      return null;
+    }
+  }
+
+  validarContraseñas(): ValidatorFn {
+    return (signUpForm: AbstractControl): ValidationErrors | null => {
+      let password = signUpForm.get('password');
+      let repeatPassword = signUpForm.get('repeatPassword');
+
+      if (password?.value) {
+        if (password.value !== repeatPassword?.value) {
+          this.signUpForm.get('repeatPassword')?.setErrors({
+            passwordsMustMatch: true,
           });
         }
       }

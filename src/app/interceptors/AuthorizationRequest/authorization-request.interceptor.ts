@@ -74,6 +74,8 @@ export class AuthorizationRequestInterceptor implements HttpInterceptor {
             //Error al refreshear token
             if (error.status == '403') {
               this.eventBusService.emit(new EventData('logout', null));
+              localStorage.removeItem('jwt');
+              localStorage.removeItem('current_user');
             }
 
             return throwError(() => error);

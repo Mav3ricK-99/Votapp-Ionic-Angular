@@ -13,7 +13,7 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import {MatIconModule} from '@angular/material/icon';
 import { UtilSharedModule } from '../../shared/util-shared/util-shared.module';
-
+import {MatTabsModule} from '@angular/material/tabs';
 @NgModule({
   declarations: [
     MisVotappsComponent,
@@ -30,7 +30,8 @@ import { UtilSharedModule } from '../../shared/util-shared/util-shared.module';
     MatCardModule,
     MatRippleModule,
     MatDialogModule,
-    MatIconModule
+    MatIconModule,
+    MatTabsModule
   ]
 })
 export class MisvotappsModule { }

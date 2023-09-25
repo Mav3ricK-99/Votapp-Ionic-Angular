@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TipoVoto } from 'src/app/classes/tipoVoto/tipo-voto';
 import { Votacion } from 'src/app/classes/votacion/votacion';
@@ -7,12 +7,13 @@ import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dial
 import { MatButtonModule } from '@angular/material/button';
 import { VotacionService } from 'src/app/services/votacion/votacion.service';
 import { UserService } from 'src/app/services/user/user.service';
+import { Preferences } from '@capacitor/preferences';
 @Component({
   selector: 'app-votapp-detail',
   templateUrl: './votapp-detail.component.html',
   styleUrls: ['./votapp-detail.component.scss'],
 })
-export class VotappDetailComponent {
+export class VotappDetailComponent implements OnInit {
 
   public votapp: Votacion;
   public mostrarVista: boolean = false;
@@ -25,9 +26,12 @@ export class VotappDetailComponent {
   public tipoDeVotos: TipoVoto[];
   public opcionesTipoDeVotos: TipoVoto[];
 
+  public pocosDiasRestantes: number;
+
   constructor(private router: ActivatedRoute, public dialog: MatDialog, public userService: UserService, private votacionService: VotacionService) {
     this.tipoDeVotos = [];
     this.opcionesTipoDeVotos = [];
+    this.pocosDiasRestantes = 999;
 
     this.llamarGetVotapp();
 
@@ -40,6 +44,17 @@ export class VotappDetailComponent {
       },
       error: err => {
         //error
+      }
+    });
+  }
+
+  ngOnInit(): void {
+    Preferences.get({ key: 'parametros' }).then((data: any) => {
+      if (data.value) {
+        let paramDiasRestantes = JSON.parse(data.value).parametros.filter((parametro: any) => {
+          return parametro.codigo == 'PARAM003' ? parametro : null;
+        });
+        this.pocosDiasRestantes = paramDiasRestantes[0].valor;
       }
     });
   }
@@ -104,7 +119,7 @@ export class VotappDetailComponent {
 
   private llamarGetVotapp() {
     const id = this.router.snapshot.paramMap.get('id') ?? '-1';
-    
+
     this.votacionService.getVotapp(id).subscribe({
       next: (obj: any) => {
         this.votapp = obj;

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 
@@ -11,27 +13,27 @@ import { AuthenticationService } from 'src/app/services/authentication/authentic
 })
 export class PasswordResetTokenComponent {
 
-  public passwordResetTokenForm: FormGroup;
-  constructor(formBuilder: FormBuilder, private authService: AuthenticationService, private _bottomSheet: MatBottomSheet, private router: Router) {
-    this.passwordResetTokenForm = formBuilder.group({
+  public recuperoContraseniaForm: FormGroup;
+  constructor(formBuilder: FormBuilder, private authService: AuthenticationService, public dialog: MatDialog, private router: Router) {
+    this.recuperoContraseniaForm = formBuilder.group({
       email: new FormControl('', { validators: [Validators.required, Validators.email, Validators.max(60)], updateOn: 'blur' }),
     });
   }
 
-  submitPasswordResetRequest() {
-    if (!this.passwordResetTokenForm.valid) return;
+  enviarEmailRecuperoContrasenia() {
+    if (!this.recuperoContraseniaForm.valid) return;
 
-    let email = this.passwordResetTokenForm.get('email')?.value;
+    this.dialog.open(EnviandoEmailRecuperoDialog, { maxWidth: '90vw' });
+    let email = this.recuperoContraseniaForm.get('email')?.value;
 
-    this.authService.retrievePasswordResetToken(email).subscribe({
+    this.authService.solicitarTokenRecuperoContrasenia(email).subscribe({
       next: (obj: any) => {
-        this._bottomSheet.open(PasswordResetTokenBottomSheet);
-        setTimeout(() => {
-          this._bottomSheet.dismiss(PasswordResetTokenBottomSheet);
+        this.dialog.closeAll();
+        this.dialog.open(EmailEnviadoDialog, { maxWidth: '90vw' }).afterClosed().subscribe(() => {
           this.router.navigate([`/auth/reset-password`], {
             state: { email: email },
           });
-        }, 6000);
+        });
       },
       error: err => {
         console.log(err);
@@ -42,9 +44,25 @@ export class PasswordResetTokenComponent {
 }
 
 @Component({
-  selector: 'app-password-reset-token-bottom-sheet',
-  templateUrl: './password-reset-token-bottom-sheet.component.html',
+  selector: 'app-enviando-email-recupero-dialog-component',
+  templateUrl: './enviando-email-recupero-dialog.component.html',
+  styleUrls: ['./enviando-email-recupero-dialog.component.scss'],
+  standalone: true,
+  imports: [MatDialogModule, MatButtonModule, MatProgressBarModule],
 })
-export class PasswordResetTokenBottomSheet {
-  constructor(private _bottomSheetRef: MatBottomSheetRef<PasswordResetTokenBottomSheet>) { }
+export class EnviandoEmailRecuperoDialog {
+
+  constructor(public dialogRef: MatDialogRef<EnviandoEmailRecuperoDialog>) { }
+
+}
+@Component({
+  selector: 'app-email-enviado-dialog-component',
+  templateUrl: './email-enviado-dialog.component.html',
+  standalone: true,
+  imports: [MatDialogModule, MatButtonModule],
+})
+export class EmailEnviadoDialog {
+
+  constructor(public dialogRef: MatDialogRef<EmailEnviadoDialog>) { }
+
 }

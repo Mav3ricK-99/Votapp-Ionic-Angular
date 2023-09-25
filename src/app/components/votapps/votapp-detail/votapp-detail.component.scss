@@ -23,8 +23,11 @@ mat-card {
     background-size: cover;
 }
 
+.titulos {
+    width: 80vw;
+}
+
 mat-card-subtitle {
-    min-width: 10rem;
     width: 100%;
     margin-top: .3rem;
     border: 2.3px solid darken(#3f51b5, 15%) !important;
@@ -33,7 +36,6 @@ mat-card-subtitle {
 }
 
 mat-card-title {
-    min-width: 12rem;
     width: 100%;
     margin-bottom: .3rem;
     border: 2.3px solid darken(#3f51b5, 15%) !important;
@@ -79,8 +81,12 @@ mat-card-title {
     -webkit-tap-highlight-color: transparent;
 }
 
-#botonDiasRestantes {
+.botonDiasRestantesWarning {
     background-color: var(--ion-color-warning);
+}
+
+.botonDiasRestantes {
+    background-color: var(--ion-color-medium);
 }
 
 .arrow-py {
@@ -90,6 +96,14 @@ mat-card-title {
 @media (max-width: 330px) {
     #voteTypes {
         flex-wrap: wrap !important;
+    }
+
+    mat-card-header {
+        flex-wrap: wrap;
+    }
+
+    .titulos {
+        width: 90vw;
     }
 }
 

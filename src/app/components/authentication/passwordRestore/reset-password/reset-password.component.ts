@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { passwordsMustMatch } from 'src/app/customValidators/PasswordsMustMatch/passwords-must-match';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 
 @Component({
@@ -24,7 +23,7 @@ export class ResetPasswordComponent {
       token: new FormControl('', { validators: [Validators.required], updateOn: 'blur' }),
       password: new FormControl('', { validators: [Validators.required, Validators.minLength(6)], updateOn: 'blur' }),
       repeatPassword: new FormControl('', { validators: [Validators.required, Validators.minLength(6)], updateOn: 'blur' }),
-    }, { validators: [passwordsMustMatch] });
+    }, { validators: [this.validarContraseñas()] });
 
     const navigation = this.router.getCurrentNavigation();
     const state = navigation?.extras.state as { email: string };
@@ -61,5 +60,22 @@ export class ResetPasswordComponent {
     }).add(() => {
       this.disabledButton = false;
     });
+  }
+
+  validarContraseñas(): ValidatorFn {
+    return (passwordResetForm: AbstractControl): ValidationErrors | null => {
+      let password = passwordResetForm.get('password');
+      let repeatPassword = passwordResetForm.get('repeatPassword');
+
+      if (password?.value) {
+        if (password.value !== repeatPassword?.value) {
+          this.passwordResetForm.get('repeatPassword')?.setErrors({
+            passwordsMustMatch: true,
+          });
+        }
+      }
+
+      return null;
+    }
   }
 }

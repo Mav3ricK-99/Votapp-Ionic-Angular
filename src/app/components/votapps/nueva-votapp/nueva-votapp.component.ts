@@ -43,6 +43,14 @@ export class NuevaVotappComponent {
     this.tipoDecisiones$ = this.votacionService.getTipoDecisiones();
     this.frecuenciasVotacion$ = this.votacionService.getFrecuencias();
 
+    this.frecuenciasVotacion$.subscribe({
+      next: (obj: any) => {
+        let porUnicaVez = obj.filter((frecuencia: any) => {
+          return frecuencia.dias == 0 ? frecuencia : null;
+        });
+        this.duracionForm.get('frecuenciaVotacion')?.setValue(porUnicaVez[0].nombre);
+      }
+    });
     this.colorPrimerContinuar = 'white-g';
     this.colorSegundoContinuar = 'white-g';
     this.colorCrearVotacion = 'white-g';
@@ -83,13 +91,20 @@ export class NuevaVotappComponent {
 
     this.duracionForm.get('frecuenciaVotacion')?.valueChanges.subscribe((data: any) => {
       let fechaNuevaVotacion = new Date();
+
       switch (data) {
         case 'semanal': { fechaNuevaVotacion = new Date(fechaNuevaVotacion.getFullYear(), fechaNuevaVotacion.getMonth(), fechaNuevaVotacion.getDate() + 7); }; break;
         case 'mensual': { fechaNuevaVotacion = new Date(fechaNuevaVotacion.getFullYear(), fechaNuevaVotacion.getMonth() + 1, fechaNuevaVotacion.getDate()); }; break;
         case 'anual': { fechaNuevaVotacion = new Date(fechaNuevaVotacion.getFullYear() + 1, fechaNuevaVotacion.getMonth(), fechaNuevaVotacion.getDate()); }; break;
       };
 
-      this.duracionForm.get('nuevaVotacion')?.setValue(fechaNuevaVotacion);
+      if (data.includes('unica')) {
+        this.duracionForm.get('nuevaVotacion')?.setValue('');
+        this.duracionForm.get('nuevaVotacion')?.disable();
+      } else {
+        this.duracionForm.get('nuevaVotacion')?.enable();
+        this.duracionForm.get('nuevaVotacion')?.setValue(fechaNuevaVotacion);
+      }
     });
 
     this.comunidadForm.get('buscarComunidad')?.valueChanges.subscribe(comunidad => {

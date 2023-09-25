@@ -1,33 +1,31 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Optional } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, filter, map } from 'rxjs';
-import { Comunidad } from 'src/app/classes/comunidad/comunidad';
+import { IonRouterOutlet, Platform } from '@ionic/angular';
+import { Observable } from 'rxjs';
 import { Votacion } from 'src/app/classes/votacion/votacion';
 import { UserService } from 'src/app/services/user/user.service';
-
+import { App } from '@capacitor/app';
 @Component({
   selector: 'app-mis-votapps',
   templateUrl: './mis-votapps.component.html',
   styleUrls: ['./mis-votapps.component.scss'],
 })
-export class MisVotappsComponent implements OnInit {
+export class MisVotappsComponent implements OnInit{
 
   public mostrarVista: boolean = false;
 
   public comunidades$: Observable<any>;
 
-  public ahoraViendo: string;
+  constructor(private userService: UserService, private router: Router, private platform: Platform) {
+    this.platform.backButton.subscribeWithPriority(-1, () => {
+      if (this.userService.hayUsuarioIngresado()) { //Solo si esta logueado!
+        App.minimizeApp();
+      }
+    });
+  }
 
-  constructor(private userService: UserService, private router: Router) {
+  ngOnInit(): void {
     this.llamarVotapps();
-  }
-
-  ngOnInit() {
-    this.ahoraViendo = 'abiertas';
-  }
-
-  public mostrarVotapps(estado: string) {
-    this.ahoraViendo = estado;
   }
 
   public goToVotapp(votapp: Votacion) {

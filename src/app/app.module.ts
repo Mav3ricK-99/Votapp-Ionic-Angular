@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -16,6 +16,7 @@ import { IonicStorageModule } from '@ionic/storage-angular';
 import { JwtModule } from '@auth0/angular-jwt';
 import { UserService } from './services/user/user.service';
 import { VotacionService } from './services/votacion/votacion.service';
+import { ParametrosService } from './services/parametros/parametros.service';
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
 }
@@ -40,7 +41,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     JwtModule,
     BrowserAnimationsModule
   ],
-  providers: [TranslateStore, AuthenticationService, UserService, VotacionService, { provide: HTTP_INTERCEPTORS, useClass: AuthorizationRequestInterceptor, multi: true },
+  providers: [TranslateStore, AuthenticationService, UserService, VotacionService, ParametrosService, { provide: HTTP_INTERCEPTORS, useClass: AuthorizationRequestInterceptor, multi: true },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

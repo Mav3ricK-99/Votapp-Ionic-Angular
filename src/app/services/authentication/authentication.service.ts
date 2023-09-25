@@ -34,7 +34,7 @@ export class AuthenticationService {
     return this.httpClient.post(this.AUTH_API_URL + 'refresh-token', {});
   }
 
-  retrievePasswordResetToken(email: string) {
+  solicitarTokenRecuperoContrasenia(email: string) {
     return this.httpClient.post(this.AUTH_API_URL + 'retrive-password-reset-token', {
       email: email,
     });
