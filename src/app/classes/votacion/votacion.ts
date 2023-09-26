@@ -93,6 +93,10 @@ export class Votacion {
         }
     }
 
+    /* Porcentaje de votos con quorum segun el porcentaje que tiene el participante
+     * 
+     * @returns porcentaje de Votos que cuentan como que tienen Quorum
+     * */
     public porcentajeVotosQuorum(): number {
         let totalPorcentajeQuorum = 0;
         this.votacionIntegrantes.forEach((votacionIntegrante) => {
@@ -108,20 +112,24 @@ export class Votacion {
     }
 
     public totalVotosQuorum(): number {
-        let validVotes = this.votacionIntegrantes.filter((votacionIntegrate: VotacionIntegrantes) => {
+        let votosValidos = this.votacionIntegrantes.filter((votacionIntegrate: VotacionIntegrantes) => {
             if (votacionIntegrate.tipoVoto && votacionIntegrate.tipoVoto.computaQuorum == true) {
                 return true;
             } else {
                 return false;
             }
         });
-        return validVotes.length;
+        return votosValidos.length;
     }
 
     public votantesTotalesPorTipoVoto(tipoVoto: TipoVoto) {
         let votosTotales = 0;
         this.votacionIntegrantes.forEach((votacionIntegrante) => {
             if (votacionIntegrante.tipoVoto?.nombre == tipoVoto.nombre) {
+                votosTotales++;
+            }
+
+            if (votacionIntegrante.tipoVoto == null && tipoVoto.nombre == 'pendiente') {
                 votosTotales++;
             }
         })
@@ -140,11 +148,11 @@ export class Votacion {
 
     public obtenerVotosPorTipoVoto(tipoVoto: TipoVoto | null): VotacionIntegrantes[] {
         let votes: VotacionIntegrantes[] = [];
-        
+
         votes = this.votacionIntegrantes.filter((votacionIntegrante) => {
             if (tipoVoto instanceof TipoVoto && votacionIntegrante.tipoVoto?.nombre.includes(tipoVoto.nombre)) {
                 return votacionIntegrante;
-            } else if(!(tipoVoto instanceof TipoVoto) && votacionIntegrante.tipoVoto == null) {
+            } else if (!(tipoVoto instanceof TipoVoto) && votacionIntegrante.tipoVoto == null) {
                 return votacionIntegrante;
             }
             return false;
@@ -156,36 +164,50 @@ export class Votacion {
         return Math.floor((this.totalVotosQuorum() * 100) / this.totalMiembros());
     }
 
+    public porcentajeVotosEmitidos(): number {
+        let votosEmitidos = this.votacionIntegrantes.filter((votacionIntegrante: VotacionIntegrantes) => {
+            if (votacionIntegrante.tipoVoto instanceof TipoVoto) {
+                return votacionIntegrante;
+            }
+            return null;
+        });
+        return (votosEmitidos.length * 100) / this.totalMiembros();
+    }
+
     public resultadoFinal(): any {
-        if (this.estaFinalizada() && this.votacionIntegrantes != null) {
-            let afirmativeVotesPerc = 0;
-            let negativeVotesPerc = 0;
-            let validVotes = this.votacionIntegrantes.filter((votacionIntegrante) => {
-                if (votacionIntegrante.tipoVoto?.getResult() == 'noquorum') {
+        if (this.estaFinalizada()) {
+            let porcVotosAfirmativos = 0;
+            let porcVotosNegativos = 0;
+            let votosValidos = this.votacionIntegrantes.filter((votacionIntegrante) => {
+                if (votacionIntegrante.tipoVoto == null || votacionIntegrante.tipoVoto?.getResult() == 'noquorum') {
                     return false;
                 } else {
-                    //Aca fallaria si el porcentaje no esta repartido en partes iguales por el total
-                    votacionIntegrante.porcentaje = (this.totalMiembros() / this.totalVotosQuorum());
                     return true;
                 }
             });
-            validVotes.forEach((votacionIntegrante) => {
+            let porcVotosValidos = (votosValidos.length * 100) / this.totalMiembros();
+            if (porcVotosValidos < this.quorumRequerido) {
+                return Resultados.NoHayQuorum;
+            }
+
+            votosValidos.forEach((votacionIntegrante) => {
                 if (votacionIntegrante.tipoVoto) {
                     let vote = votacionIntegrante.tipoVoto;
                     if (vote.computaAfirmativo)
-                        afirmativeVotesPerc += votacionIntegrante.porcentaje;
+                        porcVotosAfirmativos += votacionIntegrante.porcentaje;
 
                     if (vote.computaNegativo)
-                        negativeVotesPerc += votacionIntegrante.porcentaje;
+                        porcVotosNegativos += votacionIntegrante.porcentaje;
                 }
             });
-            if (afirmativeVotesPerc > negativeVotesPerc) {
-                return Resultados.Afirmative;
-            } else {
-                return Resultados.Negative;
+            if (porcVotosAfirmativos > porcVotosNegativos) {
+                return Resultados.Afirmativo;
+            } else if (porcVotosAfirmativos < porcVotosNegativos) {
+                return Resultados.Negativo;
             }
+            return Resultados.Empate;
         }
-        return Resultados.Tie;
+        return Resultados.Empate;
     }
 
     public set _votacionIntegrantes(v: VotacionIntegrantes[]) {

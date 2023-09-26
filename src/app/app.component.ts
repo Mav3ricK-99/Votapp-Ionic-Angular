@@ -20,14 +20,12 @@ export class AppComponent implements OnInit {
     this.getDeviceLanguage();
 
     this.platform.ready().then(() => {
-      if (this.userService.hayUsuarioIngresado()) {
-        this.parametrosService.getParametros().subscribe((params: any) => {
-          Preferences.set({
-            key: 'parametros',
-            value: JSON.stringify(params),
-          });
+      this.parametrosService.getParametros().subscribe((params: any) => {
+        Preferences.set({
+          key: 'parametros',
+          value: JSON.stringify(params),
         });
-      }
+      });
     })
   }
 

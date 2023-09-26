@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  BASE_API_URL: "http://1.1.1.1:8080"
+  BASE_API_URL: "https://votapp.com.ar/api/v1"
 };

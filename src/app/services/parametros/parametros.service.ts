@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 })
 export class ParametrosService {
 
-  private PARAMETROS_API_URL: string = `${environment.BASE_API_URL}/api/parametros/`;
+  private PARAMETROS_API_URL: string = `${environment.BASE_API_URL}/parametros/`;
 
   constructor(private httpClient: HttpClient) { }
 

@@ -16,9 +16,9 @@ export class MisVotappsComponent implements OnInit{
 
   public comunidades$: Observable<any>;
 
-  constructor(private userService: UserService, private router: Router, private platform: Platform) {
+  constructor(private userService: UserService, private router: Router, private platform: Platform, @Optional() private routerOutlet?: IonRouterOutlet) {
     this.platform.backButton.subscribeWithPriority(-1, () => {
-      if (this.userService.hayUsuarioIngresado()) { //Solo si esta logueado!
+      if((this.routerOutlet && !this.routerOutlet.canGoBack()) && this.userService.hayUsuarioIngresado()) { //Solo si esta logueado!
         App.minimizeApp();
       }
     });

@@ -54,9 +54,10 @@
                 "abstencion": "abstención"
             },
             "results": {
-                "afirmative": "afirmativo",
-                "negative": "negativo",
-                "tie": "unanimidad"
+                "noQuorum": "no hubo quorum",
+                "afirmativo": "afirmativo",
+                "negativo": "negativo",
+                "empate": "unanimidad"
             }
         }
     },

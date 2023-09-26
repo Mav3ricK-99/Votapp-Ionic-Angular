@@ -35,7 +35,7 @@
             <h3 class="uppercase text-neutral-700">Mi Voto</h3>
             <div class="flex justify-center pb-2">
               <div
-                [ngClass]="{'text-v': votapp.estadoVotoParticipantePretty(this.userService.currentUser) == 'abstencion'}"
+                [ngClass]="{'text-v': votapp.estadoVotoParticipantePretty(this.userService.currentUser) == 'abstencion' || votapp.estadoVotoParticipantePretty(this.userService.currentUser) == 'pendiente'}"
                 class="flex justify-center mat-elevation-z2 w-28 h-28 text-xl tracking-wide font-semibold rounded-full uppercase bg-black">
                 <p class="self-center text-white">
                   {{'app.votes.states.' + votapp.estadoVotoParticipantePretty(this.userService.currentUser) |
@@ -120,7 +120,7 @@
             [ngClass]="{'bg-slate-400 text-neutral-50': votapp.estadoVotoParticipante(this.userService.currentUser) == 'pendiente', 'text-slate-500 bg-slate-300': votapp.estadoVotoParticipante(this.userService.currentUser) != 'pendiente'}"
             (click)="mostrarVotos(null)" class="flex justify-center w-16 h-16 mat-elevation-z2 rounded-full uppercase">
             <p class="self-center">Sin voto<br><span
-                class="font-semibold">{{votapp.porcentajeVotosPorEstadoVoto('')}}%</span></p>
+                class="font-semibold">{{votapp.porcentajeVotosPorEstadoVoto('pendiente')}}%</span></p>
           </div>
         </div>
       </ion-col>

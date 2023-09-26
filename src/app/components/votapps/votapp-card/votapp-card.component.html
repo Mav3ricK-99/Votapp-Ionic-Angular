@@ -18,7 +18,7 @@
               votapp.estadoVotoParticipantePretty(this.userService.currentUser) | translate
               }}</ion-button>
             <ion-button expand="block" color="medium">{{votapp.totalVotosQuorum()}}
-              votos<br>{{votapp.porcentajeVotosQuorum()}}%</ion-button>
+              votos<br>{{votapp.porcentajeVotosEmitidos()}}%</ion-button>
             <div class="ocultarBotones">
               <ion-button class="mb-2" color="medium">Resultado<br>{{'app.votes.results.' +
                 votapp.resultadoFinal() | translate}}</ion-button>
@@ -51,7 +51,7 @@
                   | translate
                   }}</ion-button>
                 <ion-button color="medium">{{votapp.totalVotosQuorum()}}
-                  votos<br>{{votapp.porcentajeVotosQuorum()}}%</ion-button>
+                  votos<br>{{votapp.porcentajeVotosEmitidos()}}%</ion-button>
               </div>
             </ion-col>
             <ion-col class="md:hidden" size-xs="6">
@@ -61,7 +61,7 @@
                 | translate
                 }}</ion-button>
               <ion-button expand="block" color="medium">{{votapp.totalVotosQuorum()}}
-                votos<br>{{votapp.porcentajeVotosQuorum()}}%</ion-button>
+                votos<br>{{votapp.porcentajeVotosEmitidos()}}%</ion-button>
             </ion-col>
           </ion-row>
         </ion-grid>

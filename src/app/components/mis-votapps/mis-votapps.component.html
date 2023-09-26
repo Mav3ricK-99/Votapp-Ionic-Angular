@@ -14,18 +14,23 @@
         <ng-container *ngIf='comunidades$ | async as comunidades'>
           <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
             <mat-tab label="Abiertas">
-              <ng-container *ngFor="let comunidad of comunidades">
-                <ng-container *ngIf="comunidad.votacionesAbiertas().length > 0; else noVotapps">
-                  <ng-container *ngFor="let votapp of comunidad.votacionesAbiertas()">
-                    <app-votapp-card (click)="goToVotapp(votapp)" [votapp]="votapp" [comunidad]="comunidad" />
+              <ng-container *ngIf="comunidades.length > 0; else noEstasEnNingunaComunidad">
+                <ng-container *ngFor="let comunidad of comunidades">
+                  <ng-container *ngIf="comunidad.votacionesAbiertas().length > 0; else noHayVotappsAbiertas">
+                    <ng-container *ngFor="let votapp of comunidad.votacionesAbiertas()">
+                      <app-votapp-card (click)="goToVotapp(votapp)" [votapp]="votapp" [comunidad]="comunidad" />
+                    </ng-container>
                   </ng-container>
                 </ng-container>
-              </ng-container></mat-tab>
+              </ng-container>
+            </mat-tab>
             <mat-tab label="Cerradas">
-              <ng-container *ngFor="let comunidad of comunidades">
-                <ng-container *ngIf="comunidad.votacionesCerradas().length > 0; else noVotapps">
-                  <ng-container *ngFor="let votapp of comunidad.votacionesCerradas()">
-                    <app-votapp-card (click)="goToVotapp(votapp)" [votapp]="votapp" [comunidad]="comunidad" />
+              <ng-container *ngIf="comunidades.length > 0; else noEstasEnNingunaComunidad">
+                <ng-container *ngFor="let comunidad of comunidades">
+                  <ng-container *ngIf="comunidad.votacionesCerradas().length > 0; else noHayVotappsCerradas">
+                    <ng-container *ngFor="let votapp of comunidad.votacionesCerradas()">
+                      <app-votapp-card (click)="goToVotapp(votapp)" [votapp]="votapp" [comunidad]="comunidad" />
+                    </ng-container>
                   </ng-container>
                 </ng-container>
               </ng-container>
@@ -46,10 +51,20 @@
             </div>
           </ng-template>
 
-          <ng-template #noVotapps>
-            <h4>
+          <ng-template #noEstasEnNingunaComunidad>
+            <h5 class="text-center">
+              No perteneces a ninguna comunidad.
+            </h5>
+          </ng-template>
+          <ng-template #noHayVotappsAbiertas>
+            <h5 class="text-center">
               No hay votapps abiertas en las que hayas participado.
-            </h4>
+            </h5>
+          </ng-template>
+          <ng-template #noHayVotappsCerradas>
+            <h5 class="text-center">
+              No hay votapps cerradas en las que hayas participado.
+            </h5>
           </ng-template>
         </ng-container>
       </ion-col>

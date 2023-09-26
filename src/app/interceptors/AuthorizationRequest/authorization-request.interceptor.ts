@@ -26,7 +26,7 @@ export class AuthorizationRequestInterceptor implements HttpInterceptor {
       withCredentials: true,
     });
 
-    if (req.url.includes(environment.BASE_API_URL)) {
+    if (req.url.includes(environment.BASE_API_URL) && environment.production == false) {
       let headers = new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Access-Control-Allow-Headers', 'Origin, Content-Type, X-Auth-Token')
@@ -47,8 +47,7 @@ export class AuthorizationRequestInterceptor implements HttpInterceptor {
 
     return next.handle(req).pipe(
       catchError((error) => {
-        if (error instanceof HttpErrorResponse && !req.url.includes('auth/login') && error.status === 401
-        ) {
+        if (error instanceof HttpErrorResponse && !req.url.includes('auth/login') && error.status === 401) {
           return this.handle401Error(req, next);
         }
 

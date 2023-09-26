@@ -19,7 +19,7 @@ import { environment } from 'src/environments/environment';
 })
 export class VotacionService {
 
-  private VOTAPP_API_URL: string = `${environment.BASE_API_URL}/api/votapp/`;
+  private VOTAPP_API_URL: string = `${environment.BASE_API_URL}/votapp/`;
 
   constructor(private httpClient: HttpClient, private comunidadService: ComunidadService) { }
 
@@ -76,13 +76,13 @@ export class VotacionService {
   }
 
   changeVote(votacion_id: number, votacionDecision: string) {
-    return this.httpClient.post(this.VOTAPP_API_URL + `${votacion_id}/voto/`, {
+    return this.httpClient.post(this.VOTAPP_API_URL + `${votacion_id}/voto`, {
       tipoDeVoto: votacionDecision
     });
   }
 
   getTipoDeVotos() {
-    return this.httpClient.get<TipoVoto[]>(this.VOTAPP_API_URL + `tiposVoto/`).pipe(map((data: any) => {
+    return this.httpClient.get<TipoVoto[]>(this.VOTAPP_API_URL + `tiposVoto`).pipe(map((data: any) => {
       return data.tipoDeVotos.map((tipoVoto: any) => {
         return new TipoVoto(tipoVoto.nombre, tipoVoto.computaQuorum, tipoVoto.computaResultado, tipoVoto.computaAfirmativo, tipoVoto.computaNegativo, tipoVoto.habilitado);
       })
@@ -90,7 +90,7 @@ export class VotacionService {
   }
 
   getTipoDecisiones() {
-    return this.httpClient.get(this.VOTAPP_API_URL + `decisiones/`).pipe(map((data: any) => {
+    return this.httpClient.get(this.VOTAPP_API_URL + `decisiones`).pipe(map((data: any) => {
       return data.tipoDecisiones.map((decision: any) => {
         return new VotacionDecision(decision.nombre, decision.habilitado);
       })
@@ -98,7 +98,7 @@ export class VotacionService {
   }
 
   getFrecuencias() {
-    return this.httpClient.get(this.VOTAPP_API_URL + `frecuencias/`).pipe(map((data: any) => {
+    return this.httpClient.get(this.VOTAPP_API_URL + `frecuencias`).pipe(map((data: any) => {
       return data.frecuenciaVotaciones.map((frecuencia: any) => {
         return new VotacionFrecuencia(frecuencia.nombre, frecuencia.dias, frecuencia.habilitado);
       })

@@ -1,5 +1,6 @@
 export enum Resultados {
-    Afirmative = 'afirmative',
-    Negative = 'negative',
-    Tie = 'tie'
+    NoHayQuorum = 'noQuorum',
+    Afirmativo = 'afirmativo',
+    Negativo = 'negativo',
+    Empate = 'empate'
 }

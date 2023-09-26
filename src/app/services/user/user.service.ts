@@ -17,7 +17,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class UserService {
-  private USER_API_URL: string = `${environment.BASE_API_URL}/api/user/`;
+  private USER_API_URL: string = `${environment.BASE_API_URL}/user`;
 
   public currentUser: User;
 
@@ -26,7 +26,7 @@ export class UserService {
   }
 
   getMisVotos() {
-    return this.httpClient.get(this.USER_API_URL + `${this.currentUser.id}/votos`).pipe(map((data: any) => {
+    return this.httpClient.get(this.USER_API_URL + `/${this.currentUser.id}/votos`).pipe(map((data: any) => {
       return data.comunidades.map((c: any) => {
 
         let votacionTipoComunidad: VotacionTipo = new VotacionTipo(c.votacionTipo.nombre, c.votacionTipo.habilitado);
@@ -76,7 +76,7 @@ export class UserService {
   }
 
   getMisComunidades() {
-    return this.httpClient.get(this.USER_API_URL + `${this.currentUser.id}/comunidades`).pipe(map((data: any) => {
+    return this.httpClient.get(this.USER_API_URL + `/${this.currentUser.id}/comunidades`).pipe(map((data: any) => {
       return data.comunidades.map((comunidad: any) => {
         let votacionTipoComunidad: VotacionTipo = new VotacionTipo(comunidad.votacionTipo.nombre, comunidad.votacionTipo.habilitado);
 
