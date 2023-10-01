@@ -13,8 +13,6 @@ export class VotappCardComponent implements OnInit {
 
   @Input('votapp') votapp: Votacion;
 
-  @Input('comunidad') comunidad: Comunidad;
-
   public pocosDiasRestantes: number;
 
   constructor(public userService: UserService) {

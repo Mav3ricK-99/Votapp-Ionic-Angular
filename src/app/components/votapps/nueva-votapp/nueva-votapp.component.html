@@ -89,16 +89,16 @@
               </mat-form-field>
               <mat-form-field
                 [ngClass]="{'mb-5': !puntoAVotarForm.get('titulo')?.valid && (puntoAVotarForm.get('titulo')?.dirty || puntoAVotarForm.get('titulo')?.touched)}">
-                <mat-label>Titulo</mat-label>
-                <input matInput placeholder="Punto de votacion" formControlName="titulo">
+                <mat-label>Punto de votación</mat-label>
+                <input matInput placeholder="Punto de votación" formControlName="titulo">
                 <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('titulo')?.errors?.['required']">
-                  El titulo de la votacion es requerido.
+                  El punto de votación es requerido.
                 </mat-error>
                 <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('titulo')?.errors?.['minlength']">
-                  El titulo de la votacion debe tener al menos 3 caracteres.
+                  El punto de votación debe tener al menos 3 caracteres.
                 </mat-error>
                 <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('titulo')?.errors?.['maxlength']">
-                  El titulo de la votacion debe tener como maximo 255 caracteres.
+                  El punto de votación debe tener como maximo 255 caracteres.
                 </mat-error>
               </mat-form-field>
               <mat-form-field

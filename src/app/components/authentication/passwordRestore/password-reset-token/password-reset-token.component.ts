@@ -36,6 +36,7 @@ export class PasswordResetTokenComponent {
         });
       },
       error: err => {
+        this.dialog.closeAll();
         console.log(err);
       }
     });

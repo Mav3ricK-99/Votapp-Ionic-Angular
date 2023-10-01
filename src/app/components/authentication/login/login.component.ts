@@ -6,6 +6,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { JWT } from 'src/app/interfaces/jwt/jwt';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { App } from '@capacitor/app';
+import { Preferences } from '@capacitor/preferences';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -15,8 +16,9 @@ export class LoginComponent implements OnInit {
 
   public hidePassword: boolean = true;
   public loginForm: FormGroup;
+  public appVersion: string;
   constructor(private formBuilder: FormBuilder, private authService: AuthenticationService, private router: Router, private platform: Platform, @Optional() private routerOutlet?: IonRouterOutlet) {
-
+    this.appVersion = '';
     this.platform.backButton.subscribeWithPriority(-1, () => {
       if (this.routerOutlet && !this.routerOutlet.canGoBack()) {
         App.minimizeApp();
@@ -28,6 +30,15 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.formBuilder.group({
       email: new FormControl('', { validators: [Validators.required, Validators.email, Validators.max(60)], updateOn: 'blur' }),
       password: new FormControl('', { validators: [Validators.required, Validators.minLength(6)], updateOn: 'blur' }),
+    });
+
+    Preferences.get({ key: 'parametros' }).then((data: any) => {
+      if (data.value) {
+        let paramAppVersion = JSON.parse(data.value).parametros.filter((parametro: any) => {
+          return parametro.codigo == 'PARAM000' ? parametro : null;
+        });
+        this.appVersion = paramAppVersion[0].literal;
+      }
     });
   }
 

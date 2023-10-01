@@ -19,8 +19,13 @@ mat-card {
 .logo {
     width: 64px;
     height: 64px;
-    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
     background-size: cover;
+}
+
+.icon-logo {
+    width: 64px;
+    height: 64px;
+    font-size: 56px;
 }
 
 .titulos {
@@ -28,19 +33,13 @@ mat-card {
 }
 
 mat-card-subtitle {
-    width: 100%;
     margin-top: .3rem;
-    border: 2.3px solid darken(#3f51b5, 15%) !important;
-    border-radius: 100px;
-    padding: 1px 10px 1px 10px !important;
+    font-size: .9rem;
 }
 
 mat-card-title {
-    width: 100%;
     margin-bottom: .3rem;
-    border: 2.3px solid darken(#3f51b5, 15%) !important;
-    border-radius: 100px;
-    padding: 1px 10px 1px 10px !important;
+    font-size: .95rem;
 }
 
 .mat-mdc-card-header {

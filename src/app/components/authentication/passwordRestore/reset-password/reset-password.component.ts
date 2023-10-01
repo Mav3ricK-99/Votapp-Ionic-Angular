@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { InfoDialogComponent } from 'src/app/components/util/info-dialog/info-dialog.component';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 
 @Component({
@@ -18,7 +21,7 @@ export class ResetPasswordComponent {
 
   public disabledButton: boolean;
 
-  constructor(formBuilder: FormBuilder, private authService: AuthenticationService, private activatedRoute: ActivatedRoute, private router: Router) {
+  constructor(formBuilder: FormBuilder, private authService: AuthenticationService, public dialog: MatDialog, private router: Router) {
     this.passwordResetForm = formBuilder.group({
       token: new FormControl('', { validators: [Validators.required], updateOn: 'blur' }),
       password: new FormControl('', { validators: [Validators.required, Validators.minLength(6)], updateOn: 'blur' }),
@@ -40,7 +43,15 @@ export class ResetPasswordComponent {
     this.disabledButton = true;
     this.authService.resetPassword(this.email, token, password).subscribe({
       next: (obj: any) => {
-        this.router.navigateByUrl('/auth/login');
+        this.dialog.closeAll();
+        this.dialog.open(InfoDialogComponent, {
+          maxWidth: '90vw', data: {
+            titulo: 'Contraseña modificada',
+            mensaje: 'Tu contraseña fue modificada, ahora te redireccionaremos a la pantalla de inicio para que puedas ingresar a Votapp.',
+          }
+        }).afterClosed().subscribe(() => {
+          this.router.navigate([`/auth/login`]);
+        });
       },
       error: err => {
         switch (err.error.codigoError) {

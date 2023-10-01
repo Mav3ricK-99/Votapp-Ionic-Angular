@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { TranslateService } from '@ngx-translate/core';
@@ -8,6 +9,7 @@ import { User } from 'src/app/classes/user/user';
 import { Country } from 'src/app/interfaces/country/country';
 import { JWT } from 'src/app/interfaces/jwt/jwt';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
+import { InfoDialogComponent } from '../../util/info-dialog/info-dialog.component';
 
 @Component({
   selector: 'app-register',
@@ -23,13 +25,13 @@ export class RegisterComponent {
   countries: Observable<Country[]>;
 
   public signUpForm: FormGroup;
-  constructor(formBuilder: FormBuilder, private authService: AuthenticationService, private router: Router, private _translate: TranslateService) {
+  constructor(formBuilder: FormBuilder, private authService: AuthenticationService, private router: Router, public dialog: MatDialog, private _translate: TranslateService) {
     this.signUpForm = formBuilder.group({
       email: new FormControl('', { validators: [Validators.required, Validators.email, Validators.maxLength(60)], updateOn: 'blur' }),
       name: new FormControl('', { validators: [Validators.required, Validators.minLength(3), Validators.maxLength(45)], updateOn: 'blur' }),
       surname: new FormControl('', { validators: [Validators.required, Validators.minLength(3), Validators.maxLength(45)], updateOn: 'blur' }),
       residenceCountry: new FormControl('Argentina', { validators: [Validators.required], updateOn: 'blur' }),
-      language: new FormControl('', { validators: [Validators.required], updateOn: 'blur' }),
+      language: new FormControl('', { validators: [Validators.required] }),
       yearBirth: new FormControl('', { validators: [Validators.required, Validators.max(2023)], updateOn: 'blur' }),
       password: new FormControl('', { validators: [Validators.required, Validators.minLength(6)], updateOn: 'blur' }),
       repeatPassword: new FormControl('', { validators: [Validators.required, Validators.minLength(6)], updateOn: 'blur' }),
@@ -45,7 +47,6 @@ export class RegisterComponent {
             this._translate.use(lenguaje.shortLanguage);
             this.countries = this._translate.get('countries');
             this.langs = this._translate.get('languages');
-            this.signUpForm.get('language')?.setValue(lenguaje.language);
           }
         })
       })
@@ -76,10 +77,18 @@ export class RegisterComponent {
 
         localStorage.setItem('jwt', JSON.stringify(jwt));
         localStorage.setItem('current_user', JSON.stringify(currentUser));
-        this.router.navigateByUrl('/mis-votapps');
+
+        this.dialog.open(InfoDialogComponent, {
+          maxWidth: '90vw', data: {
+            titulo: 'Tu registro en Votapp se realizo con éxito!',
+            mensaje: 'Lo importante es tu voto, que nadie decida por vos.',
+          }
+        }).afterClosed().subscribe(() => {
+          this.router.navigate([`/mis-votapps`]);
+        });
       },
       error: err => {
-        if (err.error.detalleError.includes('email_unique')) {
+        if (err.error?.detalleError.includes('email_unique')) {
           this.signUpForm.get('email')?.setErrors({
             duplicateEmail: true,
           });
@@ -95,7 +104,7 @@ export class RegisterComponent {
       if (idioma?.value) {
         let idiomaIngresado: string = idioma.value.toLowerCase();
         let idiomaInvalido: boolean = false;
-        if (idiomaIngresado != 'español' && idiomaIngresado != 'spanish' && idiomaIngresado != 'ingles' && idiomaIngresado != 'english') {
+        if (idiomaIngresado != 'español' && idiomaIngresado != 'english') {
           idiomaInvalido = true;
         }
 

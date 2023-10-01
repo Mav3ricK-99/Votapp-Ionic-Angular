@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Comunidad } from 'src/app/classes/comunidad/comunidad';
 import { ComunidadIntegrantes } from 'src/app/classes/comunidadIntegrantes/comunidad-integrantes';
 import { TipoVoto } from 'src/app/classes/tipoVoto/tipo-voto';
@@ -25,13 +25,14 @@ export class UserService {
     this.getLocalUser();
   }
 
-  getMisVotos() {
+  getMisVotos(): Observable<any> {
     return this.httpClient.get(this.USER_API_URL + `/${this.currentUser.id}/votos`).pipe(map((data: any) => {
-      return data.comunidades.map((c: any) => {
+      let votaciones: Votacion[] = [];
+      let comunidades: Comunidad[] = [];
 
-        let votacionTipoComunidad: VotacionTipo = new VotacionTipo(c.votacionTipo.nombre, c.votacionTipo.habilitado);
-
+      comunidades = data.comunidades.map((c: any) => {
         let comunidadIntegrantes: ComunidadIntegrantes[] = [];
+        let votacionTipoComunidad: VotacionTipo = new VotacionTipo(c.votacionTipo.nombre, c.votacionTipo.habilitado);
         let comunidad: Comunidad = new Comunidad(c.id, c.nombre, c.descripcion, votacionTipoComunidad, comunidadIntegrantes, new Date(c.created_at));
 
         this.comunidadService.getLogo(c.id).subscribe({
@@ -39,29 +40,46 @@ export class UserService {
           error: (error: any) => { }
         });
 
-        c.votaciones.forEach((votacion: any) => {
-          let votacionDecision: VotacionDecision = new VotacionDecision(votacion.votacionDecision.nombre, votacion.votacionDecision.habilitado);
-          let votacionIntegrantes: VotacionIntegrantes[] = votacion.votacionIntegrantes.map((votacionIntegrante: any) => {
-            let tipoVoto: TipoVoto | null = null;
-            if (votacionIntegrante.tipoVoto != null) {
-              tipoVoto = new TipoVoto(votacionIntegrante.tipoVoto.nombre, votacionIntegrante.tipoVoto.computaQuorum, votacionIntegrante.tipoVoto.computaResultado, votacionIntegrante.tipoVoto.computaAfirmativo, votacionIntegrante.tipoVoto.computaNegativo, votacionIntegrante.tipoVoto.habilitado);
-            }
-            let usuario: User = new User(0, votacionIntegrante.user.nombre, votacionIntegrante.user.apellido, votacionIntegrante.user.email, votacionIntegrante.user.country, votacionIntegrante.user.fechaNacimiento);
-            return new VotacionIntegrantes(votacionIntegrante.miVoto, votacionIntegrante.porcentaje, tipoVoto, usuario);
-          });
-          let votacionTipo: VotacionTipo = new VotacionTipo(votacion.votacionTipo.nombre, votacion.votacionTipo.habilitado);
-          let votacionFrecuencia: VotacionFrecuencia | null = null;
-          if (votacion.votacionFrecuencia) {
-            votacionFrecuencia = new VotacionFrecuencia(votacion.votacionFrecuencia.nombre, votacion.votacionFrecuencia.dias, votacion.votacionFrecuencia.habilitado);
-          }
-          let nuevaVotacion: Votacion = new Votacion(votacion.id, votacion.aceptacionRequerida, votacion.detalle, votacion.proximaVotacion, votacion.quorumRequerido, votacion.repetir, votacion.requiereAceptacion, new Date(votacion.vencimiento), votacion.votacionPunto, comunidad, votacionDecision, votacionTipo, votacionFrecuencia);
-          nuevaVotacion.votacionIntegrantes = votacionIntegrantes;
-
-          comunidad.votaciones.push(nuevaVotacion);
-        });
-
         return comunidad;
       });
+
+      votaciones = data.votaciones.map((v: any) => {
+        let votacionDecision: VotacionDecision = new VotacionDecision(v.votacionDecision.nombre, v.votacionDecision.habilitado);
+        let votacionIntegrantes: VotacionIntegrantes[] = v.votacionIntegrantes.map((votacionIntegrante: any) => {
+          let tipoVoto: TipoVoto | null = null;
+          if (votacionIntegrante.tipoVoto != null) {
+            tipoVoto = new TipoVoto(votacionIntegrante.tipoVoto.nombre, votacionIntegrante.tipoVoto.computaQuorum, votacionIntegrante.tipoVoto.computaResultado, votacionIntegrante.tipoVoto.computaAfirmativo, votacionIntegrante.tipoVoto.computaNegativo, votacionIntegrante.tipoVoto.habilitado);
+          }
+          let usuario: User = new User(0, votacionIntegrante.user.nombre, votacionIntegrante.user.apellido, votacionIntegrante.user.email, votacionIntegrante.user.country, votacionIntegrante.user.fechaNacimiento);
+          return new VotacionIntegrantes(votacionIntegrante.miVoto, votacionIntegrante.porcentaje, tipoVoto, usuario);
+        });
+        let votacionTipo: VotacionTipo = new VotacionTipo(v.votacionTipo.nombre, v.votacionTipo.habilitado);
+        let votacionFrecuencia: VotacionFrecuencia | null = null;
+        if (v.votacionFrecuencia) {
+          votacionFrecuencia = new VotacionFrecuencia(v.votacionFrecuencia.nombre, v.votacionFrecuencia.dias, v.votacionFrecuencia.habilitado);
+        }
+
+        let comunidad: Comunidad = comunidades.filter((comunidad: Comunidad) => {
+          return comunidad.id === v.comunidad_id ? comunidad : null;
+        })[0];
+        let nuevaVotacion: Votacion = new Votacion(v.id, v.aceptacionRequerida, v.detalle, v.proximaVotacion, v.quorumRequerido, v.repetir, v.requiereAceptacion, new Date(v.vencimiento), v.votacionPunto, comunidad, votacionDecision, votacionTipo, votacionFrecuencia);
+        nuevaVotacion.votacionIntegrantes = votacionIntegrantes;
+
+        return nuevaVotacion;
+      })
+
+      return votaciones;
+    })).pipe(map((votaciones: Votacion[]) => {
+      let abiertas: Votacion[] = [];
+      let cerradas: Votacion[] = [];
+      votaciones.forEach((v: Votacion) => {
+        v.estaFinalizada() == false ? abiertas.push(v) : cerradas.push(v);
+      })
+
+      return {
+        abiertas: abiertas,
+        cerradas: cerradas
+      };
     }));
   }
 

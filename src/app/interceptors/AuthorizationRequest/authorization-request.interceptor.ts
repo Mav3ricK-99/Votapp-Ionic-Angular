@@ -26,19 +26,6 @@ export class AuthorizationRequestInterceptor implements HttpInterceptor {
       withCredentials: true,
     });
 
-    if (req.url.includes(environment.BASE_API_URL) && environment.production == false) {
-      let headers = new HttpHeaders()
-        .set('Content-Type', 'application/json')
-        .set('Access-Control-Allow-Headers', 'Origin, Content-Type, X-Auth-Token')
-        .set('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS')
-        .set('Access-Control-Allow-Origin', '*');
-      req = req.clone({
-        headers: headers
-      });
-    }
-    /* this.storageService.clearAll(); */
-
-
     let jwtStr = localStorage.getItem('jwt');
     if (jwtStr) {
       let jwt: JWT = JSON.parse(jwtStr);
@@ -87,7 +74,6 @@ export class AuthorizationRequestInterceptor implements HttpInterceptor {
   }
 
   private addAuthenticationToken(request: HttpRequest<any>, jwt: JWT): HttpRequest<any> {
-    // If you are calling an outside domain then do not add the token.
     if (!request.url.includes(environment.BASE_API_URL)) {
       return request;
     }

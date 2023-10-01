@@ -19,10 +19,8 @@
               <mat-icon class="icon-logo" mat-card-avatar aria-hidden="false" aria-label="Comunidad"
                 fontIcon="groups"></mat-icon>
             </ng-template>
-            <div class="flex flex-col justify-center items-start px-2 titulos">
-              <mat-card-title class="text-justify text-lg">{{ votapp.comunidad.nombre | uppercase }}</mat-card-title>
-              <mat-card-subtitle class="text-justify">{{ votapp.votacionPunto }}</mat-card-subtitle>
-            </div>
+            <mat-card-title>{{ votapp.comunidad.nombre | uppercase }}</mat-card-title>
+            <mat-card-subtitle>{{ votapp.votacionPunto }}</mat-card-subtitle>
           </mat-card-header>
         </mat-card>
       </ion-col>
@@ -71,7 +69,9 @@
     <ion-row class="bg-gray-50">
       <ion-col size-xs="12">
         <div class="text-center flex justify-around py-2">
-          <div [ngClass]="{'botonDiasRestantesWarning': pocosDiasRestantes > votapp.diasRestantes(), 'botonDiasRestantes': pocosDiasRestantes < votapp.diasRestantes()}" id="botonDiasRestantes"
+          <div
+            [ngClass]="{'botonDiasRestantesWarning': pocosDiasRestantes > votapp.diasRestantes(), 'botonDiasRestantes': pocosDiasRestantes < votapp.diasRestantes()}"
+            id="botonDiasRestantes"
             class="flex justify-center mat-elevation-z2 w-28 h-28 text-xv rounded-full uppercase text-neutral-50">
             <p class="self-center">Dias restantes<br><span
                 class="font-semibold text-2xl">{{votapp.diasRestantes()}}</span></p>
@@ -88,37 +88,37 @@
       <ion-col size-xs="12" class="ion-no-padding">
         <div class="flex justify-around flex-wrap text-xv mb-2 text-center">
           <div
-            [ngClass]="{'bg-slate-400': votapp.estadoVotoParticipante(this.userService.currentUser) == 'si', 'text-slate-500 bg-slate-300': votapp.estadoVotoParticipante(this.userService.currentUser) != 'si'}"
+            [ngClass]="{'bg-slate-400': viendoVotosTipo == 'si', 'text-slate-500 bg-slate-300': viendoVotosTipo != 'si'}"
             (click)="mostrarVotos('si')" class="flex justify-center w-16 h-16 mat-elevation-z2 rounded-full uppercase">
             <p class="self-center">Si<br><span
                 class="font-semibold">{{votapp.porcentajeVotosPorEstadoVoto('si')}}%</span>
             </p>
           </div>
           <div
-            [ngClass]="{'bg-slate-400': votapp.estadoVotoParticipante(this.userService.currentUser) == 'no', 'text-slate-500 bg-slate-300': votapp.estadoVotoParticipante(this.userService.currentUser) != 'no'}"
+            [ngClass]="{'bg-slate-400': viendoVotosTipo == 'no', 'text-slate-500 bg-slate-300': viendoVotosTipo != 'no'}"
             (click)="mostrarVotos('no')" class="flex justify-center w-16 h-16 mat-elevation-z2 rounded-full uppercase">
             <p class="self-center">No<br><span
                 class="font-semibold">{{votapp.porcentajeVotosPorEstadoVoto('no')}}%</span>
             </p>
           </div>
           <div
-            [ngClass]="{'bg-slate-400': votapp.estadoVotoParticipante(this.userService.currentUser) == 'abstencion (con la mayoria)', 'text-slate-500 bg-slate-300': votapp.estadoVotoParticipante(this.userService.currentUser) != 'abstencion'}"
-            (click)="mostrarVotos('abstencion')"
+            [ngClass]="{'bg-slate-400': viendoVotosTipo.includes('abstencion'), 'text-slate-500 bg-slate-300': !viendoVotosTipo.includes('abstencion')}"
+            (click)="mostrarVotos('abstencion (con la mayoria)')"
             class="flex justify-center w-16 h-16 text-xxv hyphens-auto mat-elevation-z2 rounded-full uppercase">
             <p class="self-center">Absten&shy;cion<br><span
-                class="font-semibold">{{votapp.porcentajeVotosPorEstadoVoto('abstencion')}}%</span></p>
+                class="font-semibold">{{votapp.porcentajeVotosPorEstadoVoto('abstencion (con la mayoria)')}}%</span></p>
           </div>
           <div
-            [ngClass]="{'bg-slate-400': votapp.estadoVotoParticipante(this.userService.currentUser) == 'noquorum', 'text-slate-500 bg-slate-300': votapp.estadoVotoParticipante(this.userService.currentUser) != 'noquorum'}"
+            [ngClass]="{'bg-slate-400': viendoVotosTipo.includes('quorum'), 'text-slate-500 bg-slate-300': !viendoVotosTipo.includes('quorum')}"
             (click)="mostrarVotos('no doy quorum')"
             class="flex justify-center w-16 h-16 mat-elevation-z2 rounded-full uppercase">
             <p class="self-center">No da Quorum<br><span
-                class="font-semibold">{{votapp.porcentajeVotosPorEstadoVoto('noquorum')}}%</span>
+                class="font-semibold">{{votapp.porcentajeVotosPorEstadoVoto('no doy quorum')}}%</span>
             </p>
           </div>
           <div
-            [ngClass]="{'bg-slate-400 text-neutral-50': votapp.estadoVotoParticipante(this.userService.currentUser) == 'pendiente', 'text-slate-500 bg-slate-300': votapp.estadoVotoParticipante(this.userService.currentUser) != 'pendiente'}"
-            (click)="mostrarVotos(null)" class="flex justify-center w-16 h-16 mat-elevation-z2 rounded-full uppercase">
+            [ngClass]="{'bg-slate-400': viendoVotosTipo == 'pendiente', 'text-slate-500 bg-slate-300': viendoVotosTipo != 'pendiente'}"
+            (click)="mostrarVotos('pendiente')" class="flex justify-center w-16 h-16 mat-elevation-z2 rounded-full uppercase">
             <p class="self-center">Sin voto<br><span
                 class="font-semibold">{{votapp.porcentajeVotosPorEstadoVoto('pendiente')}}%</span></p>
           </div>

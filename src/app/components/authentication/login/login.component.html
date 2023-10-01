@@ -7,7 +7,7 @@
   <ion-grid [fixed]="true">
     <ion-row class="ion-justify-content-center">
       <ion-col size="auto">
-        <ion-img src="/assets/logo/votapp-logo.jpg"></ion-img>
+        <ion-img src="/assets/logo/votapp.png"></ion-img>
       </ion-col>
     </ion-row>
     <ion-row class="ion-justify-content-center">
@@ -38,8 +38,9 @@
             <ion-col size="12">
               <mat-form-field appearance="outline">
                 <mat-label>{{'app.forms.auth.password' | translate | titlecase}}</mat-label>
-                <input formControlName="password" matInput placeholder="Ingresa tu contraseña" type="password" [type]="hidePassword ? 'password' : 'text'">
-                <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword"
+                <input formControlName="password" matInput placeholder="Ingresa tu contraseña" type="password"
+                  [type]="hidePassword ? 'password' : 'text'">
+                <button tabindex="-1" mat-icon-button matSuffix (click)="hidePassword = !hidePassword"
                   [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
                   <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                 </button>
@@ -62,17 +63,18 @@
     </ion-row>
     <ion-row class="ion-justify-content-center">
       <ion-col class="text-center" size="8" size-lg="3" size-md="6">
-        <button class="loginButton tracking-wider mb-4 text-xl font-medium" mat-raised-button
+        <button class="loginButton tracking-wider mb-3 text-xl font-medium" mat-raised-button
           (click)="submitLoginForm()" color="primary">{{'app.forms.util.submit' | translate | uppercase}}</button>
-        <div class="mb-3">
+        <div class="flex flex-col">
           <a href="#" [routerLink]="['/auth/password-reset-token']"
-            class="no-underline text-orange-500/[.80]">{{'app.forms.auth.forgotPassword'
+            class="no-underline text-sm text-orange-500/[.80] mb-2">{{'app.forms.auth.forgotPassword'
+            | translate | uppercase}}</a>
+          <a href="#" [routerLink]="['/auth/register']"
+            class="no-underline text-sm text-orange-500/[.80]">{{'app.forms.auth.newUserButton'
             | translate | uppercase}}</a>
         </div>
-        <div class="mb-2">
-          <a href="#" [routerLink]="['/auth/register']"
-            class="mb-2 no-underline text-orange-500/[.80]">{{'app.forms.auth.newUserButton'
-            | translate | uppercase}}</a>
+        <div>
+          <p class="italic text-sm">{{appVersion}}</p>
         </div>
       </ion-col>
     </ion-row>

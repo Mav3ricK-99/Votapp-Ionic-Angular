@@ -7,7 +7,7 @@
   <ion-grid [fixed]="true">
     <ion-row class="ion-justify-content-center mb-1">
       <ion-col size="auto">
-        <ion-img src="/assets/logo/votapp-logo.jpg"></ion-img>
+        <ion-img src="/assets/logo/votapp.png"></ion-img>
       </ion-col>
     </ion-row>
     <ion-row class="ion-justify-content-center">
@@ -137,7 +137,7 @@
                 <mat-label>{{'app.forms.auth.password' | translate | titlecase}}</mat-label>
                 <input type="password" [type]="hidePassword ? 'password' : 'text'" formControlName="password" matInput
                   placeholder="Escribi tu contraseña">
-                <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword"
+                <button tabindex="-1" mat-icon-button matSuffix (click)="hidePassword = !hidePassword"
                   [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
                   <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                 </button>
@@ -159,7 +159,7 @@
                 <mat-label>{{'app.forms.auth.signup.repeatPassword' | translate | titlecase}}</mat-label>
                 <input type="password" [type]="hideRepeatPassword ? 'password' : 'text'"
                   formControlName="repeatPassword" matInput placeholder="Escribi tu contraseña">
-                <button mat-icon-button matSuffix (click)="hideRepeatPassword = !hideRepeatPassword"
+                <button tabindex="-1" mat-icon-button matSuffix (click)="hideRepeatPassword = !hideRepeatPassword"
                   [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideRepeatPassword">
                   <mat-icon>{{hideRepeatPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                 </button>

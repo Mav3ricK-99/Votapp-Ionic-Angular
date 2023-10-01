@@ -16,13 +16,13 @@ import { RegisterComponent } from 'src/app/components/authentication/register/re
 import { PasswordResetTokenComponent } from 'src/app/components/authentication/passwordRestore/password-reset-token/password-reset-token.component';
 import { ResetPasswordComponent } from 'src/app/components/authentication/passwordRestore/reset-password/reset-password.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { UtilSharedModule } from '../shared/util-shared/util-shared.module';
 @NgModule({
   declarations: [
     LoginComponent,
     RegisterComponent,
     PasswordResetTokenComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
   ],
   imports: [
     IonicModule,
@@ -30,6 +30,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     AuthenticationRoutingModule,
     TranslateModule,
     FormsModule,
+    UtilSharedModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,

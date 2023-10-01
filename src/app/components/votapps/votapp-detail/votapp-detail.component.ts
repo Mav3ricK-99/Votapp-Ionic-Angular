@@ -20,6 +20,7 @@ export class VotappDetailComponent implements OnInit {
   public availableResults: string[] = [];
 
   public mostrarOtrosVotos: boolean = false;
+  public viendoVotosTipo: string;
 
   public votosFiltrados: VotacionIntegrantes[];
 
@@ -31,6 +32,7 @@ export class VotappDetailComponent implements OnInit {
   constructor(private router: ActivatedRoute, public dialog: MatDialog, public userService: UserService, private votacionService: VotacionService) {
     this.tipoDeVotos = [];
     this.opcionesTipoDeVotos = [];
+    this.viendoVotosTipo = '';
     this.pocosDiasRestantes = 999;
 
     this.llamarGetVotapp();
@@ -59,21 +61,22 @@ export class VotappDetailComponent implements OnInit {
     });
   }
 
-  public mostrarVotos(nombreVoto: string | null) {
+  public mostrarVotos(nombreTipoVoto: string) {
     let tipoVoto: TipoVoto | null = null;
-    if (nombreVoto != null) {
-      tipoVoto = this.tipoDeVotos.filter((tipoVoto: TipoVoto) => {
-        return tipoVoto.nombre.includes(nombreVoto) ? true : false;
-      })[0];
+    this.viendoVotosTipo = 'pendiente';
+    if (nombreTipoVoto !== 'pendiente') {
+      tipoVoto = TipoVoto.getVoteType(nombreTipoVoto);
+      this.viendoVotosTipo = nombreTipoVoto;
     }
-    this.mostrarOtrosVotos = true;
     this.votosFiltrados = this.votapp.obtenerVotosPorTipoVoto(tipoVoto);
+    this.mostrarOtrosVotos = true;
   }
 
   public cambiarVoto(voto: TipoVoto) {
     this.votapp.cambiarVotoParticipante(this.userService.currentUser, voto);
     this.getOtrasOpciones();
     this.mostrarOtrosVotos = true;
+    this.viendoVotosTipo = voto.nombre;
     this.votosFiltrados = this.votapp.obtenerVotosPorTipoVoto(voto);
   }
 
@@ -106,7 +109,6 @@ export class VotappDetailComponent implements OnInit {
         if (dialogResult) {
           this.votacionService.changeVote(this.votapp.id, voto.nombre).subscribe({
             next: (obj: any) => {
-              console.log(voto);
               this.cambiarVoto(voto);
             },
             error: err => {

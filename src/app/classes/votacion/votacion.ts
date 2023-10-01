@@ -122,6 +122,17 @@ export class Votacion {
         return votosValidos.length;
     }
 
+    public totalVotos(): number {
+        let votos = this.votacionIntegrantes.filter((votacionIntegrate: VotacionIntegrantes) => {
+            if (votacionIntegrate.tipoVoto) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+        return votos.length;
+    }
+
     public votantesTotalesPorTipoVoto(tipoVoto: TipoVoto) {
         let votosTotales = 0;
         this.votacionIntegrantes.forEach((votacionIntegrante) => {
@@ -139,7 +150,7 @@ export class Votacion {
 
     public porcentajeVotosPorEstadoVoto(estado: string) {
         let tipoVoto: TipoVoto = new TipoVoto(estado, false, false, false, false, false);
-        return (this.votantesTotalesPorTipoVoto(tipoVoto) * 100) / this.totalMiembros();
+        return Math.round(this.votantesTotalesPorTipoVoto(tipoVoto) * 100) / this.totalMiembros();
     }
 
     public porcentajeVotosPorTipoVoto(tipoVoto: TipoVoto) {
@@ -150,7 +161,7 @@ export class Votacion {
         let votes: VotacionIntegrantes[] = [];
 
         votes = this.votacionIntegrantes.filter((votacionIntegrante) => {
-            if (tipoVoto instanceof TipoVoto && votacionIntegrante.tipoVoto?.nombre.includes(tipoVoto.nombre)) {
+            if (tipoVoto instanceof TipoVoto && votacionIntegrante.tipoVoto?.nombre == tipoVoto.nombre) {
                 return votacionIntegrante;
             } else if (!(tipoVoto instanceof TipoVoto) && votacionIntegrante.tipoVoto == null) {
                 return votacionIntegrante;

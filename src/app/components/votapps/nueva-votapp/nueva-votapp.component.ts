@@ -46,7 +46,7 @@ export class NuevaVotappComponent {
     this.frecuenciasVotacion$.subscribe({
       next: (obj: any) => {
         let porUnicaVez = obj.filter((frecuencia: any) => {
-          return frecuencia.dias == 0 ? frecuencia : null;
+          return frecuencia.dias == 1 ? frecuencia : null;
         });
         this.duracionForm.get('frecuenciaVotacion')?.setValue(porUnicaVez[0].nombre);
       }
@@ -98,7 +98,7 @@ export class NuevaVotappComponent {
         case 'anual': { fechaNuevaVotacion = new Date(fechaNuevaVotacion.getFullYear() + 1, fechaNuevaVotacion.getMonth(), fechaNuevaVotacion.getDate()); }; break;
       };
 
-      if (data.includes('unica')) {
+      if (data.includes('vez')) {
         this.duracionForm.get('nuevaVotacion')?.setValue('');
         this.duracionForm.get('nuevaVotacion')?.disable();
       } else {
@@ -200,10 +200,13 @@ export class NuevaVotappComponent {
       next: (obj: any) => {
         this.dialog.closeAll();
         this.dialog.open(NuevaVotappConfirmarDialog, { maxWidth: '90vw' }).afterClosed().subscribe(() => {
-          this.router.navigateByUrl('/mis-votapps');
+          this.router.navigate([`/mis-votapps`], {
+            state: { refresh: true },
+          });
         });
       },
       error: err => {
+        this.dialog.closeAll();
         console.log(err);
       }, complete: () => {
         this.crearVotacionDeshabilitado = false;
