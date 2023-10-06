@@ -15,7 +15,7 @@
                     "submit": "registrarse",
                     "repeatPassword": "repetir contraseña"
                 },
-                "retrievePassword": "recuperar contraseña"
+                "retrievePassword": "modificar contraseña"
             },
             "util": {
                 "submit": "ingresar"

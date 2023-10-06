@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TipoVoto } from 'src/app/classes/tipoVoto/tipo-voto';
 import { Votacion } from 'src/app/classes/votacion/votacion';
@@ -8,6 +8,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { VotacionService } from 'src/app/services/votacion/votacion.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { Preferences } from '@capacitor/preferences';
+import { MatIcon } from '@angular/material/icon';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-votapp-detail',
   templateUrl: './votapp-detail.component.html',
@@ -15,8 +17,10 @@ import { Preferences } from '@capacitor/preferences';
 })
 export class VotappDetailComponent implements OnInit {
 
+  @ViewChild('detalleVotacion', { read: ElementRef, static: false }) detalleVotacion: ElementRef;
+  @ViewChild('mostrarMas') mostrarMas: MatIcon;
+
   public votapp: Votacion;
-  public mostrarVista: boolean = false;
   public availableResults: string[] = [];
 
   public mostrarOtrosVotos: boolean = false;
@@ -28,29 +32,24 @@ export class VotappDetailComponent implements OnInit {
   public opcionesTipoDeVotos: TipoVoto[];
 
   public pocosDiasRestantes: number;
+  public altoPantalla: any;
+  public mostrarIconoDetalle: boolean;
+
+  public mostrarVista: boolean;
 
   constructor(private router: ActivatedRoute, public dialog: MatDialog, public userService: UserService, private votacionService: VotacionService) {
+    this.mostrarIconoDetalle = false;
+    this.mostrarVista = false;
     this.tipoDeVotos = [];
     this.opcionesTipoDeVotos = [];
     this.viendoVotosTipo = '';
     this.pocosDiasRestantes = 999;
 
     this.llamarGetVotapp();
-
-    this.votacionService.getTipoDeVotos().subscribe({
-      next: (obj: any) => {
-        this.tipoDeVotos = obj;
-        setTimeout(() => {
-          this.getOtrasOpciones();
-        }, 150);
-      },
-      error: err => {
-        //error
-      }
-    });
   }
 
   ngOnInit(): void {
+    this.altoPantalla = window.innerHeight;
     Preferences.get({ key: 'parametros' }).then((data: any) => {
       if (data.value) {
         let paramDiasRestantes = JSON.parse(data.value).parametros.filter((parametro: any) => {
@@ -59,6 +58,35 @@ export class VotappDetailComponent implements OnInit {
         this.pocosDiasRestantes = paramDiasRestantes[0].valor;
       }
     });
+
+    this.votacionService.getTipoDeVotos().subscribe({
+      next: (obj: any) => {
+        this.tipoDeVotos = obj;
+        setTimeout(() => {
+          let cincoPorcientoAltoPantalla = (this.altoPantalla * 5) / 100;
+          if (this.detalleVotacion.nativeElement.offsetHeight > cincoPorcientoAltoPantalla) {
+            this.mostrarIconoDetalle = true;
+          }
+          this.getOtrasOpciones();
+        }, 350);
+      },
+      error: err => {
+        //error
+      }
+    });
+  }
+
+  public toggleMostrarDetalle() {
+    let detalleVotacion: any = this.detalleVotacion.nativeElement;
+    if (detalleVotacion.classList.contains('detalleVotacionCerrado')) {
+      detalleVotacion.classList.remove('detalleVotacionCerrado');
+      detalleVotacion.classList.add('detalleVotacionAbierto');
+      this.mostrarMas._elementRef.nativeElement.classList.add('rotate-90');
+    } else {
+      this.mostrarMas._elementRef.nativeElement.classList.remove('rotate-90');
+      detalleVotacion.classList.remove('detalleVotacionAbierto');
+      detalleVotacion.classList.add('detalleVotacionCerrado');
+    }
   }
 
   public mostrarVotos(nombreTipoVoto: string) {
@@ -97,7 +125,6 @@ export class VotappDetailComponent implements OnInit {
 
   handleRefresh(event: any) {
     setTimeout(() => {
-      this.mostrarVista = false;
       this.llamarGetVotapp();
       event.target.complete();
     }, 500);
@@ -129,7 +156,8 @@ export class VotappDetailComponent implements OnInit {
         return obj;
       },
       error: err => {
-      },
+        //error al recuperar votapp
+      }
     });
   }
 

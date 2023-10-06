@@ -23,6 +23,7 @@ mat-card {
 }
 
 .icon-logo {
+    padding-left: 3px;
     width: 64px;
     height: 64px;
     font-size: 56px;
@@ -32,14 +33,49 @@ mat-card {
     width: 80vw;
 }
 
+.text-ellipsis {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.detalleVotacion {
+    transition: all 650ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.detalleVotacionCerrado {
+    max-height: 5vh;
+}
+
+.detalleVotacionAbierto {
+    max-height: 100vh;
+}
+
+.iconExpandirDetalle {
+    position: absolute;
+    right: 10px;
+    bottom: 5px;
+    width: 32px;
+    height: 32px;
+    font-size: 32px;
+    transition: all 650ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.rotate-90 {
+    transform: rotate(180deg) !important;
+}
+
 mat-card-subtitle {
     margin-top: .3rem;
     font-size: .9rem;
+    padding-left: 7px !important;
+    padding-right: 7px !important;
 }
 
 mat-card-title {
     margin-bottom: .3rem;
     font-size: .95rem;
+    padding-left: 7px !important;
+    padding-right: 7px !important;
 }
 
 .mat-mdc-card-header {

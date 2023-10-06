@@ -60,17 +60,24 @@ export class LoginComponent implements OnInit {
         this.router.navigateByUrl('/mis-votapps');
       },
       error: err => {
-        if (err.status === 401) {
-          let mensajeError: string = err.error?.message ?? err.error?.mensajeError ?? '';
+        switch (err.status) {
+          case 401: {
+            let mensajeError: string = err.error?.message ?? err.error?.mensajeError ?? '';
 
-          if (mensajeError.includes('Bad credentials')) {
+            if (mensajeError.includes('Bad credentials')) {
+              this.loginForm.get('password')?.setErrors({
+                badCredentials: true,
+              });
+              this.loginForm.markAllAsTouched();
+            }
+            if (mensajeError.includes('Cambiar contraseña')) {
+              this.router.navigateByUrl(`/password-reset-token`);
+            }
+          }; break;
+          case 429: {
             this.loginForm.get('password')?.setErrors({
-              badCredentials: true,
+              tooManyAttempts: true,
             });
-            this.loginForm.markAllAsTouched();
-          }
-          if (mensajeError.includes('Cambiar contraseña')) {
-            this.router.navigateByUrl(`/password-reset-token`);
           }
         }
       }

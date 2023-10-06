@@ -1,9 +1,9 @@
 <mat-card class="px-1 my-2 mx-2">
   <mat-card-header class="flex justify-start items-center">
-    <div *ngIf="votapp.comunidad.logo; else noTieneLogo" mat-card-avatar class="logo"
+    <div *ngIf="votapp.comunidad.logo; else noTieneLogo" mat-card-avatar class="self-start logo"
       style="background-image: url('data:image/png;base64,{{votapp.comunidad.logo}}')"></div>
     <ng-template #noTieneLogo>
-      <mat-icon class="icon-logo" mat-card-avatar aria-hidden="false" aria-label="Comunidad"
+      <mat-icon class="self-start icon-logo" mat-card-avatar aria-hidden="false" aria-label="Comunidad"
         fontIcon="groups"></mat-icon>
     </ng-template>
     <mat-card-title>{{ votapp.comunidad.nombre | uppercase }}</mat-card-title>

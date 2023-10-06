@@ -12,15 +12,22 @@
     <ion-row class="bg-gray-50 py-1">
       <ion-col size-xs="12">
         <mat-card>
-          <mat-card-header class="flex items-center justify-center">
-            <div *ngIf="votapp.comunidad.logo; else noTieneLogo" mat-card-avatar class="logo"
+          <mat-card-header class="flex items-start justify-start">
+            <div *ngIf="votapp.comunidad.logo; else noTieneLogo" mat-card-avatar class="self-start logo"
               style="background-image: url('data:image/png;base64,{{votapp.comunidad.logo}}')"></div>
             <ng-template #noTieneLogo>
-              <mat-icon class="icon-logo" mat-card-avatar aria-hidden="false" aria-label="Comunidad"
+              <mat-icon class="self-start icon-logo" mat-card-avatar aria-hidden="false" aria-label="Comunidad"
                 fontIcon="groups"></mat-icon>
             </ng-template>
             <mat-card-title>{{ votapp.comunidad.nombre | uppercase }}</mat-card-title>
             <mat-card-subtitle>{{ votapp.votacionPunto }}</mat-card-subtitle>
+            <mat-card-subtitle class="detalleVotacion text-ellipsis overflow-hidden detalleVotacionCerrado text-xs"
+              #detalleVotacion>
+              {{ votapp.detalle }}
+              <mat-icon *ngIf="mostrarIconoDetalle" (click)="toggleMostrarDetalle()" class="iconExpandirDetalle"
+                mat-card-avatar aria-hidden="false" aria-label="Mostrar mas" fontIcon="keyboard_double_arrow_down"
+                #mostrarMas />
+            </mat-card-subtitle>
           </mat-card-header>
         </mat-card>
       </ion-col>
@@ -112,13 +119,14 @@
             [ngClass]="{'bg-slate-400': viendoVotosTipo.includes('quorum'), 'text-slate-500 bg-slate-300': !viendoVotosTipo.includes('quorum')}"
             (click)="mostrarVotos('no doy quorum')"
             class="flex justify-center w-16 h-16 mat-elevation-z2 rounded-full uppercase">
-            <p class="self-center">No da Quorum<br><span
-                class="font-semibold">{{votapp.porcentajeVotosPorEstadoVoto('no doy quorum')}}%</span>
+            <p class="self-center">No da Quorum<br><span class="font-semibold">{{votapp.porcentajeVotosPorEstadoVoto('no
+                doy quorum')}}%</span>
             </p>
           </div>
           <div
             [ngClass]="{'bg-slate-400': viendoVotosTipo == 'pendiente', 'text-slate-500 bg-slate-300': viendoVotosTipo != 'pendiente'}"
-            (click)="mostrarVotos('pendiente')" class="flex justify-center w-16 h-16 mat-elevation-z2 rounded-full uppercase">
+            (click)="mostrarVotos('pendiente')"
+            class="flex justify-center w-16 h-16 mat-elevation-z2 rounded-full uppercase">
             <p class="self-center">Sin voto<br><span
                 class="font-semibold">{{votapp.porcentajeVotosPorEstadoVoto('pendiente')}}%</span></p>
           </div>

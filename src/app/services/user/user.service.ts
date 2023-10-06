@@ -33,11 +33,10 @@ export class UserService {
       comunidades = data.comunidades.map((c: any) => {
         let comunidadIntegrantes: ComunidadIntegrantes[] = [];
         let votacionTipoComunidad: VotacionTipo = new VotacionTipo(c.votacionTipo.nombre, c.votacionTipo.habilitado);
-        let comunidad: Comunidad = new Comunidad(c.id, c.nombre, c.descripcion, votacionTipoComunidad, comunidadIntegrantes, new Date(c.created_at));
-
+        var comunidad: Comunidad = new Comunidad(c.id, c.nombre, c.descripcion, votacionTipoComunidad, comunidadIntegrantes, new Date(c.created_at));
         this.comunidadService.getLogo(c.id).subscribe({
-          next: (data: any) => { comunidad.logo = data.logo },
-          error: (error: any) => { }
+          next: (data: any) => { comunidad.logo = data.logo; },
+          error: (error: any) => {  }
         });
 
         return comunidad;
@@ -56,9 +55,8 @@ export class UserService {
         let votacionTipo: VotacionTipo = new VotacionTipo(v.votacionTipo.nombre, v.votacionTipo.habilitado);
         let votacionFrecuencia: VotacionFrecuencia | null = null;
         if (v.votacionFrecuencia) {
-          votacionFrecuencia = new VotacionFrecuencia(v.votacionFrecuencia.nombre, v.votacionFrecuencia.dias, v.votacionFrecuencia.habilitado);
+          votacionFrecuencia = new VotacionFrecuencia(v.votacionFrecuencia.id, v.votacionFrecuencia.nombre, v.votacionFrecuencia.dias, v.votacionFrecuencia.habilitado);
         }
-
         let comunidad: Comunidad = comunidades.filter((comunidad: Comunidad) => {
           return comunidad.id === v.comunidad_id ? comunidad : null;
         })[0];
@@ -83,16 +81,6 @@ export class UserService {
     }));
   }
 
-  getLocalUser() {
-    let currentUserStr = localStorage.getItem('current_user');
-    if (currentUserStr) {
-      let currentUser = JSON.parse(currentUserStr);
-      this.currentUser = new User(currentUser.id, currentUser.nombre, currentUser.apellido, currentUser.sub, currentUser.paisResidencia, currentUser.fechaNacimiento)
-    } else {
-      this.currentUser = new User(-1, '', '', '', '', 0);
-    }
-  }
-
   getMisComunidades() {
     return this.httpClient.get(this.USER_API_URL + `/${this.currentUser.id}/comunidades`).pipe(map((data: any) => {
       return data.comunidades.map((comunidad: any) => {
@@ -108,6 +96,16 @@ export class UserService {
         return nuevaComunidad;
       })
     }));
+  }
+
+  getLocalUser() {
+    let currentUserStr = localStorage.getItem('current_user');
+    if (currentUserStr) {
+      let currentUser = JSON.parse(currentUserStr);
+      this.currentUser = new User(currentUser.id, currentUser.nombre, currentUser.apellido, currentUser.sub, currentUser.paisResidencia, currentUser.fechaNacimiento)
+    } else {
+      this.currentUser = new User(-1, '', '', '', '', 0);
+    }
   }
 
   hayUsuarioIngresado() {

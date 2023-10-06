@@ -170,16 +170,47 @@
                   La fecha del vencimiento de la votacion debe ser posterior al dia de hoy.
                 </mat-error>
               </mat-form-field>
-              <mat-label>Hora de fin de votacion</mat-label>
-              <ion-datetime style="max-width:100%;" presentation="time"
-                formControlName="horaVencimiento"></ion-datetime>
+
+              <div class="flex flex-col">
+                <div class="flex" [ngClass]="{'colControlesHora': duracionForm.get('horaVencimiento')?.errors != null || duracionForm.get('minutoVencimiento')?.errors != null}">
+                  <mat-form-field class="pr-2">
+                    <mat-label>Horas</mat-label>
+                    <input type="number" aria-label="Hora" formControlName="horaVencimiento" matInput placeholder="Hora"
+                      [matAutocomplete]="horaAutocomplete" autocomplete="disabled">
+                    <mat-autocomplete autoActiveFirstOption #horaAutocomplete="matAutocomplete">
+                      <mat-option *ngFor="let hora of horas" [value]="hora">
+                        {{hora}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                  <mat-form-field class="ps-2">
+                    <mat-label>Minutos</mat-label>
+                    <input type="number" aria-label="Minuto" formControlName="minutoVencimiento" matInput
+                      placeholder="Minuto" [matAutocomplete]="minutoAutocomplete" autocomplete="disabled">
+                    <mat-autocomplete autoActiveFirstOption #minutoAutocomplete="matAutocomplete">
+                      <mat-option *ngFor="let minuto of minutos" [value]="minuto">
+                        {{minuto}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                </div>
+                <mat-error class="text-sm" *ngIf="duracionForm.get('horaVencimiento')?.errors?.['required'] || duracionForm.get('minutoVencimiento')?.errors?.['required']">
+                  La hora de el fin de votacion es requerida.
+                </mat-error>
+                <mat-error class="text-sm" *ngIf="duracionForm.get('horaVencimiento')?.errors?.['min'] || duracionForm.get('horaVencimiento')?.errors?.['max']">
+                  La hora no es valida.
+                </mat-error>
+                <mat-error class="text-sm" *ngIf="duracionForm.get('minutoVencimiento')?.errors?.['min'] || duracionForm.get('minutoVencimiento')?.errors?.['max']">
+                  Los minutos no son validos.
+                </mat-error>
+              </div>
               <mat-form-field
                 [ngClass]="{'mb-5': !duracionForm.get('frecuenciasVotacion')?.valid && (duracionForm.get('frecuenciasVotacion')?.dirty || duracionForm.get('frecuenciasVotacion')?.touched)}">
                 <mat-label>Frecuencia de votacion</mat-label>
                 <mat-select formControlName="frecuenciaVotacion">
                   <ng-container *ngIf="(frecuenciasVotacion$ | async) as frecuenciasVotacion">
                     <ng-container *ngFor="let frecuencia of frecuenciasVotacion">
-                      <mat-option value="{{frecuencia.nombre}}">{{frecuencia.nombre | titlecase}}</mat-option>
+                      <mat-option [value]="frecuencia.id">{{frecuencia.nombre | titlecase}}</mat-option>
                     </ng-container>
                   </ng-container>
                 </mat-select>

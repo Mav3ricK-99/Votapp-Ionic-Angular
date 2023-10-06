@@ -1,7 +1,7 @@
 import { formatDate } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { lastValueFrom, map } from 'rxjs';
+import { map } from 'rxjs';
 import { Comunidad } from 'src/app/classes/comunidad/comunidad';
 import { ComunidadIntegrantes } from 'src/app/classes/comunidadIntegrantes/comunidad-integrantes';
 import { TipoVoto } from 'src/app/classes/tipoVoto/tipo-voto';
@@ -66,7 +66,7 @@ export class VotacionService {
       let votacionTipo: VotacionTipo = new VotacionTipo(votacion.votacionTipo.nombre, votacion.votacionTipo.habilitado);
       let votacionFrecuencia: VotacionFrecuencia | null = null;
       if (votacion.votacionFrecuencia) {
-        votacionFrecuencia = new VotacionFrecuencia(votacion.votacionFrecuencia.nombre, votacion.votacionFrecuencia.dias, votacion.votacionFrecuencia.habilitado);
+        votacionFrecuencia = new VotacionFrecuencia(votacion.votacionFrecuencia.id, votacion.votacionFrecuencia.nombre, votacion.votacionFrecuencia.dias, votacion.votacionFrecuencia.habilitado);
       }
       let nuevaVotacion: Votacion = new Votacion(votacion.id, votacion.aceptacionRequerida, votacion.detalle, votacion.proximaVotacion, votacion.quorumRequerido, votacion.repetir, votacion.requiereAceptacion, new Date(votacion.vencimiento), votacion.votacionPunto, comunidad, votacionDecision, votacionTipo, votacionFrecuencia);
       nuevaVotacion._votacionIntegrantes = votacionIntegrantes;
@@ -100,7 +100,7 @@ export class VotacionService {
   getFrecuencias() {
     return this.httpClient.get(this.VOTAPP_API_URL + `frecuencias`).pipe(map((data: any) => {
       return data.frecuenciaVotaciones.map((frecuencia: any) => {
-        return new VotacionFrecuencia(frecuencia.nombre, frecuencia.dias, frecuencia.habilitado);
+        return new VotacionFrecuencia(frecuencia.id, frecuencia.nombre, frecuencia.dias, frecuencia.habilitado);
       })
     }));
   }

@@ -83,7 +83,6 @@ export class Votacion {
         return votacionIntegrantes[0];
     }
 
-
     public votoParticipante(usuario: User): TipoVoto | boolean {
         let votacionIntegrante: VotacionIntegrantes = this.votacionIntegranteParticipante(usuario);
         if (votacionIntegrante.tipoVoto != null) {

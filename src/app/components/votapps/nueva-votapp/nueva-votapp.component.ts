@@ -1,4 +1,3 @@
-import { DialogRef } from '@angular/cdk/dialog';
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -36,21 +35,24 @@ export class NuevaVotappComponent {
 
   public crearVotacionDeshabilitado: boolean;
 
-  constructor(formBuilder: FormBuilder, private userService: UserService, private votacionService: VotacionService, public dialog: MatDialog, public router: Router) {
+  public horas: Array<string> = [];
+  public minutos: Array<string> = [];
 
+  public fechaHoy: Date;
+
+  constructor(formBuilder: FormBuilder, private userService: UserService, private votacionService: VotacionService, public dialog: MatDialog, public router: Router) {
+    for (let i = 0; i < 60; i++) {
+      if (i < 24) {
+        this.horas.push(i.toString().padStart(2, '0'));
+      }
+      this.minutos.push(i.toString().padStart(2, '0'));
+    }
+    this.fechaHoy = new Date();
     this.comunidades$ = this.userService.getMisComunidades();
     this.comunidadesFiltradas$ = this.comunidades$;
     this.tipoDecisiones$ = this.votacionService.getTipoDecisiones();
     this.frecuenciasVotacion$ = this.votacionService.getFrecuencias();
 
-    this.frecuenciasVotacion$.subscribe({
-      next: (obj: any) => {
-        let porUnicaVez = obj.filter((frecuencia: any) => {
-          return frecuencia.dias == 1 ? frecuencia : null;
-        });
-        this.duracionForm.get('frecuenciaVotacion')?.setValue(porUnicaVez[0].nombre);
-      }
-    });
     this.colorPrimerContinuar = 'white-g';
     this.colorSegundoContinuar = 'white-g';
     this.colorCrearVotacion = 'white-g';
@@ -62,10 +64,6 @@ export class NuevaVotappComponent {
       comunidad: new FormControl<Comunidad | null>(null, { validators: [Validators.required] }),
     });
 
-    this.comunidadForm.statusChanges.subscribe((valid: string) => {
-      valid == 'VALID' ? this.colorPrimerContinuar = 'green' : this.colorPrimerContinuar = 'white-g';;
-    });
-
     this.puntoAVotarForm = formBuilder.group({
       tipoDecision: new FormControl<VotacionDecision | null>(null, { validators: [Validators.required], updateOn: 'blur' }),
       titulo: new FormControl('', { validators: [Validators.required, Validators.minLength(3), Validators.maxLength(255)], updateOn: 'blur' }),
@@ -74,36 +72,53 @@ export class NuevaVotappComponent {
       quorumRequerido: new FormControl('50', { validators: [Validators.required, Validators.min(0), Validators.max(100)], updateOn: 'blur' }),
     });
 
-    this.puntoAVotarForm.statusChanges.subscribe((valid: string) => {
-      valid == 'VALID' ? this.colorSegundoContinuar = 'green' : this.colorSegundoContinuar = 'white-g';
-    });
-
     this.duracionForm = formBuilder.group({
       fechaVencimiento: new FormControl<Date | null>(null, { validators: [Validators.required], updateOn: 'blur' }),
       frecuenciaVotacion: new FormControl<VotacionFrecuencia | null>(null, { updateOn: 'blur' }),
       nuevaVotacion: new FormControl<Date | null>(null, { updateOn: 'blur' }),
-      horaVencimiento: new FormControl(new Date().toLocaleTimeString()),
+      horaVencimiento: new FormControl('', { validators: [Validators.required, Validators.min(0), Validators.max(24)], updateOn: 'blur' }),
+      minutoVencimiento: new FormControl('', { validators: [Validators.required, Validators.min(0), Validators.max(59)], updateOn: 'blur' }),
     }, { validators: [this.validarFechas()] });
+
+    //Relleno botones si el form esta validado!
+    this.comunidadForm.statusChanges.subscribe((valid: string) => {
+      valid == 'VALID' ? this.colorPrimerContinuar = 'green' : this.colorPrimerContinuar = 'white-g';;
+    });
+
+    this.puntoAVotarForm.statusChanges.subscribe((valid: string) => {
+      valid == 'VALID' ? this.colorSegundoContinuar = 'green' : this.colorSegundoContinuar = 'white-g';
+    });
 
     this.duracionForm.statusChanges.subscribe((valid: string) => {
       valid == 'VALID' ? this.colorCrearVotacion = 'green' : this.colorCrearVotacion = 'white-g';
     });
 
-    this.duracionForm.get('frecuenciaVotacion')?.valueChanges.subscribe((data: any) => {
-      let fechaNuevaVotacion = new Date();
+    this.duracionForm.get('horaVencimiento')?.setValue(this.fechaHoy.getHours());
+    this.duracionForm.get('minutoVencimiento')?.setValue(this.fechaHoy.getMinutes());
 
-      switch (data) {
-        case 'semanal': { fechaNuevaVotacion = new Date(fechaNuevaVotacion.getFullYear(), fechaNuevaVotacion.getMonth(), fechaNuevaVotacion.getDate() + 7); }; break;
-        case 'mensual': { fechaNuevaVotacion = new Date(fechaNuevaVotacion.getFullYear(), fechaNuevaVotacion.getMonth() + 1, fechaNuevaVotacion.getDate()); }; break;
-        case 'anual': { fechaNuevaVotacion = new Date(fechaNuevaVotacion.getFullYear() + 1, fechaNuevaVotacion.getMonth(), fechaNuevaVotacion.getDate()); }; break;
+    this.duracionForm.get('frecuenciaVotacion')?.valueChanges.subscribe((idFrecuencia: any) => {
+      let fechaNuevaVotacion = new Date();
+      switch (idFrecuencia) {
+        case 1: { fechaNuevaVotacion.setDate(fechaNuevaVotacion.getDate() + 7); }; break;
+        case 2: { fechaNuevaVotacion.setMonth(fechaNuevaVotacion.getMonth() + 1); }; break;
+        case 3: { fechaNuevaVotacion.setFullYear(fechaNuevaVotacion.getFullYear() + 1); }; break;
       };
 
-      if (data.includes('vez')) {
+      if (idFrecuencia == 4) {
         this.duracionForm.get('nuevaVotacion')?.setValue('');
         this.duracionForm.get('nuevaVotacion')?.disable();
       } else {
         this.duracionForm.get('nuevaVotacion')?.enable();
         this.duracionForm.get('nuevaVotacion')?.setValue(fechaNuevaVotacion);
+      }
+    });
+
+    this.frecuenciasVotacion$.subscribe({
+      next: (obj: any) => {
+        let porUnicaVez = obj.filter((frecuencia: any) => {
+          return frecuencia.id == 4 ? frecuencia : null;
+        });
+        this.duracionForm.get('frecuenciaVotacion')?.setValue(porUnicaVez[0].id);
       }
     });
 
@@ -145,8 +160,7 @@ export class NuevaVotappComponent {
       let fechaNuevaVotacion = duracionForm.get('nuevaVotacion');
       let errores: any = {};
       if (fechaVencimiento?.value) {
-        let fechaHoy: Date = new Date();
-        if (fechaVencimiento.value < fechaHoy) {
+        if (fechaVencimiento.value < this.fechaHoy) {
           this.duracionForm.get('fechaVencimiento')?.setErrors({
             invalidFechaVencimiento: true,
           });
@@ -178,15 +192,16 @@ export class NuevaVotappComponent {
     let aceptacionRequerida = this.puntoAVotarForm.get('aceptacionRequerida')?.value;
     let quorumRequerido = this.puntoAVotarForm.get('quorumRequerido')?.value;
 
-    let horaMinutoVencimiento: string[] = this.duracionForm.get('horaVencimiento')?.value.split(':');
+    let horaVencimiento: string = this.duracionForm.get('horaVencimiento')?.value;
+    let minutoVencimiento: string = this.duracionForm.get('minutoVencimiento')?.value;
     let fechaVencimiento: Date = this.duracionForm.get('fechaVencimiento')?.value;
-    fechaVencimiento.setHours(parseInt(horaMinutoVencimiento[0]));
-    fechaVencimiento.setMinutes(parseInt(horaMinutoVencimiento[1]));
-
+    fechaVencimiento.setHours(parseInt(horaVencimiento));
+    fechaVencimiento.setMinutes(parseInt(minutoVencimiento));
+    console.log(fechaVencimiento);
     let frecuenciaVotacion: VotacionFrecuencia | null = null;
     let frecuenciaControl = this.duracionForm.get('frecuenciaVotacion');
     if (frecuenciaControl?.value != null) {
-      frecuenciaVotacion = new VotacionFrecuencia(frecuenciaControl.value, 7, true);
+      frecuenciaVotacion = new VotacionFrecuencia(0, frecuenciaControl.value, 7, true);
     }
     let nuevaVotacion = this.duracionForm.get('nuevaVotacion')?.value;
 

@@ -19,6 +19,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { UtilSharedModule } from '../../shared/util-shared/util-shared.module';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 @NgModule({
   declarations: [
     NuevaVotappComponent,
@@ -42,7 +43,8 @@ import { UtilSharedModule } from '../../shared/util-shared/util-shared.module';
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatDialogModule
+    MatDialogModule,
+    MatAutocompleteModule
   ], providers: [
     {
       provide: STEPPER_GLOBAL_OPTIONS,
