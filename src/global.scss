@@ -47,6 +47,11 @@ ion-grid {
     padding-bottom: 0 !important; */
 }
 
+.ion-padding {
+    --padding-top: 0;
+    --padding-bottom: 0;
+}
+
 .mat-green {
     color: #fff !important;
     background-color: #4ade80 !important;
@@ -121,4 +126,8 @@ ion-grid {
 
 .border-radius-1r {
     border-radius: 1rem !important;
+}
+
+.logo-votapp {
+    width: 70vw;
 }

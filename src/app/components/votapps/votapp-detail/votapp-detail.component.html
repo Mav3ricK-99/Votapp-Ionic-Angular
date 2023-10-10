@@ -24,10 +24,10 @@
             <mat-card-subtitle class="detalleVotacion text-ellipsis overflow-hidden detalleVotacionCerrado text-xs"
               #detalleVotacion>
               {{ votapp.detalle }}
-              <mat-icon *ngIf="mostrarIconoDetalle" (click)="toggleMostrarDetalle()" class="iconExpandirDetalle"
-                mat-card-avatar aria-hidden="false" aria-label="Mostrar mas" fontIcon="keyboard_double_arrow_down"
-                #mostrarMas />
             </mat-card-subtitle>
+            <mat-icon *ngIf="mostrarIconoDetalle" (click)="toggleMostrarDetalle()" class="iconExpandirDetalle"
+              mat-card-avatar aria-hidden="false" aria-label="Mostrar mas" fontIcon="keyboard_double_arrow_down"
+              #mostrarMas />
           </mat-card-header>
         </mat-card>
       </ion-col>
@@ -98,14 +98,14 @@
             [ngClass]="{'bg-slate-400': viendoVotosTipo == 'si', 'text-slate-500 bg-slate-300': viendoVotosTipo != 'si'}"
             (click)="mostrarVotos('si')" class="flex justify-center w-16 h-16 mat-elevation-z2 rounded-full uppercase">
             <p class="self-center">Si<br><span
-                class="font-semibold">{{votapp.porcentajeVotosPorEstadoVoto('si')}}%</span>
+                class="font-semibold">{{votapp.porcentajeTotalPorTipoVoto('si')}}%</span>
             </p>
           </div>
           <div
             [ngClass]="{'bg-slate-400': viendoVotosTipo == 'no', 'text-slate-500 bg-slate-300': viendoVotosTipo != 'no'}"
             (click)="mostrarVotos('no')" class="flex justify-center w-16 h-16 mat-elevation-z2 rounded-full uppercase">
             <p class="self-center">No<br><span
-                class="font-semibold">{{votapp.porcentajeVotosPorEstadoVoto('no')}}%</span>
+                class="font-semibold">{{votapp.porcentajeTotalPorTipoVoto('no')}}%</span>
             </p>
           </div>
           <div
@@ -113,14 +113,13 @@
             (click)="mostrarVotos('abstencion (con la mayoria)')"
             class="flex justify-center w-16 h-16 text-xxv hyphens-auto mat-elevation-z2 rounded-full uppercase">
             <p class="self-center">Absten&shy;cion<br><span
-                class="font-semibold">{{votapp.porcentajeVotosPorEstadoVoto('abstencion (con la mayoria)')}}%</span></p>
+                class="font-semibold">{{votapp.porcentajeTotalPorTipoVoto('abstencion (con la mayoria)')}}%</span></p>
           </div>
           <div
             [ngClass]="{'bg-slate-400': viendoVotosTipo.includes('quorum'), 'text-slate-500 bg-slate-300': !viendoVotosTipo.includes('quorum')}"
             (click)="mostrarVotos('no doy quorum')"
             class="flex justify-center w-16 h-16 mat-elevation-z2 rounded-full uppercase">
-            <p class="self-center">No da Quorum<br><span class="font-semibold">{{votapp.porcentajeVotosPorEstadoVoto('no
-                doy quorum')}}%</span>
+            <p class="self-center">No da Quorum<br><span class="font-semibold">{{votapp.porcentajeTotalPorTipoVoto('no doy quorum')}}%</span>
             </p>
           </div>
           <div
@@ -128,7 +127,7 @@
             (click)="mostrarVotos('pendiente')"
             class="flex justify-center w-16 h-16 mat-elevation-z2 rounded-full uppercase">
             <p class="self-center">Sin voto<br><span
-                class="font-semibold">{{votapp.porcentajeVotosPorEstadoVoto('pendiente')}}%</span></p>
+                class="font-semibold">{{votapp.porcentajeTotalPorTipoVoto('pendiente')}}%</span></p>
           </div>
         </div>
       </ion-col>
@@ -141,7 +140,7 @@
               class="flex justify-center text-center uppercase text-black border-dashed border-2 text-xs border-slate-400 bg-slate-200">
               <p class="self-center">{{votapp.comunidad.nombre}} - {{voto.user.name}} {{voto.user.surname}} <mat-icon
                   class="arrow-py text-slate-400">arrow_right_alt</mat-icon> {{'app.votes.states.'+
-                votapp.estadoVotoParticipantePretty(this.userService.currentUser) | translate }}</p>
+                votapp.estadoVotoParticipantePretty(voto.user) | translate }}</p>
             </div>
           </div>
         </ng-container>

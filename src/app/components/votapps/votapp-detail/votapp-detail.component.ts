@@ -15,7 +15,7 @@ import { Observable } from 'rxjs';
   templateUrl: './votapp-detail.component.html',
   styleUrls: ['./votapp-detail.component.scss'],
 })
-export class VotappDetailComponent implements OnInit {
+export class VotappDetailComponent implements OnInit, AfterViewInit {
 
   @ViewChild('detalleVotacion', { read: ElementRef, static: false }) detalleVotacion: ElementRef;
   @ViewChild('mostrarMas') mostrarMas: MatIcon;
@@ -58,22 +58,15 @@ export class VotappDetailComponent implements OnInit {
         this.pocosDiasRestantes = paramDiasRestantes[0].valor;
       }
     });
+  }
 
-    this.votacionService.getTipoDeVotos().subscribe({
-      next: (obj: any) => {
-        this.tipoDeVotos = obj;
-        setTimeout(() => {
-          let cincoPorcientoAltoPantalla = (this.altoPantalla * 5) / 100;
-          if (this.detalleVotacion.nativeElement.offsetHeight > cincoPorcientoAltoPantalla) {
-            this.mostrarIconoDetalle = true;
-          }
-          this.getOtrasOpciones();
-        }, 350);
-      },
-      error: err => {
-        //error
+  public ngAfterViewInit(): void {
+    setTimeout(() => {
+      let cincoPorcientoAltoPantalla = (this.altoPantalla * 5) / 100;
+      if (this.detalleVotacion.nativeElement.offsetHeight > cincoPorcientoAltoPantalla) {
+        this.mostrarIconoDetalle = true;
       }
-    });
+    }, 250);
   }
 
   public toggleMostrarDetalle() {
@@ -153,6 +146,14 @@ export class VotappDetailComponent implements OnInit {
       next: (obj: any) => {
         this.votapp = obj;
         this.mostrarVista = true;
+        if (!this.votapp.estaFinalizada()) {
+          this.votacionService.getTipoDeVotos().subscribe({
+            next: (obj: any) => {
+              this.tipoDeVotos = obj;
+              this.getOtrasOpciones();
+            }
+          });
+        }
         return obj;
       },
       error: err => {

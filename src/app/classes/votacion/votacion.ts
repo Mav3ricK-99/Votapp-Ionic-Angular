@@ -57,17 +57,17 @@ export class Votacion {
     }
 
     public estadoVotoParticipantePretty(usuario: User): string {
-        let myVote: TipoVoto | boolean = this.votoParticipante(usuario);
-        if (myVote instanceof TipoVoto) {
-            return myVote.getPrettyResult();
+        let miVoto: TipoVoto | boolean = this.votoParticipante(usuario);
+        if (miVoto instanceof TipoVoto) {
+            return miVoto.getPrettyResult();
         }
         return 'pendiente';
     }
 
     public estadoVotoParticipante(usuario: User): string {
-        let myVote: TipoVoto | boolean = this.votoParticipante(usuario);
-        if (myVote instanceof TipoVoto) {
-            return myVote.getResult();
+        let miVoto: TipoVoto | boolean = this.votoParticipante(usuario);
+        if (miVoto instanceof TipoVoto) {
+            return miVoto.getResult();
         }
         return 'pendiente';
     }
@@ -103,7 +103,7 @@ export class Votacion {
                 totalPorcentajeQuorum += votacionIntegrante.porcentaje;
             }
         });
-        return totalPorcentajeQuorum;
+        return Math.trunc(totalPorcentajeQuorum);
     }
 
     public totalMiembros(): number {
@@ -147,13 +147,19 @@ export class Votacion {
         return votosTotales;
     }
 
-    public porcentajeVotosPorEstadoVoto(estado: string) {
-        let tipoVoto: TipoVoto = new TipoVoto(estado, false, false, false, false, false);
-        return Math.round(this.votantesTotalesPorTipoVoto(tipoVoto) * 100) / this.totalMiembros();
-    }
+    public porcentajeTotalPorTipoVoto(estado: string): number {
+        let porcentaje: number = 0;
+        this.votacionIntegrantes.forEach((votacionIntegrante) => {
+            if (votacionIntegrante.tipoVoto?.nombre == estado) {
+                porcentaje += votacionIntegrante.porcentaje;
+            }
 
-    public porcentajeVotosPorTipoVoto(tipoVoto: TipoVoto) {
-        return (this.votantesTotalesPorTipoVoto(tipoVoto) * 100) / this.totalMiembros();
+            if (votacionIntegrante.tipoVoto == null && estado == 'pendiente') {
+                porcentaje += votacionIntegrante.porcentaje;
+            }
+        })
+
+        return porcentaje;
     }
 
     public obtenerVotosPorTipoVoto(tipoVoto: TipoVoto | null): VotacionIntegrantes[] {

@@ -29,21 +29,18 @@ mat-card {
     font-size: 56px;
 }
 
-.titulos {
-    width: 80vw;
-}
-
 .text-ellipsis {
     overflow: hidden !important;
     text-overflow: ellipsis !important;
 }
 
 .detalleVotacion {
+    max-width: 65vw;
     transition: all 650ms cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 .detalleVotacionCerrado {
-    max-height: 5vh;
+    max-height: 5.1vh;
 }
 
 .detalleVotacionAbierto {

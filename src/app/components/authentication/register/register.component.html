@@ -7,12 +7,12 @@
   <ion-grid [fixed]="true">
     <ion-row class="ion-justify-content-center mb-1">
       <ion-col size="auto">
-        <ion-img src="/assets/logo/votapp.png"></ion-img>
+        <ion-img class="logo-votapp" src="/assets/logo/votapp.png"></ion-img>
       </ion-col>
     </ion-row>
     <ion-row class="ion-justify-content-center">
       <ion-col size-xl="5" size-xs="12" size-md="8" size="10">
-        <h2 class="text-center font-light mb-3">Contanos de vos para poder ingresar</h2>
+        <h2 class="text-center font-light">Contanos de vos para poder ingresar</h2>
         <form [formGroup]="signUpForm">
           <ion-row class="ion-justify-content-center">
             <ion-col size="12">
@@ -137,7 +137,7 @@
                 <mat-label>{{'app.forms.auth.password' | translate | titlecase}}</mat-label>
                 <input [type]="hidePassword ? 'password' : 'text'" formControlName="password" matInput autocomplete="true"
                   placeholder="Escribi tu contraseña">
-                <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword"
+                <button tabindex="-1" type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword"
                   [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
                   <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                 </button>
@@ -158,7 +158,7 @@
               <mat-form-field [ngClass]="{'mb-3': !signUpForm.get('repeatPassword')?.valid && (signUpForm.get('repeatPassword')?.dirty || signUpForm.get('repeatPassword')?.touched)}" appearance="outline">
                 <mat-label>{{'app.forms.auth.signup.repeatPassword' | translate | titlecase}}</mat-label>
                 <input [type]="hideRepeatPassword ? 'password' : 'text'" autocomplete="true" 
-                  formControlName="repeatPassword" matInput placeholder="Escribi tu contraseña">
+                (keydown.enter)="submitSignUpForm()" formControlName="repeatPassword" matInput placeholder="Escribi tu contraseña">
                 <button tabindex="-1" mat-icon-button matSuffix (click)="hideRepeatPassword = !hideRepeatPassword"
                   [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideRepeatPassword">
                   <mat-icon>{{hideRepeatPassword ? 'visibility_off' : 'visibility'}}</mat-icon>

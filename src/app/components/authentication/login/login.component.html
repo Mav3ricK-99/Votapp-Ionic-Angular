@@ -7,16 +7,16 @@
   <ion-grid [fixed]="true">
     <ion-row class="ion-justify-content-center">
       <ion-col size="auto">
-        <ion-img src="/assets/logo/votapp.png"></ion-img>
+        <ion-img class="logo-votapp" src="/assets/logo/votapp.png"></ion-img>
       </ion-col>
     </ion-row>
     <ion-row class="ion-justify-content-center">
       <ion-col size-xl="5" size-xs="12" size-md="8" size="10">
         <h2 class="text-center text-1r font-light mb-2">Ingresa tu correo electronico y contraseña</h2>
         <form [formGroup]="loginForm">
-          <ion-row class="ion-justify-content-center mb-1">
+          <ion-row class="ion-justify-content-center">
             <ion-col size="12">
-              <mat-form-field appearance="outline">
+              <mat-form-field appearance="outline"  [ngClass]="{'mb-1': !loginForm.get('email')?.valid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)}">
                 <mat-label>{{'app.forms.auth.email' | translate | titlecase}}</mat-label>
                 <input type="email" formControlName="email" matInput placeholder="Ingresa su correo electronico">
                 <mat-error class="text-sm"
@@ -34,12 +34,12 @@
             </ion-col>
           </ion-row>
 
-          <ion-row class="ion-justify-content-center mb-4">
+          <ion-row class="ion-justify-content-center">
             <ion-col size="12">
-              <mat-form-field appearance="outline">
+              <mat-form-field appearance="outline" [ngClass]="{'mb-2': !loginForm.get('password')?.valid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)}">
                 <mat-label>{{'app.forms.auth.password' | translate | titlecase}}</mat-label>
                 <input formControlName="password" matInput placeholder="Ingresa tu contraseña" type="password" autocomplete="true"
-                  [type]="hidePassword ? 'password' : 'text'">
+                  [type]="hidePassword ? 'password' : 'text'" (keydown.enter)="submitLoginForm()">
                 <button tabindex="-1" type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword"
                   [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
                   <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
@@ -78,7 +78,7 @@
             | translate | uppercase}}</a>
         </div>
         <div>
-          <p class="italic text-sm">{{appVersion}}</p>
+          <p class="italic text-sm mt-2 mb-0">Version {{appVersion}}</p>
         </div>
       </ion-col>
     </ion-row>

@@ -12,7 +12,8 @@ import { VotacionDecision } from 'src/app/classes/votacionDecision/votacion-deci
 import { VotacionFrecuencia } from 'src/app/classes/votacionFrecuencia/votacion-frecuencia';
 import { UserService } from 'src/app/services/user/user.service';
 import { VotacionService } from 'src/app/services/votacion/votacion.service';
-
+import { Platform } from '@ionic/angular';
+import { Keyboard } from '@capacitor/keyboard';
 @Component({
   selector: 'app-nueva-votapp',
   templateUrl: './nueva-votapp.component.html',
@@ -28,6 +29,8 @@ export class NuevaVotappComponent {
   public colorSegundoContinuar: string;
   public colorCrearVotacion: string;
 
+  public mostrarNuevaVotacion: boolean;
+
   public comunidades$: Observable<any>;
   public comunidadesFiltradas$: Observable<any>;
   public tipoDecisiones$: Observable<any>;
@@ -40,7 +43,7 @@ export class NuevaVotappComponent {
 
   public fechaHoy: Date;
 
-  constructor(formBuilder: FormBuilder, private userService: UserService, private votacionService: VotacionService, public dialog: MatDialog, public router: Router) {
+  constructor(formBuilder: FormBuilder, private userService: UserService, private votacionService: VotacionService, public dialog: MatDialog, public router: Router, public platform: Platform) {
     for (let i = 0; i < 60; i++) {
       if (i < 24) {
         this.horas.push(i.toString().padStart(2, '0'));
@@ -52,6 +55,7 @@ export class NuevaVotappComponent {
     this.comunidadesFiltradas$ = this.comunidades$;
     this.tipoDecisiones$ = this.votacionService.getTipoDecisiones();
     this.frecuenciasVotacion$ = this.votacionService.getFrecuencias();
+    this.mostrarNuevaVotacion = false;
 
     this.colorPrimerContinuar = 'white-g';
     this.colorSegundoContinuar = 'white-g';
@@ -76,7 +80,7 @@ export class NuevaVotappComponent {
       fechaVencimiento: new FormControl<Date | null>(null, { validators: [Validators.required], updateOn: 'blur' }),
       frecuenciaVotacion: new FormControl<VotacionFrecuencia | null>(null, { updateOn: 'blur' }),
       nuevaVotacion: new FormControl<Date | null>(null, { updateOn: 'blur' }),
-      horaVencimiento: new FormControl('', { validators: [Validators.required, Validators.min(0), Validators.max(24)], updateOn: 'blur' }),
+      horaVencimiento: new FormControl('', { validators: [Validators.required, Validators.min(0), Validators.max(23)], updateOn: 'blur' }),
       minutoVencimiento: new FormControl('', { validators: [Validators.required, Validators.min(0), Validators.max(59)], updateOn: 'blur' }),
     }, { validators: [this.validarFechas()] });
 
@@ -106,9 +110,9 @@ export class NuevaVotappComponent {
 
       if (idFrecuencia == 4) {
         this.duracionForm.get('nuevaVotacion')?.setValue('');
-        this.duracionForm.get('nuevaVotacion')?.disable();
+        this.mostrarNuevaVotacion = false;
       } else {
-        this.duracionForm.get('nuevaVotacion')?.enable();
+        this.mostrarNuevaVotacion = true;
         this.duracionForm.get('nuevaVotacion')?.setValue(fechaNuevaVotacion);
       }
     });
@@ -179,6 +183,10 @@ export class NuevaVotappComponent {
     }
   }
 
+  ocultarTeclado() {
+    Keyboard.hide();
+  }
+
   crearNuevaVotacion() {
     if (!this.comunidadForm.valid || !this.duracionForm.valid || !this.puntoAVotarForm.valid) return;
 
@@ -197,7 +205,7 @@ export class NuevaVotappComponent {
     let fechaVencimiento: Date = this.duracionForm.get('fechaVencimiento')?.value;
     fechaVencimiento.setHours(parseInt(horaVencimiento));
     fechaVencimiento.setMinutes(parseInt(minutoVencimiento));
-    console.log(fechaVencimiento);
+
     let frecuenciaVotacion: VotacionFrecuencia | null = null;
     let frecuenciaControl = this.duracionForm.get('frecuenciaVotacion');
     if (frecuenciaControl?.value != null) {

@@ -34,7 +34,7 @@ export class RegisterComponent {
       language: new FormControl('', { validators: [Validators.required] }),
       yearBirth: new FormControl('', { validators: [Validators.required, Validators.max(2023)], updateOn: 'blur' }),
       password: new FormControl('', { validators: [Validators.required, Validators.minLength(6)], updateOn: 'blur' }),
-      repeatPassword: new FormControl('', { validators: [Validators.required, Validators.minLength(6)], updateOn: 'blur' }),
+      repeatPassword: new FormControl('', { validators: [Validators.required, Validators.minLength(6)] }),
     }, { validators: [this.validarContraseñas(), this.validarIdioma()] });
 
     this.countries = this._translate.get('countries');
@@ -54,6 +54,7 @@ export class RegisterComponent {
   }
 
   submitSignUpForm() {
+    this.signUpForm.markAllAsTouched();
     if (!this.signUpForm.valid) return;
 
     let email = this.signUpForm.get('email')?.value;

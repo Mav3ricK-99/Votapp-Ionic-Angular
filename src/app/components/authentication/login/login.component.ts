@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
       email: new FormControl('', { validators: [Validators.required, Validators.email, Validators.max(60)], updateOn: 'blur' }),
-      password: new FormControl('', { validators: [Validators.required, Validators.minLength(6)], updateOn: 'blur' }),
+      password: new FormControl('', { validators: [Validators.required, Validators.minLength(6)]}),
     });
 
     Preferences.get({ key: 'parametros' }).then((data: any) => {
@@ -43,6 +43,7 @@ export class LoginComponent implements OnInit {
   }
 
   submitLoginForm() {
+    this.loginForm.markAllAsTouched();
     if (!this.loginForm.valid) return;
 
     let email = this.loginForm.get('email')?.value;
