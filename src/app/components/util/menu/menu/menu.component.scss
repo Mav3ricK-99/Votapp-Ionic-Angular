@@ -1,0 +1,26 @@
+.boton-menu {
+    font-size: .85rem;
+    background-color: rgb(249 250 251) !important;
+    color: rgb(97, 97, 97);
+    letter-spacing: 1px;
+}
+
+.border-gradient {
+    border-bottom: 2px solid;
+    border-image-slice: 1;
+    border-width: 2px;
+}
+
+.border-gradient-purple {
+    border-image-source: linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(63, 81, 181, 1) 35%, rgba(63, 81, 181, 1) 65%, rgba(255, 255, 255, 1) 100%);
+    transition: all ease 333ms;
+
+    &:active {
+        letter-spacing: 1.2px;
+        border-image-source: linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(63, 81, 181, 1) 20%, rgba(63, 81, 181, 1) 80%, rgba(255, 255, 255, 1) 100%);
+    }
+}
+
+.mb--5 {
+    margin-bottom: -5px;
+}

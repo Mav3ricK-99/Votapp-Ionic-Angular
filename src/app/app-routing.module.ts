@@ -1,13 +1,11 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { UsuarioPuedeAccederGuard } from './guards/usuarioPuedeAcceder/usuario-puede-acceder.guard';
-import { UsuarioYaIngresadoGuard } from './guards/usuarioYaIngresado/usuario-ya-ingresado.guard';
 
 const routes: Routes = [
   {
     path: 'auth',
     loadChildren: () => import('./modules/authentication/authentication.module').then(m => m.AuthenticationModule),
-    /* canActivate: [UsuarioYaIngresadoGuard], */
   },
   {
     path: 'mis-votapps',

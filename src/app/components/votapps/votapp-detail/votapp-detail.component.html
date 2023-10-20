@@ -1,158 +1,185 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title class="ion-text-center"> {{'app.dashboard.buttons.myVotapps' | translate | uppercase}} </ion-title>
-  </ion-toolbar>
-</ion-header>
-<ion-content [scrollEvents]="true" *ngIf='mostrarVista'>
-  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
-  <ion-grid>
-    <app-botones-inicio [botonPresionado]="'misVotapps'"></app-botones-inicio>
-    <ion-row class="bg-gray-50 py-1">
-      <ion-col size-xs="12">
-        <mat-card>
-          <mat-card-header class="flex items-start justify-start">
-            <div *ngIf="votapp.comunidad.logo; else noTieneLogo" mat-card-avatar class="self-start logo"
-              style="background-image: url('data:image/png;base64,{{votapp.comunidad.logo}}')"></div>
-            <ng-template #noTieneLogo>
-              <mat-icon class="self-start icon-logo" mat-card-avatar aria-hidden="false" aria-label="Comunidad"
-                fontIcon="groups"></mat-icon>
-            </ng-template>
-            <mat-card-title>{{ votapp.comunidad.nombre | uppercase }}</mat-card-title>
-            <mat-card-subtitle>{{ votapp.votacionPunto }}</mat-card-subtitle>
-            <mat-card-subtitle class="detalleVotacion text-ellipsis overflow-hidden detalleVotacionCerrado text-xs"
-              #detalleVotacion>
-              {{ votapp.detalle }}
-            </mat-card-subtitle>
-            <mat-icon *ngIf="mostrarIconoDetalle" (click)="toggleMostrarDetalle()" class="iconExpandirDetalle"
-              mat-card-avatar aria-hidden="false" aria-label="Mostrar mas" fontIcon="keyboard_double_arrow_down"
-              #mostrarMas />
-          </mat-card-header>
-        </mat-card>
-      </ion-col>
-    </ion-row>
-    <ng-container *ngIf="votapp.estadoVotoParticipantePretty(this.userService.currentUser) != 'pending'">
-      <ion-row class="bg-gray-50">
+<app-menu></app-menu>
+<div class="ion-page" id="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title> {{'app.dashboard.buttons.myVotapps' | translate | uppercase}} </ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content [scrollEvents]="true">
+    <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    <ion-grid>
+      <app-botones-inicio [botonPresionado]="'misVotapps'"></app-botones-inicio>
+      <ion-row class="bg-gray-50 py-1" *ngIf="votacionLista; else loader">
         <ion-col size-xs="12">
-          <div class="text-center">
-            <h3 class="text-xxs text-neutral-600">SU VOTO PUEDE SER MODIFICADO MIENTRAS LA VOTACION ESTA ABIERTA</h3>
-            <h3 class="uppercase text-neutral-700">Mi Voto</h3>
-            <div class="flex justify-center pb-2">
+          <mat-card>
+            <mat-card-header class="flex items-start justify-start">
+              <div *ngIf="votapp.comunidad.logo; else noTieneLogo" mat-card-avatar class="self-start logo"
+                style="background-image: url('data:image/png;base64,{{votapp.comunidad.logo}}')"></div>
+              <ng-template #noTieneLogo>
+                <mat-icon class="self-start icon-logo" mat-card-avatar aria-hidden="false" aria-label="Comunidad"
+                  fontIcon="groups"></mat-icon>
+              </ng-template>
+              <mat-card-title>{{ votapp.comunidad.nombre | uppercase }}</mat-card-title>
+              <mat-card-subtitle>{{ votapp.votacionPunto }}</mat-card-subtitle>
+              <mat-card-subtitle class="detalleVotacion text-ellipsis overflow-hidden detalleVotacionCerrado text-xs"
+                #detalleVotacion>
+                {{ votapp.detalle }}
+              </mat-card-subtitle>
+              <mat-icon *ngIf="mostrarIconoDetalle" (click)="toggleMostrarDetalle()" class="iconExpandirDetalle"
+                mat-card-avatar aria-hidden="false" aria-label="Mostrar mas" fontIcon="keyboard_double_arrow_down"
+                #mostrarMas />
+            </mat-card-header>
+          </mat-card>
+        </ion-col>
+      </ion-row>
+      <ng-container
+        *ngIf="votacionLista && votapp.estadoVotoParticipantePretty(this.userService.currentUser) != 'pending'">
+        <ion-row class="bg-gray-50">
+          <ion-col size-xs="12">
+            <div class="text-center">
+              <h3 class="text-xxs text-neutral-600">SU VOTO PUEDE SER MODIFICADO MIENTRAS LA VOTACION ESTA ABIERTA
+              </h3>
+              <h3 class="uppercase text-neutral-700">Mi Voto</h3>
+              <div class="flex justify-center pb-2">
+                <div
+                  [ngClass]="{'text-v': votapp.estadoVotoParticipantePretty(this.userService.currentUser) == 'abstencion' || votapp.estadoVotoParticipantePretty(this.userService.currentUser) == 'pendiente'}"
+                  class="flex justify-center mat-elevation-z2 w-28 h-28 text-xl tracking-wide font-semibold rounded-full uppercase bg-black">
+                  <p class="self-center text-white">
+                    {{'app.votes.states.' + votapp.estadoVotoParticipantePretty(this.userService.currentUser) |
+                    translate}}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row class="bg-gray-50" *ngIf="!votapp.estaFinalizada()">
+          <ion-col size-xs="12">
+            <div class="text-center">
+              <div id="voteTypes" class="flex flex-nowrap gap-2 justify-around pb-2">
+                <div matRipple [matRippleColor]="'rgb(214 211 209 0.5)'" (click)="abrirDialog(tipoVoto)"
+                  class="flex justify-center mat-elevation-z3 opcionesVoto text-xs text-center rounded-full uppercase bg-stone-200/[.65]"
+                  [ngClass]="{'cuatroOpcionesVoto': opcionesTipoDeVotos.length > 3}"
+                  *ngFor="let tipoVoto of opcionesTipoDeVotos">
+                  <p class="self-center">
+                    {{'app.votes.states.'+ tipoVoto.getPrettyResult() | translate }}</p>
+                </div>
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ng-container>
+      <ion-row *ngIf="votacionLista">
+        <ion-col size-xs="12" class="ion-no-padding">
+          <div class="bg-stone-100 w-100 px-3 text-lg text-stone-400 uppercase text-center shadow-md">
+            {{'app.votes.detail.partialResults' | translate}}</div>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="votacionLista" class="bg-gray-50">
+        <ion-col size-xs="12">
+          <div class="text-center flex justify-around py-2">
+            <div
+              [ngClass]="{'botonDiasRestantesWarning': pocosDiasRestantes > votapp.diasRestantes(), 'botonDiasRestantes': pocosDiasRestantes < votapp.diasRestantes()}"
+              id="botonDiasRestantes"
+              class="flex justify-center mat-elevation-z2 w-28 h-28 text-xv rounded-full uppercase text-neutral-50">
+              <p class="self-center">Dias restantes<br><span
+                  class="font-semibold text-2xl">{{votapp.diasRestantes()}}</span></p>
+            </div>
+            <div
+              class="flex justify-center mat-elevation-z2 w-28 h-28 text-v rounded-full uppercase text-neutral-50 bg-green-400">
+              <p class="self-center">quorum<br><span class="font-semibold">{{votapp.porcentajeVotosQuorum()}}% /
+                  {{votapp.quorumRequerido}}%</span></p>
+            </div>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="votacionLista" class="bg-gray-50">
+        <ion-col size-xs="12" class="ion-no-padding">
+          <div class="flex justify-around flex-wrap text-xv mb-2 text-center">
+            <div
+              [ngClass]="{'bg-slate-400': viendoVotosTipo == 'si', 'text-slate-500 bg-slate-300': viendoVotosTipo != 'si'}"
+              (click)="mostrarVotos('si')"
+              class="flex justify-center w-16 h-16 mat-elevation-z2 rounded-full uppercase">
+              <p class="self-center">Si<br><span
+                  class="font-semibold">{{votapp.porcentajeTotalPorTipoVoto('si')}}%</span>
+              </p>
+            </div>
+            <div
+              [ngClass]="{'bg-slate-400': viendoVotosTipo == 'no', 'text-slate-500 bg-slate-300': viendoVotosTipo != 'no'}"
+              (click)="mostrarVotos('no')"
+              class="flex justify-center w-16 h-16 mat-elevation-z2 rounded-full uppercase">
+              <p class="self-center">No<br><span
+                  class="font-semibold">{{votapp.porcentajeTotalPorTipoVoto('no')}}%</span>
+              </p>
+            </div>
+            <div
+              [ngClass]="{'bg-slate-400': viendoVotosTipo.includes('abstencion'), 'text-slate-500 bg-slate-300': !viendoVotosTipo.includes('abstencion')}"
+              (click)="mostrarVotos('abstencion (con la mayoria)')"
+              class="flex justify-center w-16 h-16 text-xxv hyphens-auto mat-elevation-z2 rounded-full uppercase">
+              <p class="self-center">Absten&shy;cion<br><span
+                  class="font-semibold">{{votapp.porcentajeTotalPorTipoVoto('abstencion (con la mayoria)')}}%</span>
+              </p>
+            </div>
+            <div
+              [ngClass]="{'bg-slate-400': viendoVotosTipo.includes('quorum'), 'text-slate-500 bg-slate-300': !viendoVotosTipo.includes('quorum')}"
+              (click)="mostrarVotos('no doy quorum')"
+              class="flex justify-center w-16 h-16 mat-elevation-z2 rounded-full uppercase">
+              <p class="self-center">No da Quorum<br><span class="font-semibold">
+                  {{votapp.porcentajeTotalPorTipoVoto('no doy quorum')}}%</span>
+              </p>
+            </div>
+            <div
+              [ngClass]="{'bg-slate-400': viendoVotosTipo == 'pendiente', 'text-slate-500 bg-slate-300': viendoVotosTipo != 'pendiente'}"
+              (click)="mostrarVotos('pendiente')"
+              class="flex justify-center w-16 h-16 mat-elevation-z2 rounded-full uppercase">
+              <p class="self-center">Sin voto<br><span
+                  class="font-semibold">{{votapp.porcentajeTotalPorTipoVoto('pendiente')}}%</span></p>
+            </div>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="votacionLista && mostrarOtrosVotos">
+        <ion-col size-xs="12">
+          <ng-container *ngIf="votosFiltrados.length > 0; else noHayVotos">
+            <div class="w-100 flex flex-col pb-1" *ngFor="let voto of votosFiltrados">
               <div
-                [ngClass]="{'text-v': votapp.estadoVotoParticipantePretty(this.userService.currentUser) == 'abstencion' || votapp.estadoVotoParticipantePretty(this.userService.currentUser) == 'pendiente'}"
-                class="flex justify-center mat-elevation-z2 w-28 h-28 text-xl tracking-wide font-semibold rounded-full uppercase bg-black">
-                <p class="self-center text-white">
-                  {{'app.votes.states.' + votapp.estadoVotoParticipantePretty(this.userService.currentUser) |
-                  translate}}
+                class="flex justify-center text-center uppercase text-black border-dashed border-2 text-xs border-slate-400 bg-slate-200">
+                <p class="self-center">{{votapp.comunidad.nombre}} - {{voto.user.name}} {{voto.user.surname}}
+                  <mat-icon class="arrow-py text-slate-400">arrow_right_alt</mat-icon> {{'app.votes.states.'+
+                  votapp.estadoVotoParticipantePretty(voto.user) | translate }}
                 </p>
               </div>
             </div>
-          </div>
-        </ion-col>
-      </ion-row>
-      <ion-row class="bg-gray-50" *ngIf="!votapp.estaFinalizada()">
-        <ion-col size-xs="12">
-          <div class="text-center">
-            <div id="voteTypes" class="flex flex-nowrap gap-2 justify-around pb-2">
-              <div matRipple [matRippleColor]="'rgb(214 211 209 0.5)'" (click)="abrirDialog(tipoVoto)"
-                class="flex justify-center mat-elevation-z3 opcionesVoto text-xs text-center rounded-full uppercase bg-stone-200/[.65]"
-                [ngClass]="{'cuatroOpcionesVoto': opcionesTipoDeVotos.length > 3}"
-                *ngFor="let tipoVoto of opcionesTipoDeVotos">
-                <p class="self-center">
-                  {{'app.votes.states.'+ tipoVoto.getPrettyResult() | translate }}</p>
+          </ng-container>
+          <ng-template #noHayVotos class="pb-1">
+            <div class="w-100 flex flex-col pb-1">
+              <div
+                class="w-100 flex justify-center text-center uppercase text-black border-dashed border-2 text-xs border-slate-400 bg-slate-200">
+                <p class="self-center">No hay votos para esta opcion.</p>
               </div>
             </div>
-          </div>
+          </ng-template>
         </ion-col>
       </ion-row>
-    </ng-container>
-    <ion-row>
-      <ion-col size-xs="12" class="ion-no-padding">
-        <div class="bg-stone-100 w-100 px-3 text-lg text-stone-400 uppercase text-center shadow-md">
-          {{'app.votes.detail.partialResults' | translate}}</div>
-      </ion-col>
-    </ion-row>
-    <ion-row class="bg-gray-50">
-      <ion-col size-xs="12">
-        <div class="text-center flex justify-around py-2">
-          <div
-            [ngClass]="{'botonDiasRestantesWarning': pocosDiasRestantes > votapp.diasRestantes(), 'botonDiasRestantes': pocosDiasRestantes < votapp.diasRestantes()}"
-            id="botonDiasRestantes"
-            class="flex justify-center mat-elevation-z2 w-28 h-28 text-xv rounded-full uppercase text-neutral-50">
-            <p class="self-center">Dias restantes<br><span
-                class="font-semibold text-2xl">{{votapp.diasRestantes()}}</span></p>
-          </div>
-          <div
-            class="flex justify-center mat-elevation-z2 w-28 h-28 text-v rounded-full uppercase text-neutral-50 bg-green-400">
-            <p class="self-center">quorum<br><span class="font-semibold">{{votapp.porcentajeVotosQuorum()}}% /
-                {{votapp.quorumRequerido}}%</span></p>
-          </div>
+      <ng-template #loader>
+        <div class="py-2 flex justify-center" role="status">
+          <svg aria-hidden="true" class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+              fill="currentColor" />
+            <path
+              d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+              fill="currentFill" />
+          </svg>
+          <span class="sr-only">Loading...</span>
         </div>
-      </ion-col>
-    </ion-row>
-    <ion-row class="bg-gray-50">
-      <ion-col size-xs="12" class="ion-no-padding">
-        <div class="flex justify-around flex-wrap text-xv mb-2 text-center">
-          <div
-            [ngClass]="{'bg-slate-400': viendoVotosTipo == 'si', 'text-slate-500 bg-slate-300': viendoVotosTipo != 'si'}"
-            (click)="mostrarVotos('si')" class="flex justify-center w-16 h-16 mat-elevation-z2 rounded-full uppercase">
-            <p class="self-center">Si<br><span
-                class="font-semibold">{{votapp.porcentajeTotalPorTipoVoto('si')}}%</span>
-            </p>
-          </div>
-          <div
-            [ngClass]="{'bg-slate-400': viendoVotosTipo == 'no', 'text-slate-500 bg-slate-300': viendoVotosTipo != 'no'}"
-            (click)="mostrarVotos('no')" class="flex justify-center w-16 h-16 mat-elevation-z2 rounded-full uppercase">
-            <p class="self-center">No<br><span
-                class="font-semibold">{{votapp.porcentajeTotalPorTipoVoto('no')}}%</span>
-            </p>
-          </div>
-          <div
-            [ngClass]="{'bg-slate-400': viendoVotosTipo.includes('abstencion'), 'text-slate-500 bg-slate-300': !viendoVotosTipo.includes('abstencion')}"
-            (click)="mostrarVotos('abstencion (con la mayoria)')"
-            class="flex justify-center w-16 h-16 text-xxv hyphens-auto mat-elevation-z2 rounded-full uppercase">
-            <p class="self-center">Absten&shy;cion<br><span
-                class="font-semibold">{{votapp.porcentajeTotalPorTipoVoto('abstencion (con la mayoria)')}}%</span></p>
-          </div>
-          <div
-            [ngClass]="{'bg-slate-400': viendoVotosTipo.includes('quorum'), 'text-slate-500 bg-slate-300': !viendoVotosTipo.includes('quorum')}"
-            (click)="mostrarVotos('no doy quorum')"
-            class="flex justify-center w-16 h-16 mat-elevation-z2 rounded-full uppercase">
-            <p class="self-center">No da Quorum<br><span class="font-semibold">{{votapp.porcentajeTotalPorTipoVoto('no doy quorum')}}%</span>
-            </p>
-          </div>
-          <div
-            [ngClass]="{'bg-slate-400': viendoVotosTipo == 'pendiente', 'text-slate-500 bg-slate-300': viendoVotosTipo != 'pendiente'}"
-            (click)="mostrarVotos('pendiente')"
-            class="flex justify-center w-16 h-16 mat-elevation-z2 rounded-full uppercase">
-            <p class="self-center">Sin voto<br><span
-                class="font-semibold">{{votapp.porcentajeTotalPorTipoVoto('pendiente')}}%</span></p>
-          </div>
-        </div>
-      </ion-col>
-    </ion-row>
-    <ion-row *ngIf="mostrarOtrosVotos">
-      <ion-col size-xs="12">
-        <ng-container *ngIf="votosFiltrados.length > 0; else noHayVotos">
-          <div class="w-100 flex flex-col pb-1" *ngFor="let voto of votosFiltrados">
-            <div
-              class="flex justify-center text-center uppercase text-black border-dashed border-2 text-xs border-slate-400 bg-slate-200">
-              <p class="self-center">{{votapp.comunidad.nombre}} - {{voto.user.name}} {{voto.user.surname}} <mat-icon
-                  class="arrow-py text-slate-400">arrow_right_alt</mat-icon> {{'app.votes.states.'+
-                votapp.estadoVotoParticipantePretty(voto.user) | translate }}</p>
-            </div>
-          </div>
-        </ng-container>
-        <ng-template #noHayVotos class="pb-1">
-          <div class="w-100 flex flex-col pb-1">
-            <div
-              class="w-100 flex justify-center text-center uppercase text-black border-dashed border-2 text-xs border-slate-400 bg-slate-200">
-              <p class="self-center">No hay votos para esta opcion.</p>
-            </div>
-          </div>
-        </ng-template>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</ion-content>
+      </ng-template>
+    </ion-grid>
+  </ion-content>
+</div>

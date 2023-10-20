@@ -180,14 +180,14 @@ export class Votacion {
         return Math.floor((this.totalVotosQuorum() * 100) / this.totalMiembros());
     }
 
-    public porcentajeVotosEmitidos(): number {
-        let votosEmitidos = this.votacionIntegrantes.filter((votacionIntegrante: VotacionIntegrantes) => {
+    public porcentajeVotosEmitidosPorPorcentaje(): number {
+        let porcentajeVotosEmitidosPorPorcentaje: number = 0;
+        this.votacionIntegrantes.forEach((votacionIntegrante: VotacionIntegrantes) => {
             if (votacionIntegrante.tipoVoto instanceof TipoVoto) {
-                return votacionIntegrante;
+                porcentajeVotosEmitidosPorPorcentaje += votacionIntegrante.porcentaje;
             }
-            return null;
         });
-        return (votosEmitidos.length * 100) / this.totalMiembros();
+        return Math.trunc(porcentajeVotosEmitidosPorPorcentaje);
     }
 
     public resultadoFinal(): any {

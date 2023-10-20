@@ -35,11 +35,11 @@ export class VotappDetailComponent implements OnInit, AfterViewInit {
   public altoPantalla: any;
   public mostrarIconoDetalle: boolean;
 
-  public mostrarVista: boolean;
+  public votacionLista: boolean;
 
   constructor(private router: ActivatedRoute, public dialog: MatDialog, public userService: UserService, private votacionService: VotacionService) {
     this.mostrarIconoDetalle = false;
-    this.mostrarVista = false;
+    this.votacionLista = false;
     this.tipoDeVotos = [];
     this.opcionesTipoDeVotos = [];
     this.viendoVotosTipo = '';
@@ -145,7 +145,7 @@ export class VotappDetailComponent implements OnInit, AfterViewInit {
     this.votacionService.getVotapp(id).subscribe({
       next: (obj: any) => {
         this.votapp = obj;
-        this.mostrarVista = true;
+        this.votacionLista = true;
         if (!this.votapp.estaFinalizada()) {
           this.votacionService.getTipoDeVotos().subscribe({
             next: (obj: any) => {

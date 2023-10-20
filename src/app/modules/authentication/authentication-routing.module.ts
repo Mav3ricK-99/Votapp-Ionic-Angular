@@ -4,15 +4,18 @@ import { LoginComponent } from 'src/app/components/authentication/login/login.co
 import { PasswordResetTokenComponent } from 'src/app/components/authentication/passwordRestore/password-reset-token/password-reset-token.component';
 import { ResetPasswordComponent } from 'src/app/components/authentication/passwordRestore/reset-password/reset-password.component';
 import { RegisterComponent } from 'src/app/components/authentication/register/register.component';
+import { UsuarioYaIngresadoGuard } from 'src/app/guards/usuarioYaIngresado/usuario-ya-ingresado.guard';
 
 const routes: Routes = [
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
+    canActivate: [UsuarioYaIngresadoGuard],
   },
   {
     path: 'register',
-    component: RegisterComponent
+    component: RegisterComponent,
+    canActivate: [UsuarioYaIngresadoGuard],
   },
   {
     path: 'password-reset-token',

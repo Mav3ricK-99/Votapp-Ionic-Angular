@@ -1,254 +1,262 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title class="ion-text-center"> {{'app.dashboard.buttons.newVotapp' | translate | uppercase}} </ion-title>
-  </ion-toolbar>
-</ion-header>
-<ion-content [scrollEvents]="true">
-  <ion-grid>
-    <app-botones-inicio [botonPresionado]="'nuevaVotapp'"></app-botones-inicio>
-    <ion-row class="bg-gray-50 h-100">
-      <ion-col class="bg-gray-50 ion-no-padding" size-xs="12">
-        <mat-vertical-stepper class="bg-gray-50" #stepper [linear]="true">
-          <mat-step class="bg-black" [stepControl]="comunidadForm">
-            <form [formGroup]="comunidadForm">
-              <ng-template matStepLabel>Seleccioná la Comunidad</ng-template>
-              <mat-form-field class="mt-2">
-                <mat-label>Buscar comunidad</mat-label>
-                <input matInput placeholder="Nombre de la comunidad" formControlName="buscarComunidad">
-              </mat-form-field>
-              <div
-                *ngIf="comunidadForm.get('comunidad')?.invalid && (comunidadForm.get('comunidad')?.dirty || comunidadForm.get('comunidad')?.touched)">
-                <mat-error class="pb-2 text-sm" *ngIf="comunidadForm.get('comunidad')?.errors?.['required']">Para
-                  continuar selecciona una comunidad de las que se muestran a continuacion.</mat-error>
-              </div>
-              <div class="scrollable max-h-40 flex flex-col items-around">
-                <ng-container *ngIf="(comunidadesFiltradas$ | async) as comunidadesFiltradas; else loader">
-                  <ng-container *ngIf="comunidadesFiltradas.length > 0; else noHayComunidades">
-                    <ng-container *ngFor="let comunidad of comunidadesFiltradas">
-                      <button (click)="elejirComunidad(comunidad)" class="uppercase mb-2 min-height-2 justify-start"
-                        mat-stroked-button mat-button
-                        *ngIf="comunidadForm.get('comunidad')?.value?.nombre != comunidad.nombre; else comunidadElejida">
-                        <mat-icon aria-hidden="false" aria-label="Porcentaje" fontIcon="percent"></mat-icon>
-                        {{comunidad.nombre}}
-                      </button>
-                      <ng-template #comunidadElejida>
-                        <button class="uppercase mb-2 min-height-2 justify-start" mat-stroked-button mat-button
-                          color="darkPrimary">
+<app-menu></app-menu>
+<div class="ion-page" id="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title> {{'app.dashboard.buttons.newVotapp' | translate | uppercase}} </ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content [scrollEvents]="true">
+    <ion-grid>
+      <app-botones-inicio [botonPresionado]="'nuevaVotapp'"></app-botones-inicio>
+      <ion-row class="bg-gray-50 h-100">
+        <ion-col class="bg-gray-50 ion-no-padding" size-xs="12">
+          <mat-vertical-stepper class="bg-gray-50" #stepper [linear]="true">
+            <mat-step class="bg-black" [stepControl]="comunidadForm">
+              <form [formGroup]="comunidadForm">
+                <ng-template matStepLabel>Seleccioná la Comunidad</ng-template>
+                <mat-form-field class="mt-2">
+                  <mat-label>Buscar comunidad</mat-label>
+                  <input matInput placeholder="Nombre de la comunidad" formControlName="buscarComunidad">
+                </mat-form-field>
+                <div
+                  *ngIf="comunidadForm.get('comunidad')?.invalid && (comunidadForm.get('comunidad')?.dirty || comunidadForm.get('comunidad')?.touched)">
+                  <mat-error class="pb-2 text-sm" *ngIf="comunidadForm.get('comunidad')?.errors?.['required']">Para
+                    continuar selecciona una comunidad de las que se muestran a continuacion.</mat-error>
+                </div>
+                <div class="scrollable max-h-40 flex flex-col items-around">
+                  <ng-container *ngIf="(comunidadesFiltradas$ | async) as comunidadesFiltradas; else loader">
+                    <ng-container *ngIf="comunidadesFiltradas.length > 0; else noHayComunidades">
+                      <ng-container *ngFor="let comunidad of comunidadesFiltradas">
+                        <button (click)="elejirComunidad(comunidad)" class="uppercase mb-2 min-height-2 justify-start"
+                          mat-stroked-button mat-button
+                          *ngIf="comunidadForm.get('comunidad')?.value?.nombre != comunidad.nombre; else comunidadElejida">
                           <mat-icon aria-hidden="false" aria-label="Porcentaje" fontIcon="percent"></mat-icon>
                           {{comunidad.nombre}}
                         </button>
-                      </ng-template>
+                        <ng-template #comunidadElejida>
+                          <button class="uppercase mb-2 min-height-2 justify-start" mat-stroked-button mat-button
+                            color="darkPrimary">
+                            <mat-icon aria-hidden="false" aria-label="Porcentaje" fontIcon="percent"></mat-icon>
+                            {{comunidad.nombre}}
+                          </button>
+                        </ng-template>
+                      </ng-container>
                     </ng-container>
+                    <ng-template #noHayComunidades>
+                      <h4 class="text-center">
+                        No hay comunidades para mostrar.
+                      </h4>
+                    </ng-template>
                   </ng-container>
-                  <ng-template #noHayComunidades>
-                    <h4 class="text-center">
-                      No hay comunidades para mostrar.
-                    </h4>
+                  <ng-template #loader>
+                    <div role="status" class="text-center mt-1">
+                      <svg aria-hidden="true"
+                        class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                        viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                          fill="currentColor" />
+                        <path
+                          d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                          fill="currentFill" />
+                      </svg>
+                      <span class="sr-only">Loading...</span>
+                    </div>
                   </ng-template>
-                </ng-container>
-                <ng-template #loader>
-                  <div role="status" class="text-center mt-1">
-                    <svg aria-hidden="true"
-                      class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
-                      viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path
-                        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                        fill="currentColor" />
-                      <path
-                        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                        fill="currentFill" />
-                    </svg>
-                    <span class="sr-only">Loading...</span>
-                  </div>
-                </ng-template>
-              </div>
-              <div class="flex flex-col justify-around py-2 items-center">
-                <!-- <button class="w-50 mb-1 uppercase" disabled color="primary" mat-raised-button>Crear nueva
-                  Comunidad</button><br> -->
-                <button class="w-24" (click)="continuarPrimerPaso()" mat-button mat-raised-button
-                  [color]="colorPrimerContinuar" matStepperNext>Continuar</button>
-              </div>
-            </form>
-          </mat-step>
-          <mat-step [stepControl]="puntoAVotarForm" errorMessage="Verifique los datos en este paso.">
-            <ng-template matStepLabel>Punto a Votar</ng-template>
-            <form [formGroup]="puntoAVotarForm" class="mt-1">
-              <mat-form-field
-                [ngClass]="{'mb-5': !puntoAVotarForm.get('tipoDecision')?.valid && (puntoAVotarForm.get('tipoDecision')?.dirty || puntoAVotarForm.get('tipoDecision')?.touched)}">
-                <mat-label>Tipo de decision</mat-label>
-                <mat-select formControlName="tipoDecision">
-                  <ng-container *ngIf="(tipoDecisiones$ | async) as tipoDecisiones">
-                    <ng-container *ngFor="let decision of tipoDecisiones">
-                      <mat-option value="{{decision.nombre}}" selected>{{decision.nombre | titlecase}}</mat-option>
-                    </ng-container>
-                  </ng-container>
-                </mat-select>
-                <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('tipoDecision')?.errors?.['required']">
-                  El tipo de Decision de la votacion es requerido.
-                </mat-error>
-              </mat-form-field>
-              <mat-form-field
-                [ngClass]="{'mb-5': !puntoAVotarForm.get('titulo')?.valid && (puntoAVotarForm.get('titulo')?.dirty || puntoAVotarForm.get('titulo')?.touched)}">
-                <mat-label>Punto de votación</mat-label>
-                <input matInput placeholder="Punto de votación" formControlName="titulo">
-                <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('titulo')?.errors?.['required']">
-                  El punto de votación es requerido.
-                </mat-error>
-                <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('titulo')?.errors?.['minlength']">
-                  El punto de votación debe tener al menos 3 caracteres.
-                </mat-error>
-                <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('titulo')?.errors?.['maxlength']">
-                  El punto de votación debe tener como maximo 255 caracteres.
-                </mat-error>
-              </mat-form-field>
-              <mat-form-field
-                [ngClass]="{'mb-5': !puntoAVotarForm.get('detalle')?.valid && (puntoAVotarForm.get('detalle')?.dirty || puntoAVotarForm.get('detalle')?.touched)}">
-                <mat-label>Detalle</mat-label>
-                <textarea matInput maxlength="255" formControlName="detalle"></textarea>
-                <mat-hint align="end">{{puntoAVotarForm.get('detalle')?.value?.length}}/255</mat-hint>
-                <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('detalle')?.errors?.['minlength']">
-                  El detalle de la votacion debe tener al menos 3 caracteres.
-                </mat-error>
-                <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('detalle')?.errors?.['maxlength']">
-                  El detalle de la votacion debe tener como maximo 255 caracteres.
-                </mat-error>
-              </mat-form-field>
-              <mat-form-field
-                [ngClass]="{'mb-5': !puntoAVotarForm.get('aceptacionRequerida')?.valid && (puntoAVotarForm.get('aceptacionRequerida')?.dirty || puntoAVotarForm.get('aceptacionRequerida')?.touched)}"
-                floatLabel="always">
-                <mat-label>Aceptacion requerida</mat-label>
-                <input matInput type="number" class="text-right" placeholder="0" formControlName="aceptacionRequerida">
-                <span matTextPrefix>%&nbsp;</span>
-                <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('aceptacionRequerida')?.errors?.['required']">
-                  La aceptacion requerida de la votacion es requerida.
-                </mat-error>
-                <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('aceptacionRequerida')?.errors?.['min']">
-                  La aceptacion requerida debe ser como minimo 0.
-                </mat-error>
-                <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('aceptacionRequerida')?.errors?.['max']">
-                  La aceptacion requerida debe ser 100% como maximo.
-                </mat-error>
-              </mat-form-field>
-              <mat-form-field
-                [ngClass]="{'mb-5': !puntoAVotarForm.get('quorumRequerido')?.valid && (puntoAVotarForm.get('quorumRequerido')?.dirty || puntoAVotarForm.get('quorumRequerido')?.touched)}"
-                floatLabel="always">
-                <mat-label>Quorum requerido</mat-label>
-                <input matInput type="number" class="text-right" placeholder="0" formControlName="quorumRequerido">
-                <span matTextPrefix>%&nbsp;</span>
-                <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('quorumRequerido')?.errors?.['required']">
-                  El quorum requerido de la votacion es requerido.
-                </mat-error>
-                <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('quorumRequerido')?.errors?.['min']">
-                  El quorum requerido debe ser como minimo 0.
-                </mat-error>
-                <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('quorumRequerido')?.errors?.['max']">
-                  El quorum requerido debe ser 100% como maximo.
-                </mat-error>
-              </mat-form-field>
-              <div class="flex justify-around py-3 items-center">
-                <button mat-button mat-raised-button color="darkPrimary" matStepperPrevious>Regresar</button>
-                <button class="w-24" mat-button mat-raised-button [color]="colorSegundoContinuar" matStepperNext
-                  (click)="continuarSegundoPaso()">Continuar</button>
-              </div>
-            </form>
-          </mat-step>
-          <mat-step [stepControl]="duracionForm" errorMessage="Verifique los datos en este paso.">
-            <ng-template matStepLabel>Duracion</ng-template>
-            <form [formGroup]="duracionForm" class="mt-2">
-              <mat-form-field class="mb-2"
-                [ngClass]="{'mb-5': !duracionForm.get('fechaVencimiento')?.valid && (duracionForm.get('fechaVencimiento')?.dirty || duracionForm.get('fechaVencimiento')?.touched)}">
-                <mat-label>Fecha fin de Votacion</mat-label>
-                <input matInput [matDatepicker]="picker" formControlName="fechaVencimiento">
-                <mat-hint>DD/MM/YYYY</mat-hint>
-                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-                <mat-error class="text-sm" *ngIf="duracionForm.get('fechaVencimiento')?.errors?.['required']">
-                  La fecha fin de la votacion de la votacion es requerida.
-                </mat-error>
-                <mat-error class="text-sm"
-                  *ngIf="duracionForm.get('fechaVencimiento')?.errors?.['invalidFechaVencimiento']">
-                  La fecha del vencimiento de la votacion debe ser posterior al dia de hoy.
-                </mat-error>
-              </mat-form-field>
-
-              <div class="flex flex-col">
-                <div class="flex"
-                  [ngClass]="{'colControlesHora': duracionForm.get('horaVencimiento')?.errors != null || duracionForm.get('minutoVencimiento')?.errors != null}">
-                  <mat-form-field class="pr-2">
-                    <mat-label>Horas</mat-label>
-                    <input (focus)="ocultarTeclado()" type="number" aria-label="Hora" formControlName="horaVencimiento"
-                      matInput placeholder="Hora" [matAutocomplete]="horaAutocomplete" autocomplete="disabled">
-                    <mat-autocomplete autoActiveFirstOption #horaAutocomplete="matAutocomplete">
-                      <mat-option *ngFor="let hora of horas" [value]="hora">
-                        {{hora}}
-                      </mat-option>
-                    </mat-autocomplete>
-                  </mat-form-field>
-                  <mat-form-field class="ps-2">
-                    <mat-label>Minutos</mat-label>
-                    <input (focus)="ocultarTeclado()" type="number" aria-label="Minuto"
-                      formControlName="minutoVencimiento" matInput placeholder="Minuto"
-                      [matAutocomplete]="minutoAutocomplete" autocomplete="disabled">
-                    <mat-autocomplete autoActiveFirstOption #minutoAutocomplete="matAutocomplete">
-                      <mat-option *ngFor="let minuto of minutos" [value]="minuto">
-                        {{minuto}}
-                      </mat-option>
-                    </mat-autocomplete>
-                  </mat-form-field>
                 </div>
-                <mat-error class="text-sm"
-                  *ngIf="duracionForm.get('horaVencimiento')?.errors?.['required'] || duracionForm.get('minutoVencimiento')?.errors?.['required']">
-                  La hora de el fin de votacion es requerida.
-                </mat-error>
-                <mat-error class="text-sm"
-                  *ngIf="duracionForm.get('horaVencimiento')?.errors?.['min'] || duracionForm.get('horaVencimiento')?.errors?.['max']">
-                  La hora no es valida.
-                </mat-error>
-                <mat-error class="text-sm"
-                  *ngIf="duracionForm.get('minutoVencimiento')?.errors?.['min'] || duracionForm.get('minutoVencimiento')?.errors?.['max']">
-                  Los minutos no son validos.
-                </mat-error>
-              </div>
-              <mat-form-field
-                [ngClass]="{'mb-5': !duracionForm.get('frecuenciasVotacion')?.valid && (duracionForm.get('frecuenciasVotacion')?.dirty || duracionForm.get('frecuenciasVotacion')?.touched)}">
-                <mat-label>Frecuencia de votacion</mat-label>
-                <mat-select formControlName="frecuenciaVotacion">
-                  <ng-container *ngIf="(frecuenciasVotacion$ | async) as frecuenciasVotacion">
-                    <ng-container *ngFor="let frecuencia of frecuenciasVotacion">
-                      <mat-option [value]="frecuencia.id">{{frecuencia.nombre | titlecase}}</mat-option>
+                <div class="flex flex-col justify-around py-2 items-center">
+                  <!-- <button class="w-50 mb-1 uppercase" disabled color="primary" mat-raised-button>Crear nueva
+                  Comunidad</button><br> -->
+                  <button class="w-24" (click)="continuarPrimerPaso()" mat-button mat-raised-button
+                    [color]="colorPrimerContinuar" matStepperNext>Continuar</button>
+                </div>
+              </form>
+            </mat-step>
+            <mat-step [stepControl]="puntoAVotarForm" errorMessage="Verifique los datos en este paso.">
+              <ng-template matStepLabel>Punto a Votar</ng-template>
+              <form [formGroup]="puntoAVotarForm" class="mt-1">
+                <mat-form-field
+                  [ngClass]="{'mb-5': !puntoAVotarForm.get('tipoDecision')?.valid && (puntoAVotarForm.get('tipoDecision')?.dirty || puntoAVotarForm.get('tipoDecision')?.touched)}">
+                  <mat-label>Tipo de decision</mat-label>
+                  <mat-select formControlName="tipoDecision">
+                    <ng-container *ngIf="(tipoDecisiones$ | async) as tipoDecisiones">
+                      <ng-container *ngFor="let decision of tipoDecisiones">
+                        <mat-option value="{{decision.nombre}}" selected>{{decision.nombre | titlecase}}</mat-option>
+                      </ng-container>
                     </ng-container>
-                  </ng-container>
-                </mat-select>
-                <mat-error class="text-sm" *ngIf="duracionForm.get('frecuenciaVotacion')?.errors?.['required']">
-                  La frecuencia de la votacion es requerida.
-                </mat-error>
-              </mat-form-field>
-              <mat-form-field *ngIf="mostrarNuevaVotacion"
-                [ngClass]="{'mb-4': duracionForm.get('nuevaVotacion')?.errors?.['invalidNuevaFecha']}">
-                <mat-label>Nueva fecha de votacion</mat-label>
-                <input matInput [matDatepicker]="nuevaVotacionPicker" formControlName="nuevaVotacion">
-                <mat-hint>DD/MM/YYYY</mat-hint>
-                <mat-datepicker-toggle matIconSuffix [for]="nuevaVotacionPicker"></mat-datepicker-toggle>
-                <mat-datepicker #nuevaVotacionPicker></mat-datepicker>
-                <mat-error class="text-sm" *ngIf="duracionForm.get('nuevaVotacion')?.errors?.['invalidNuevaFecha']">
-                  La fecha de la nueva votacion debe ser posterior a la del vencimiento.
-                </mat-error>
-              </mat-form-field>
-            </form>
-            <div class="flex flex-col justify-around py-3">
-              <div class="mb-2 flex justify-evenly">
-                <button mat-button mat-raised-button class="ultimosBotones" color="darkPrimary"
-                  matStepperPrevious>Regresar</button>
-                <button mat-button mat-raised-button class="ultimosBotones" color="darkPrimary"
-                  (click)="comunidadForm.reset();puntoAVotarForm.reset();duracionForm.reset();">Reiniciar</button>
+                  </mat-select>
+                  <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('tipoDecision')?.errors?.['required']">
+                    El tipo de Decision de la votacion es requerido.
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field
+                  [ngClass]="{'mb-5': !puntoAVotarForm.get('titulo')?.valid && (puntoAVotarForm.get('titulo')?.dirty || puntoAVotarForm.get('titulo')?.touched)}">
+                  <mat-label>Punto de votación</mat-label>
+                  <input matInput placeholder="Punto de votación" formControlName="titulo">
+                  <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('titulo')?.errors?.['required']">
+                    El punto de votación es requerido.
+                  </mat-error>
+                  <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('titulo')?.errors?.['minlength']">
+                    El punto de votación debe tener al menos 3 caracteres.
+                  </mat-error>
+                  <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('titulo')?.errors?.['maxlength']">
+                    El punto de votación debe tener como maximo 255 caracteres.
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field
+                  [ngClass]="{'mb-5': !puntoAVotarForm.get('detalle')?.valid && (puntoAVotarForm.get('detalle')?.dirty || puntoAVotarForm.get('detalle')?.touched)}">
+                  <mat-label>Detalle</mat-label>
+                  <textarea matInput maxlength="255" formControlName="detalle"></textarea>
+                  <mat-hint align="end">{{puntoAVotarForm.get('detalle')?.value?.length}}/255</mat-hint>
+                  <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('detalle')?.errors?.['minlength']">
+                    El detalle de la votacion debe tener al menos 3 caracteres.
+                  </mat-error>
+                  <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('detalle')?.errors?.['maxlength']">
+                    El detalle de la votacion debe tener como maximo 255 caracteres.
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field
+                  [ngClass]="{'mb-5': !puntoAVotarForm.get('aceptacionRequerida')?.valid && (puntoAVotarForm.get('aceptacionRequerida')?.dirty || puntoAVotarForm.get('aceptacionRequerida')?.touched)}"
+                  floatLabel="always">
+                  <mat-label>Aceptacion requerida</mat-label>
+                  <input matInput type="number" class="text-right" placeholder="0"
+                    formControlName="aceptacionRequerida">
+                  <span matTextPrefix>%&nbsp;</span>
+                  <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('aceptacionRequerida')?.errors?.['required']">
+                    La aceptacion requerida de la votacion es requerida.
+                  </mat-error>
+                  <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('aceptacionRequerida')?.errors?.['min']">
+                    La aceptacion requerida debe ser como minimo 0.
+                  </mat-error>
+                  <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('aceptacionRequerida')?.errors?.['max']">
+                    La aceptacion requerida debe ser 100% como maximo.
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field
+                  [ngClass]="{'mb-5': !puntoAVotarForm.get('quorumRequerido')?.valid && (puntoAVotarForm.get('quorumRequerido')?.dirty || puntoAVotarForm.get('quorumRequerido')?.touched)}"
+                  floatLabel="always">
+                  <mat-label>Quorum requerido</mat-label>
+                  <input matInput type="number" class="text-right" placeholder="0" formControlName="quorumRequerido">
+                  <span matTextPrefix>%&nbsp;</span>
+                  <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('quorumRequerido')?.errors?.['required']">
+                    El quorum requerido de la votacion es requerido.
+                  </mat-error>
+                  <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('quorumRequerido')?.errors?.['min']">
+                    El quorum requerido debe ser como minimo 0.
+                  </mat-error>
+                  <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('quorumRequerido')?.errors?.['max']">
+                    El quorum requerido debe ser 100% como maximo.
+                  </mat-error>
+                </mat-form-field>
+                <div class="flex justify-around py-3 items-center">
+                  <button mat-button mat-raised-button color="darkPrimary" matStepperPrevious>Regresar</button>
+                  <button class="w-24" mat-button mat-raised-button [color]="colorSegundoContinuar" matStepperNext
+                    (click)="continuarSegundoPaso()">Continuar</button>
+                </div>
+              </form>
+            </mat-step>
+            <mat-step [stepControl]="duracionForm" errorMessage="Verifique los datos en este paso.">
+              <ng-template matStepLabel>Duracion</ng-template>
+              <form [formGroup]="duracionForm" class="mt-2">
+                <mat-form-field class="mb-2"
+                  [ngClass]="{'mb-5': !duracionForm.get('fechaVencimiento')?.valid && (duracionForm.get('fechaVencimiento')?.dirty || duracionForm.get('fechaVencimiento')?.touched)}">
+                  <mat-label>Fecha fin de Votacion</mat-label>
+                  <input matInput [matDatepicker]="picker" formControlName="fechaVencimiento">
+                  <mat-hint>DD/MM/YYYY</mat-hint>
+                  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                  <mat-error class="text-sm" *ngIf="duracionForm.get('fechaVencimiento')?.errors?.['required']">
+                    La fecha fin de la votacion de la votacion es requerida.
+                  </mat-error>
+                  <mat-error class="text-sm"
+                    *ngIf="duracionForm.get('fechaVencimiento')?.errors?.['invalidFechaVencimiento']">
+                    La fecha del vencimiento de la votacion debe ser posterior al dia de hoy.
+                  </mat-error>
+                </mat-form-field>
+
+                <div class="flex flex-col">
+                  <div class="flex"
+                    [ngClass]="{'colControlesHora': duracionForm.get('horaVencimiento')?.errors != null || duracionForm.get('minutoVencimiento')?.errors != null}">
+                    <mat-form-field class="pr-2">
+                      <mat-label>Horas</mat-label>
+                      <input virtualkeyboardpolicy="manual" type="number" aria-label="Hora"
+                        formControlName="horaVencimiento" matInput placeholder="Hora"
+                        [matAutocomplete]="horaAutocomplete" autocomplete="disabled">
+                      <mat-autocomplete autoActiveFirstOption #horaAutocomplete="matAutocomplete">
+                        <mat-option *ngFor="let hora of horas" [value]="hora">
+                          {{hora}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+                    <mat-form-field class="ps-2">
+                      <mat-label>Minutos</mat-label>
+                      <input virtualkeyboardpolicy="manual" type="number" aria-label="Minuto"
+                        formControlName="minutoVencimiento" matInput placeholder="Minuto"
+                        [matAutocomplete]="minutoAutocomplete" autocomplete="disabled">
+                      <mat-autocomplete autoActiveFirstOption #minutoAutocomplete="matAutocomplete">
+                        <mat-option *ngFor="let minuto of minutos" [value]="minuto">
+                          {{minuto}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+                  </div>
+                  <mat-error class="text-sm"
+                    *ngIf="duracionForm.get('horaVencimiento')?.errors?.['required'] || duracionForm.get('minutoVencimiento')?.errors?.['required']">
+                    La hora de el fin de votacion es requerida.
+                  </mat-error>
+                  <mat-error class="text-sm"
+                    *ngIf="duracionForm.get('horaVencimiento')?.errors?.['min'] || duracionForm.get('horaVencimiento')?.errors?.['max']">
+                    La hora no es valida.
+                  </mat-error>
+                  <mat-error class="text-sm"
+                    *ngIf="duracionForm.get('minutoVencimiento')?.errors?.['min'] || duracionForm.get('minutoVencimiento')?.errors?.['max']">
+                    Los minutos no son validos.
+                  </mat-error>
+                </div>
+                <mat-form-field
+                  [ngClass]="{'mb-5': !duracionForm.get('frecuenciasVotacion')?.valid && (duracionForm.get('frecuenciasVotacion')?.dirty || duracionForm.get('frecuenciasVotacion')?.touched)}">
+                  <mat-label>Frecuencia de votacion</mat-label>
+                  <mat-select formControlName="frecuenciaVotacion">
+                    <ng-container *ngIf="(frecuenciasVotacion$ | async) as frecuenciasVotacion">
+                      <ng-container *ngFor="let frecuencia of frecuenciasVotacion">
+                        <mat-option [value]="frecuencia.id">{{frecuencia.nombre | titlecase}}</mat-option>
+                      </ng-container>
+                    </ng-container>
+                  </mat-select>
+                  <mat-error class="text-sm" *ngIf="duracionForm.get('frecuenciaVotacion')?.errors?.['required']">
+                    La frecuencia de la votacion es requerida.
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field *ngIf="mostrarNuevaVotacion"
+                  [ngClass]="{'mb-4': duracionForm.get('nuevaVotacion')?.errors?.['invalidNuevaFecha']}">
+                  <mat-label>Nueva fecha de votacion</mat-label>
+                  <input matInput [matDatepicker]="nuevaVotacionPicker" formControlName="nuevaVotacion">
+                  <mat-hint>DD/MM/YYYY</mat-hint>
+                  <mat-datepicker-toggle matIconSuffix [for]="nuevaVotacionPicker"></mat-datepicker-toggle>
+                  <mat-datepicker #nuevaVotacionPicker></mat-datepicker>
+                  <mat-error class="text-sm" *ngIf="duracionForm.get('nuevaVotacion')?.errors?.['invalidNuevaFecha']">
+                    La fecha de la nueva votacion debe ser posterior a la del vencimiento.
+                  </mat-error>
+                </mat-form-field>
+              </form>
+              <div class="flex flex-col justify-around py-3">
+                <div class="mb-2 flex justify-evenly">
+                  <button mat-button mat-raised-button class="ultimosBotones" color="darkPrimary"
+                    matStepperPrevious>Regresar</button>
+                  <button mat-button mat-raised-button class="ultimosBotones" color="darkPrimary"
+                    (click)="comunidadForm.reset();puntoAVotarForm.reset();duracionForm.reset();">Reiniciar</button>
+                </div>
+                <button class="self-center" mat-button mat-raised-button [color]="colorCrearVotacion" matStepperNext
+                  [disabled]="crearVotacionDeshabilitado" (click)="crearNuevaVotacion()">Confirmar y enviar
+                  invitaciones</button>
               </div>
-              <button class="self-center" mat-button mat-raised-button [color]="colorCrearVotacion" matStepperNext
-                [disabled]="crearVotacionDeshabilitado" (click)="crearNuevaVotacion()">Confirmar y enviar
-                invitaciones</button>
-            </div>
-          </mat-step>
-        </mat-vertical-stepper>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</ion-content>
+            </mat-step>
+          </mat-vertical-stepper>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-content>
+</div>

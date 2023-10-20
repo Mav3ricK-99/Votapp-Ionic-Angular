@@ -12,6 +12,7 @@ import { AuthenticationService } from 'src/app/services/authentication/authentic
 import { EventBusService, EventData } from 'src/app/services/eventBus/event-bus.service';
 import { JWT } from 'src/app/interfaces/jwt/jwt';
 import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthorizationRequestInterceptor implements HttpInterceptor {
@@ -19,7 +20,7 @@ export class AuthorizationRequestInterceptor implements HttpInterceptor {
   private isRefreshing = false;
   private AUTH_HEADER = "Authorization";
 
-  constructor(private authService: AuthenticationService, private eventBusService: EventBusService) { }
+  constructor(private authService: AuthenticationService, private eventBusService: EventBusService, private router: Router) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     req = req.clone({
@@ -62,6 +63,7 @@ export class AuthorizationRequestInterceptor implements HttpInterceptor {
               this.eventBusService.emit(new EventData('logout', null));
               localStorage.removeItem('jwt');
               localStorage.removeItem('current_user');
+              this.router.navigateByUrl('auth/login');
             }
 
             return throwError(() => error);

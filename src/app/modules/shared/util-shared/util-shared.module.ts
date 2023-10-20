@@ -7,11 +7,14 @@ import { TranslateModule } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
 import { InfoDialogComponent } from 'src/app/components/util/info-dialog/info-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MenuComponent } from 'src/app/components/util/menu/menu/menu.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
     BotonesInicioComponent,
-    InfoDialogComponent
+    InfoDialogComponent,
+    MenuComponent
   ],
   imports: [
     CommonModule,
@@ -19,9 +22,11 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatButtonModule,
     TranslateModule,
     MatDialogModule,
+    MatIconModule,
     RouterModule
   ], exports: [
-    BotonesInicioComponent
+    BotonesInicioComponent,
+    MenuComponent
   ]
 })
 export class UtilSharedModule { }

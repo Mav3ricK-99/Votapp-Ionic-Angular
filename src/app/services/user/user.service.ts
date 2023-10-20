@@ -25,8 +25,8 @@ export class UserService {
     this.getLocalUser();
   }
 
-  getMisVotos(): Observable<any> {
-    return this.httpClient.get(this.USER_API_URL + `/${this.currentUser.id}/votos`).pipe(map((data: any) => {
+  getMisVotos(pagina: number): Observable<any> {
+    return this.httpClient.get(this.USER_API_URL + `/${this.currentUser.id}/votos/${pagina}`).pipe(map((data: any) => {
       let votaciones: Votacion[] = [];
       let comunidades: Comunidad[] = [];
 
@@ -36,7 +36,7 @@ export class UserService {
         var comunidad: Comunidad = new Comunidad(c.id, c.nombre, c.descripcion, votacionTipoComunidad, comunidadIntegrantes, new Date(c.created_at));
         this.comunidadService.getLogo(c.id).subscribe({
           next: (data: any) => { comunidad.logo = data.logo; },
-          error: (error: any) => {  }
+          error: (error: any) => { }
         });
 
         return comunidad;
@@ -67,17 +67,6 @@ export class UserService {
       })
 
       return votaciones;
-    })).pipe(map((votaciones: Votacion[]) => {
-      let abiertas: Votacion[] = [];
-      let cerradas: Votacion[] = [];
-      votaciones.forEach((v: Votacion) => {
-        v.estaFinalizada() == false ? abiertas.push(v) : cerradas.push(v);
-      })
-
-      return {
-        abiertas: abiertas,
-        cerradas: cerradas
-      };
     }));
   }
 
@@ -111,5 +100,11 @@ export class UserService {
   hayUsuarioIngresado() {
     this.getLocalUser();
     return this.currentUser.id > -1 ? true : false;
+  }
+
+  cerrarSesion() {
+    //revokar token
+    localStorage.removeItem('jwt');
+    localStorage.removeItem('current_user');
   }
 }

@@ -14,6 +14,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import {MatIconModule} from '@angular/material/icon';
 import { UtilSharedModule } from '../../shared/util-shared/util-shared.module';
 import {MatTabsModule} from '@angular/material/tabs';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatSidenavModule} from '@angular/material/sidenav';
+
 @NgModule({
   declarations: [
     MisVotappsComponent,

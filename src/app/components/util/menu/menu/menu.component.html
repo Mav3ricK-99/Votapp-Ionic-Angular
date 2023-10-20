@@ -1,0 +1,26 @@
+<ion-menu type="overlay" contentId="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title class="text-sm">INICIO</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <div class="flex h-full flex-col">
+      <div class="self-center grow">
+        <button class="boton-menu uppercase border-gradient border-gradient-purple py-2 my-2" [routerLink]="['/auth/password-reset-token']">
+          <mat-icon class="mb--5 me-1">vpn_key</mat-icon>
+          Cambiar contraseña
+        </button>
+      </div>
+      <div class="self-center">
+        <button class="boton-menu uppercase border-gradient border-gradient-purple py-2 my-5" (click)="cerrarSesion()">
+          <mat-icon class="mb--5 me-1">logout</mat-icon>
+          Cerrar sesion
+        </button>
+      </div>
+    </div>
+  </ion-content>
+</ion-menu>

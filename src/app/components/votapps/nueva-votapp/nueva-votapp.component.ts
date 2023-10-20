@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -13,7 +13,7 @@ import { VotacionFrecuencia } from 'src/app/classes/votacionFrecuencia/votacion-
 import { UserService } from 'src/app/services/user/user.service';
 import { VotacionService } from 'src/app/services/votacion/votacion.service';
 import { Platform } from '@ionic/angular';
-import { Keyboard } from '@capacitor/keyboard';
+import { Keyboard, KeyboardInfo, KeyboardStyle } from '@capacitor/keyboard';
 @Component({
   selector: 'app-nueva-votapp',
   templateUrl: './nueva-votapp.component.html',
@@ -181,10 +181,6 @@ export class NuevaVotappComponent {
 
       return errores;
     }
-  }
-
-  ocultarTeclado() {
-    Keyboard.hide();
   }
 
   crearNuevaVotacion() {

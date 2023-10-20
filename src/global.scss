@@ -116,6 +116,10 @@ ion-grid {
     --mat-stepper-container-color: rgb(249 250 251) !important;
 }
 
+.mat-mdc-tab-header{
+    z-index: 0 !important;
+}
+
 .text-wrap {
     text-wrap: wrap;
 }
