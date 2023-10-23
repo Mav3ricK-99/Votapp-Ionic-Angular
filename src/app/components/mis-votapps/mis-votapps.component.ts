@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, Optional, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subject, merge } from 'rxjs';
 import { Votacion } from 'src/app/classes/votacion/votacion';
 import { UserService } from 'src/app/services/user/user.service';
 import { App } from '@capacitor/app';
-import { InfiniteScrollCustomEvent, IonInfiniteScroll } from '@ionic/angular';
+import { InfiniteScrollCustomEvent, IonInfiniteScroll, IonRouterOutlet, Platform } from '@ionic/angular';
 @Component({
   selector: 'app-mis-votapps',
   templateUrl: './mis-votapps.component.html',
@@ -22,11 +22,6 @@ export class MisVotappsComponent {
   constructor(private userService: UserService, private router: Router) {
     this.pagina = 0;
     this.votacionesListas = false;
-    App.addListener('backButton', () => {
-      if (this.router && this.router.url.includes('mis')) {
-        App.minimizeApp();
-      }
-    })
   }
 
   ionViewDidEnter() {
