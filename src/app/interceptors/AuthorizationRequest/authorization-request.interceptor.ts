@@ -5,7 +5,6 @@ import {
   HttpEvent,
   HttpInterceptor,
   HttpErrorResponse,
-  HttpHeaders
 } from '@angular/common/http';
 import { Observable, catchError, switchMap, throwError } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
