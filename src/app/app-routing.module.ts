@@ -18,6 +18,11 @@ const routes: Routes = [
     canActivate: [UsuarioPuedeAccederGuard],
   },
   {
+    path: 'nueva-comunidad',
+    loadChildren: () => import('./modules/comunidad/nueva-comunidad/nueva-comunidad.module').then(m => m.NuevaComunidadModule),
+    canActivate: [UsuarioPuedeAccederGuard],
+  },
+  {
     path: '',
     redirectTo: 'auth/login',
     pathMatch: 'full'

@@ -80,6 +80,15 @@ ion-grid {
     border: 2px solid darken(#4ade80, 5%) !important;
 }
 
+.border-primary {
+    border-color: #3f51b5 !important;
+}
+
+.scrollable {
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
 .mat-green:disabled {
     color: var(--mdc-protected-button-disabled-container-color) !important;
     background-color: var(--mdc-protected-button-container-color) !important;

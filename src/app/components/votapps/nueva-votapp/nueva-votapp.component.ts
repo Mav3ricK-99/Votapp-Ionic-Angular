@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -13,7 +13,6 @@ import { VotacionFrecuencia } from 'src/app/classes/votacionFrecuencia/votacion-
 import { UserService } from 'src/app/services/user/user.service';
 import { VotacionService } from 'src/app/services/votacion/votacion.service';
 import { Platform } from '@ionic/angular';
-import { Keyboard, KeyboardInfo, KeyboardStyle } from '@capacitor/keyboard';
 @Component({
   selector: 'app-nueva-votapp',
   templateUrl: './nueva-votapp.component.html',
@@ -23,7 +22,7 @@ export class NuevaVotappComponent {
 
   comunidadForm: FormGroup;
   puntoAVotarForm: FormGroup;
-  duracionForm: FormGroup;
+  parametrosForm: FormGroup;
 
   public colorPrimerContinuar: string;
   public colorSegundoContinuar: string;
@@ -72,11 +71,11 @@ export class NuevaVotappComponent {
       tipoDecision: new FormControl<VotacionDecision | null>(null, { validators: [Validators.required], updateOn: 'blur' }),
       titulo: new FormControl('', { validators: [Validators.required, Validators.minLength(3), Validators.maxLength(255)], updateOn: 'blur' }),
       detalle: new FormControl('', { validators: [Validators.minLength(3), Validators.maxLength(255)] }),
-      aceptacionRequerida: new FormControl('50', { validators: [Validators.required, Validators.min(0), Validators.max(100)], updateOn: 'blur' }),
-      quorumRequerido: new FormControl('50', { validators: [Validators.required, Validators.min(0), Validators.max(100)], updateOn: 'blur' }),
     });
 
-    this.duracionForm = formBuilder.group({
+    this.parametrosForm = formBuilder.group({
+      aceptacionRequerida: new FormControl('', { validators: [Validators.required, Validators.min(0), Validators.max(100)], updateOn: 'blur' }),
+      quorumRequerido: new FormControl('', { validators: [Validators.required, Validators.min(0), Validators.max(100)], updateOn: 'blur' }),
       fechaVencimiento: new FormControl<Date | null>(null, { validators: [Validators.required], updateOn: 'blur' }),
       frecuenciaVotacion: new FormControl<VotacionFrecuencia | null>(null, { updateOn: 'blur' }),
       nuevaVotacion: new FormControl<Date | null>(null, { updateOn: 'blur' }),
@@ -86,21 +85,21 @@ export class NuevaVotappComponent {
 
     //Relleno botones si el form esta validado!
     this.comunidadForm.statusChanges.subscribe((valid: string) => {
-      valid == 'VALID' ? this.colorPrimerContinuar = 'green' : this.colorPrimerContinuar = 'white-g';;
+      valid == 'VALID' ? this.colorPrimerContinuar = 'green' : this.colorPrimerContinuar = 'white-g';
     });
 
     this.puntoAVotarForm.statusChanges.subscribe((valid: string) => {
       valid == 'VALID' ? this.colorSegundoContinuar = 'green' : this.colorSegundoContinuar = 'white-g';
     });
 
-    this.duracionForm.statusChanges.subscribe((valid: string) => {
+    this.parametrosForm.statusChanges.subscribe((valid: string) => {
       valid == 'VALID' ? this.colorCrearVotacion = 'green' : this.colorCrearVotacion = 'white-g';
     });
 
-    this.duracionForm.get('horaVencimiento')?.setValue(this.fechaHoy.getHours());
-    this.duracionForm.get('minutoVencimiento')?.setValue(this.fechaHoy.getMinutes());
+    this.parametrosForm.get('horaVencimiento')?.setValue(this.fechaHoy.getHours());
+    this.parametrosForm.get('minutoVencimiento')?.setValue(this.fechaHoy.getMinutes());
 
-    this.duracionForm.get('frecuenciaVotacion')?.valueChanges.subscribe((idFrecuencia: any) => {
+    this.parametrosForm.get('frecuenciaVotacion')?.valueChanges.subscribe((idFrecuencia: any) => {
       let fechaNuevaVotacion = new Date();
       switch (idFrecuencia) {
         case 1: { fechaNuevaVotacion.setDate(fechaNuevaVotacion.getDate() + 7); }; break;
@@ -109,11 +108,11 @@ export class NuevaVotappComponent {
       };
 
       if (idFrecuencia == 4) {
-        this.duracionForm.get('nuevaVotacion')?.setValue('');
+        this.parametrosForm.get('nuevaVotacion')?.setValue('');
         this.mostrarNuevaVotacion = false;
       } else {
         this.mostrarNuevaVotacion = true;
-        this.duracionForm.get('nuevaVotacion')?.setValue(fechaNuevaVotacion);
+        this.parametrosForm.get('nuevaVotacion')?.setValue(fechaNuevaVotacion);
       }
     });
 
@@ -122,7 +121,7 @@ export class NuevaVotappComponent {
         let porUnicaVez = obj.filter((frecuencia: any) => {
           return frecuencia.id == 4 ? frecuencia : null;
         });
-        this.duracionForm.get('frecuenciaVotacion')?.setValue(porUnicaVez[0].id);
+        this.parametrosForm.get('frecuenciaVotacion')?.setValue(porUnicaVez[0].id);
       }
     });
 
@@ -153,26 +152,26 @@ export class NuevaVotappComponent {
   }
 
   /**
-   * Valida las fechas del formulario 'duracionForm'
+   * Valida las fechas del formulario 'parametrosForm'
    *  > La fecha de nueva Votacion debe ser posterior a la del vencimiento
    *  > La fecha del vencimiento debe ser posterior al dia de hoy
    * @returns ValidatorFn
    */
   validarFechas(): ValidatorFn {
-    return (duracionForm: AbstractControl): ValidationErrors | null => {
-      let fechaVencimiento = duracionForm.get('fechaVencimiento');
-      let fechaNuevaVotacion = duracionForm.get('nuevaVotacion');
+    return (parametrosForm: AbstractControl): ValidationErrors | null => {
+      let fechaVencimiento = parametrosForm.get('fechaVencimiento');
+      let fechaNuevaVotacion = parametrosForm.get('nuevaVotacion');
       let errores: any = {};
       if (fechaVencimiento?.value) {
         if (fechaVencimiento.value < this.fechaHoy) {
-          this.duracionForm.get('fechaVencimiento')?.setErrors({
+          this.parametrosForm.get('fechaVencimiento')?.setErrors({
             invalidFechaVencimiento: true,
           });
           errores.invalidFechaVencimiento = true;
         }
 
         if (fechaNuevaVotacion?.value && (fechaNuevaVotacion.value < fechaVencimiento.value)) {
-          this.duracionForm.get('nuevaVotacion')?.setErrors({
+          this.parametrosForm.get('nuevaVotacion')?.setErrors({
             invalidNuevaFecha: true,
           });
           errores.invalidFechaVencimiento = true;
@@ -184,7 +183,7 @@ export class NuevaVotappComponent {
   }
 
   crearNuevaVotacion() {
-    if (!this.comunidadForm.valid || !this.duracionForm.valid || !this.puntoAVotarForm.valid) return;
+    if (!this.comunidadForm.valid || !this.parametrosForm.valid || !this.puntoAVotarForm.valid) return;
 
     this.dialog.open(CreandoVotappDialog, { maxWidth: '90vw' });
 
@@ -193,21 +192,21 @@ export class NuevaVotappComponent {
     let tipoDecision: VotacionDecision = new VotacionDecision(this.puntoAVotarForm.get('tipoDecision')?.value, true);
     let titulo = this.puntoAVotarForm.get('titulo')?.value;
     let detalle = this.puntoAVotarForm.get('detalle')?.value;
-    let aceptacionRequerida = this.puntoAVotarForm.get('aceptacionRequerida')?.value;
-    let quorumRequerido = this.puntoAVotarForm.get('quorumRequerido')?.value;
 
-    let horaVencimiento: string = this.duracionForm.get('horaVencimiento')?.value;
-    let minutoVencimiento: string = this.duracionForm.get('minutoVencimiento')?.value;
-    let fechaVencimiento: Date = this.duracionForm.get('fechaVencimiento')?.value;
+    let aceptacionRequerida = this.parametrosForm.get('aceptacionRequerida')?.value;
+    let quorumRequerido = this.parametrosForm.get('quorumRequerido')?.value;
+    let horaVencimiento: string = this.parametrosForm.get('horaVencimiento')?.value;
+    let minutoVencimiento: string = this.parametrosForm.get('minutoVencimiento')?.value;
+    let fechaVencimiento: Date = this.parametrosForm.get('fechaVencimiento')?.value;
     fechaVencimiento.setHours(parseInt(horaVencimiento));
     fechaVencimiento.setMinutes(parseInt(minutoVencimiento));
 
     let frecuenciaVotacion: VotacionFrecuencia | null = null;
-    let frecuenciaControl = this.duracionForm.get('frecuenciaVotacion');
+    let frecuenciaControl = this.parametrosForm.get('frecuenciaVotacion');
     if (frecuenciaControl?.value != null) {
       frecuenciaVotacion = new VotacionFrecuencia(0, frecuenciaControl.value, 7, true);
     }
-    let nuevaVotacion = this.duracionForm.get('nuevaVotacion')?.value;
+    let nuevaVotacion = this.parametrosForm.get('nuevaVotacion')?.value;
 
     let repetir: boolean = nuevaVotacion != null ? true : false;
     let requiereAceptacion: boolean = aceptacionRequerida > 0 ? true : false;
@@ -226,6 +225,7 @@ export class NuevaVotappComponent {
       },
       error: err => {
         this.dialog.closeAll();
+        this.crearVotacionDeshabilitado = false;
         console.log(err);
       }, complete: () => {
         this.crearVotacionDeshabilitado = false;

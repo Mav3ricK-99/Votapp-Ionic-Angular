@@ -32,7 +32,7 @@ export class UserService {
 
       comunidades = data.comunidades.map((c: any) => {
         let comunidadIntegrantes: ComunidadIntegrantes[] = [];
-        let votacionTipoComunidad: VotacionTipo = new VotacionTipo(c.votacionTipo.nombre, c.votacionTipo.habilitado);
+        let votacionTipoComunidad: VotacionTipo = new VotacionTipo(c.votacionTipo.id, c.votacionTipo.nombre, c.votacionTipo.habilitado);
         var comunidad: Comunidad = new Comunidad(c.id, c.nombre, c.descripcion, votacionTipoComunidad, comunidadIntegrantes, new Date(c.created_at));
         this.comunidadService.getLogo(c.id).subscribe({
           next: (data: any) => { comunidad.logo = data.logo; },
@@ -52,7 +52,7 @@ export class UserService {
           let usuario: User = new User(0, votacionIntegrante.user.nombre, votacionIntegrante.user.apellido, votacionIntegrante.user.email, votacionIntegrante.user.country, votacionIntegrante.user.fechaNacimiento);
           return new VotacionIntegrantes(votacionIntegrante.miVoto, votacionIntegrante.porcentaje, tipoVoto, usuario);
         });
-        let votacionTipo: VotacionTipo = new VotacionTipo(v.votacionTipo.nombre, v.votacionTipo.habilitado);
+        let votacionTipo: VotacionTipo = new VotacionTipo(v.votacionTipo.id, v.votacionTipo.nombre, v.votacionTipo.habilitado);
         let votacionFrecuencia: VotacionFrecuencia | null = null;
         if (v.votacionFrecuencia) {
           votacionFrecuencia = new VotacionFrecuencia(v.votacionFrecuencia.id, v.votacionFrecuencia.nombre, v.votacionFrecuencia.dias, v.votacionFrecuencia.habilitado);
@@ -73,7 +73,7 @@ export class UserService {
   getMisComunidades() {
     return this.httpClient.get(this.USER_API_URL + `/${this.currentUser.id}/comunidades`).pipe(map((data: any) => {
       return data.comunidades.map((comunidad: any) => {
-        let votacionTipoComunidad: VotacionTipo = new VotacionTipo(comunidad.votacionTipo.nombre, comunidad.votacionTipo.habilitado);
+        let votacionTipoComunidad: VotacionTipo = new VotacionTipo(comunidad.votacionTipo.id, comunidad.votacionTipo.nombre, comunidad.votacionTipo.habilitado);
 
         let comunidadIntegrantes: ComunidadIntegrantes[] = [];
         comunidad.comunidadIntegrantes.forEach((comunidadIntegrante: any) => {

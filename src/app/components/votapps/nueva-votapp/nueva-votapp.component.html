@@ -67,16 +67,17 @@
                     </div>
                   </ng-template>
                 </div>
-                <div class="flex flex-col justify-around py-2 items-center">
-                  <!-- <button class="w-50 mb-1 uppercase" disabled color="primary" mat-raised-button>Crear nueva
-                  Comunidad</button><br> -->
+                <div class="flex flex-col justify-around pt-2 items-center">
+                  <button class="w-50 mb-1/[0.5] uppercase" [routerLink]="['/nueva-comunidad']" color="primary"
+                    mat-raised-button>Crear nueva
+                    Comunidad</button><br>
                   <button class="w-24" (click)="continuarPrimerPaso()" mat-button mat-raised-button
                     [color]="colorPrimerContinuar" matStepperNext>Continuar</button>
                 </div>
               </form>
             </mat-step>
             <mat-step [stepControl]="puntoAVotarForm" errorMessage="Verifique los datos en este paso.">
-              <ng-template matStepLabel>Punto a Votar</ng-template>
+              <ng-template matStepLabel>¿Qué accion se vota?</ng-template>
               <form [formGroup]="puntoAVotarForm" class="mt-1">
                 <mat-form-field
                   [ngClass]="{'mb-5': !puntoAVotarForm.get('tipoDecision')?.valid && (puntoAVotarForm.get('tipoDecision')?.dirty || puntoAVotarForm.get('tipoDecision')?.touched)}">
@@ -110,7 +111,7 @@
                   [ngClass]="{'mb-5': !puntoAVotarForm.get('detalle')?.valid && (puntoAVotarForm.get('detalle')?.dirty || puntoAVotarForm.get('detalle')?.touched)}">
                   <mat-label>Detalle</mat-label>
                   <textarea matInput maxlength="255" formControlName="detalle"></textarea>
-                  <mat-hint align="end">{{puntoAVotarForm.get('detalle')?.value?.length}}/255</mat-hint>
+                  <mat-hint align="end">{{puntoAVotarForm.get('detalle')?.value?.length ?? 0}}/255</mat-hint>
                   <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('detalle')?.errors?.['minlength']">
                     El detalle de la votacion debe tener al menos 3 caracteres.
                   </mat-error>
@@ -118,68 +119,69 @@
                     El detalle de la votacion debe tener como maximo 255 caracteres.
                   </mat-error>
                 </mat-form-field>
-                <mat-form-field
-                  [ngClass]="{'mb-5': !puntoAVotarForm.get('aceptacionRequerida')?.valid && (puntoAVotarForm.get('aceptacionRequerida')?.dirty || puntoAVotarForm.get('aceptacionRequerida')?.touched)}"
-                  floatLabel="always">
-                  <mat-label>Aceptacion requerida</mat-label>
-                  <input matInput type="number" class="text-right" placeholder="0"
-                    formControlName="aceptacionRequerida">
-                  <span matTextPrefix>%&nbsp;</span>
-                  <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('aceptacionRequerida')?.errors?.['required']">
-                    La aceptacion requerida de la votacion es requerida.
-                  </mat-error>
-                  <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('aceptacionRequerida')?.errors?.['min']">
-                    La aceptacion requerida debe ser como minimo 0.
-                  </mat-error>
-                  <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('aceptacionRequerida')?.errors?.['max']">
-                    La aceptacion requerida debe ser 100% como maximo.
-                  </mat-error>
-                </mat-form-field>
-                <mat-form-field
-                  [ngClass]="{'mb-5': !puntoAVotarForm.get('quorumRequerido')?.valid && (puntoAVotarForm.get('quorumRequerido')?.dirty || puntoAVotarForm.get('quorumRequerido')?.touched)}"
-                  floatLabel="always">
-                  <mat-label>Quorum requerido</mat-label>
-                  <input matInput type="number" class="text-right" placeholder="0" formControlName="quorumRequerido">
-                  <span matTextPrefix>%&nbsp;</span>
-                  <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('quorumRequerido')?.errors?.['required']">
-                    El quorum requerido de la votacion es requerido.
-                  </mat-error>
-                  <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('quorumRequerido')?.errors?.['min']">
-                    El quorum requerido debe ser como minimo 0.
-                  </mat-error>
-                  <mat-error class="text-sm" *ngIf="puntoAVotarForm.get('quorumRequerido')?.errors?.['max']">
-                    El quorum requerido debe ser 100% como maximo.
-                  </mat-error>
-                </mat-form-field>
-                <div class="flex justify-around py-3 items-center">
+
+                <div class="flex justify-around py-2 items-center">
                   <button mat-button mat-raised-button color="darkPrimary" matStepperPrevious>Regresar</button>
                   <button class="w-24" mat-button mat-raised-button [color]="colorSegundoContinuar" matStepperNext
                     (click)="continuarSegundoPaso()">Continuar</button>
                 </div>
               </form>
             </mat-step>
-            <mat-step [stepControl]="duracionForm" errorMessage="Verifique los datos en este paso.">
-              <ng-template matStepLabel>Duracion</ng-template>
-              <form [formGroup]="duracionForm" class="mt-2">
+            <mat-step [stepControl]="parametrosForm" errorMessage="Verifique los datos en este paso.">
+              <ng-template matStepLabel>Parametros de la votación</ng-template>
+              <form [formGroup]="parametrosForm" class="mt-2">
+                <mat-form-field
+                  [ngClass]="{'mb-5': !parametrosForm.get('aceptacionRequerida')?.valid && (parametrosForm.get('aceptacionRequerida')?.dirty || parametrosForm.get('aceptacionRequerida')?.touched)}"
+                  floatLabel="always">
+                  <mat-label>Aceptacion requerida</mat-label>
+                  <input matInput type="number" class="text-right" placeholder="0"
+                    formControlName="aceptacionRequerida">
+                  <span matTextPrefix>%&nbsp;</span>
+                  <mat-error class="text-sm" *ngIf="parametrosForm.get('aceptacionRequerida')?.errors?.['required']">
+                    La aceptacion requerida de la votacion es requerida.
+                  </mat-error>
+                  <mat-error class="text-sm" *ngIf="parametrosForm.get('aceptacionRequerida')?.errors?.['min']">
+                    La aceptacion requerida debe ser como minimo 0.
+                  </mat-error>
+                  <mat-error class="text-sm" *ngIf="parametrosForm.get('aceptacionRequerida')?.errors?.['max']">
+                    La aceptacion requerida debe ser 100% como maximo.
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field
+                  [ngClass]="{'mb-5': !parametrosForm.get('quorumRequerido')?.valid && (parametrosForm.get('quorumRequerido')?.dirty || parametrosForm.get('quorumRequerido')?.touched)}"
+                  floatLabel="always">
+                  <mat-label>Quorum requerido</mat-label>
+                  <input matInput type="number" class="text-right" placeholder="0" formControlName="quorumRequerido">
+                  <span matTextPrefix>%&nbsp;</span>
+                  <mat-error class="text-sm" *ngIf="parametrosForm.get('quorumRequerido')?.errors?.['required']">
+                    El quorum requerido de la votacion es requerido.
+                  </mat-error>
+                  <mat-error class="text-sm" *ngIf="parametrosForm.get('quorumRequerido')?.errors?.['min']">
+                    El quorum requerido debe ser como minimo 0.
+                  </mat-error>
+                  <mat-error class="text-sm" *ngIf="parametrosForm.get('quorumRequerido')?.errors?.['max']">
+                    El quorum requerido debe ser 100% como maximo.
+                  </mat-error>
+                </mat-form-field>
                 <mat-form-field class="mb-2"
-                  [ngClass]="{'mb-5': !duracionForm.get('fechaVencimiento')?.valid && (duracionForm.get('fechaVencimiento')?.dirty || duracionForm.get('fechaVencimiento')?.touched)}">
+                  [ngClass]="{'mb-5': !parametrosForm.get('fechaVencimiento')?.valid && (parametrosForm.get('fechaVencimiento')?.dirty || parametrosForm.get('fechaVencimiento')?.touched)}">
                   <mat-label>Fecha fin de Votacion</mat-label>
                   <input matInput [matDatepicker]="picker" formControlName="fechaVencimiento">
                   <mat-hint>DD/MM/YYYY</mat-hint>
                   <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                   <mat-datepicker #picker></mat-datepicker>
-                  <mat-error class="text-sm" *ngIf="duracionForm.get('fechaVencimiento')?.errors?.['required']">
+                  <mat-error class="text-sm" *ngIf="parametrosForm.get('fechaVencimiento')?.errors?.['required']">
                     La fecha fin de la votacion de la votacion es requerida.
                   </mat-error>
                   <mat-error class="text-sm"
-                    *ngIf="duracionForm.get('fechaVencimiento')?.errors?.['invalidFechaVencimiento']">
+                    *ngIf="parametrosForm.get('fechaVencimiento')?.errors?.['invalidFechaVencimiento']">
                     La fecha del vencimiento de la votacion debe ser posterior al dia de hoy.
                   </mat-error>
                 </mat-form-field>
 
                 <div class="flex flex-col">
                   <div class="flex"
-                    [ngClass]="{'colControlesHora': duracionForm.get('horaVencimiento')?.errors != null || duracionForm.get('minutoVencimiento')?.errors != null}">
+                    [ngClass]="{'colControlesHora': parametrosForm.get('horaVencimiento')?.errors != null || parametrosForm.get('minutoVencimiento')?.errors != null}">
                     <mat-form-field class="pr-2">
                       <mat-label>Horas</mat-label>
                       <input virtualkeyboardpolicy="manual" type="number" aria-label="Hora"
@@ -204,20 +206,20 @@
                     </mat-form-field>
                   </div>
                   <mat-error class="text-sm"
-                    *ngIf="duracionForm.get('horaVencimiento')?.errors?.['required'] || duracionForm.get('minutoVencimiento')?.errors?.['required']">
+                    *ngIf="parametrosForm.get('horaVencimiento')?.errors?.['required'] || parametrosForm.get('minutoVencimiento')?.errors?.['required']">
                     La hora de el fin de votacion es requerida.
                   </mat-error>
                   <mat-error class="text-sm"
-                    *ngIf="duracionForm.get('horaVencimiento')?.errors?.['min'] || duracionForm.get('horaVencimiento')?.errors?.['max']">
+                    *ngIf="parametrosForm.get('horaVencimiento')?.errors?.['min'] || parametrosForm.get('horaVencimiento')?.errors?.['max']">
                     La hora no es valida.
                   </mat-error>
                   <mat-error class="text-sm"
-                    *ngIf="duracionForm.get('minutoVencimiento')?.errors?.['min'] || duracionForm.get('minutoVencimiento')?.errors?.['max']">
+                    *ngIf="parametrosForm.get('minutoVencimiento')?.errors?.['min'] || parametrosForm.get('minutoVencimiento')?.errors?.['max']">
                     Los minutos no son validos.
                   </mat-error>
                 </div>
                 <mat-form-field
-                  [ngClass]="{'mb-5': !duracionForm.get('frecuenciasVotacion')?.valid && (duracionForm.get('frecuenciasVotacion')?.dirty || duracionForm.get('frecuenciasVotacion')?.touched)}">
+                  [ngClass]="{'mb-5': !parametrosForm.get('frecuenciasVotacion')?.valid && (parametrosForm.get('frecuenciasVotacion')?.dirty || parametrosForm.get('frecuenciasVotacion')?.touched)}">
                   <mat-label>Frecuencia de votacion</mat-label>
                   <mat-select formControlName="frecuenciaVotacion">
                     <ng-container *ngIf="(frecuenciasVotacion$ | async) as frecuenciasVotacion">
@@ -226,18 +228,18 @@
                       </ng-container>
                     </ng-container>
                   </mat-select>
-                  <mat-error class="text-sm" *ngIf="duracionForm.get('frecuenciaVotacion')?.errors?.['required']">
+                  <mat-error class="text-sm" *ngIf="parametrosForm.get('frecuenciaVotacion')?.errors?.['required']">
                     La frecuencia de la votacion es requerida.
                   </mat-error>
                 </mat-form-field>
                 <mat-form-field *ngIf="mostrarNuevaVotacion"
-                  [ngClass]="{'mb-4': duracionForm.get('nuevaVotacion')?.errors?.['invalidNuevaFecha']}">
+                  [ngClass]="{'mb-4': parametrosForm.get('nuevaVotacion')?.errors?.['invalidNuevaFecha']}">
                   <mat-label>Nueva fecha de votacion</mat-label>
                   <input matInput [matDatepicker]="nuevaVotacionPicker" formControlName="nuevaVotacion">
                   <mat-hint>DD/MM/YYYY</mat-hint>
                   <mat-datepicker-toggle matIconSuffix [for]="nuevaVotacionPicker"></mat-datepicker-toggle>
                   <mat-datepicker #nuevaVotacionPicker></mat-datepicker>
-                  <mat-error class="text-sm" *ngIf="duracionForm.get('nuevaVotacion')?.errors?.['invalidNuevaFecha']">
+                  <mat-error class="text-sm" *ngIf="parametrosForm.get('nuevaVotacion')?.errors?.['invalidNuevaFecha']">
                     La fecha de la nueva votacion debe ser posterior a la del vencimiento.
                   </mat-error>
                 </mat-form-field>
@@ -247,7 +249,7 @@
                   <button mat-button mat-raised-button class="ultimosBotones" color="darkPrimary"
                     matStepperPrevious>Regresar</button>
                   <button mat-button mat-raised-button class="ultimosBotones" color="darkPrimary"
-                    (click)="comunidadForm.reset();puntoAVotarForm.reset();duracionForm.reset();">Reiniciar</button>
+                    (click)="comunidadForm.reset();puntoAVotarForm.reset();parametrosForm.reset();">Reiniciar</button>
                 </div>
                 <button class="self-center" mat-button mat-raised-button [color]="colorCrearVotacion" matStepperNext
                   [disabled]="crearVotacionDeshabilitado" (click)="crearNuevaVotacion()">Confirmar y enviar

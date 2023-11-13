@@ -41,7 +41,7 @@ export class VotacionService {
   getVotapp(id: string) {
     return this.httpClient.get(this.VOTAPP_API_URL + `${id}`).pipe(map((data: any) => {
       let votacion = data.votacion;
-      let votacionTipoComunidad: VotacionTipo = new VotacionTipo(votacion.comunidad.votacionTipo.nombre, votacion.comunidad.votacionTipo.habilitado);
+      let votacionTipoComunidad: VotacionTipo = new VotacionTipo(votacion.comunidad.votacionTipo.id, votacion.comunidad.votacionTipo.nombre, votacion.comunidad.votacionTipo.habilitado);
       let comunidadIntegrantes: ComunidadIntegrantes[] = [];
       votacion.comunidad.comunidadIntegrantes.forEach((comunidadIntegrante: any) => {
         let nuevaComunidadIntegrante: ComunidadIntegrantes = new ComunidadIntegrantes(comunidadIntegrante.id, comunidadIntegrante.votar, comunidadIntegrante.user, comunidadIntegrante.crearVotacion, comunidadIntegrante.porcentaje, comunidadIntegrante.requiereAceptacion, comunidadIntegrante.fEnvioInvitacion, comunidadIntegrante.fDecision, comunidadIntegrante.aceptacion, comunidadIntegrante.habilitado, comunidadIntegrante.created_at);
@@ -63,7 +63,7 @@ export class VotacionService {
         let usuario: User = new User(0, votacionIntegrante.user.nombre, votacionIntegrante.user.apellido, votacionIntegrante.user.email, votacionIntegrante.user.country, votacionIntegrante.user.fechaNacimiento);
         return new VotacionIntegrantes(votacionIntegrante.miVoto, votacionIntegrante.porcentaje, tipoVoto, usuario);
       });
-      let votacionTipo: VotacionTipo = new VotacionTipo(votacion.votacionTipo.nombre, votacion.votacionTipo.habilitado);
+      let votacionTipo: VotacionTipo = new VotacionTipo(votacion.votacionTipo.id, votacion.votacionTipo.nombre, votacion.votacionTipo.habilitado);
       let votacionFrecuencia: VotacionFrecuencia | null = null;
       if (votacion.votacionFrecuencia) {
         votacionFrecuencia = new VotacionFrecuencia(votacion.votacionFrecuencia.id, votacion.votacionFrecuencia.nombre, votacion.votacionFrecuencia.dias, votacion.votacionFrecuencia.habilitado);

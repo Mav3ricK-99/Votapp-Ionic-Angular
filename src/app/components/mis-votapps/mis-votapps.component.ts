@@ -71,10 +71,10 @@ export class MisVotappsComponent {
         this.infiniteScrollAbiertas.disabled = true;
         this.infiniteScrollCerradas.disabled = true;
       }
-      if (!votacionesAbiertas) {
+      if (!votacionesAbiertas && this.infiniteScrollAbiertas) {
         this.infiniteScrollAbiertas.disabled = true;
       }
-      if (!votacionesCerradas) {
+      if (!votacionesCerradas && this.infiniteScrollCerradas) {
         this.infiniteScrollCerradas.disabled = true;
       }
       //SI justo hay 10 mas quedaria el front bugeado (un poco, se podrian recargar mas)

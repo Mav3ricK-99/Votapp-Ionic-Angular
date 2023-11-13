@@ -1,0 +1,177 @@
+<app-menu></app-menu>
+<div class="ion-page" id="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title> {{'app.dashboard.buttons.newVotapp' | translate | uppercase}} </ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content [scrollEvents]="true">
+    <ion-grid>
+      <app-botones-inicio [botonPresionado]="'nuevaVotapp'"></app-botones-inicio>
+      <ion-row class="bg-gray-50 h-100">
+        <ion-col class="bg-gray-50 ion-no-padding" size-xs="12">
+          <mat-vertical-stepper class="bg-gray-50" #stepper [linear]="true">
+            <mat-step [stepControl]="comunidadForm">
+              <form [formGroup]="comunidadForm">
+                <ng-template matStepLabel>Creacion de nueva Comunidad</ng-template>
+                <mat-form-field
+                  [ngClass]="{'mb-5': !comunidadForm.get('nombre')?.valid && (comunidadForm.get('nombre')?.dirty || comunidadForm.get('nombre')?.touched)}"
+                  class="mt-1">
+                  <mat-label>Nombre de la Comunidad</mat-label>
+                  <input matInput placeholder="Nombre de la comunidad" formControlName="nombre">
+                  <mat-error class="text-sm" *ngIf="comunidadForm.get('nombre')?.errors?.['required']">
+                    El nombre de la comunidad es requerido.
+                  </mat-error>
+                  <mat-error class="text-sm" *ngIf="comunidadForm.get('nombre')?.errors?.['minlength']">
+                    El nombre de la comunidad debe tener como minimo 3 caracteres.
+                  </mat-error>
+                  <mat-error class="text-sm" *ngIf="comunidadForm.get('nombre')?.errors?.['maxlength']">
+                    El nombre de la comunidad debe tener como maximo 40 caracteres.
+                  </mat-error>
+                </mat-form-field>
+                <div class="flex flex-col justify-around">
+                  <h4 class="text-center padding-2">Tipo de Votación</h4>
+                  <div class="flex justify-around padding-2">
+                    <ng-container *ngIf="(votacionesTipo$ | async) as votacionesTipo; else loader">
+                      <ng-container *ngIf="votacionesTipo.length > 0; else noHayTiposDeVotaciones">
+                        <ng-container *ngFor="let votacionTipo of votacionesTipo">
+                          <button type="button" (click)="elejirVotacionTipo(votacionTipo)" class="botonesVotacionTipo"
+                            mat-fab
+                            [color]="comunidadForm.get('tipoVotacion')?.value?.nombre == votacionTipo.nombre ? 'primary' : 'white'">
+                            <mat-icon>{{votacionTipo.nombre == 'porcentaje' ? 'percent' : 'groups'}}</mat-icon>
+                          </button>
+                        </ng-container>
+                      </ng-container>
+                      <ng-template #noHayTiposDeVotaciones>
+                        <h4 class="text-center">
+                          No tipos de votaciones para mostrar.
+                        </h4>
+                      </ng-template>
+                    </ng-container>
+                    <ng-template #loader>
+                      <div role="status" class="text-center mt-1">
+                        <svg aria-hidden="true"
+                          class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                          viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                            fill="currentColor" />
+                          <path
+                            d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                            fill="currentFill" />
+                        </svg>
+                        <span class="sr-only">Loading...</span>
+                      </div>
+                    </ng-template>
+                  </div>
+                  <ng-container
+                    *ngIf="!comunidadForm.get('tipoVotacion')?.valid && (comunidadForm.get('tipoVotacion')?.dirty || comunidadForm.get('tipoVotacion')?.touched)">
+                    <mat-error class="text-sm" *ngIf="comunidadForm.get('tipoVotacion')?.errors?.['required']">
+                      Debe seleccionar un tipo de votacion para esta comunidad.
+                    </mat-error>
+                  </ng-container>
+                  <div [@abiertoCerrado]="detalleTipoVotacionAbierto ? 'abierto' : 'cerrado'"
+                    class="w-100 flex justify-center uppercase border-dashed my-2 p-2 border-2 text-xs border-primary bg-white">
+                    <span
+                      *ngIf="comunidadForm.get('tipoVotacion')?.value?.nombre == 'porcentaje' && detalleTipoVotacionAbierto">Permite
+                      definir votaciones donde se puede establecer un porcentaje variable de participacion para cada
+                      integrante de la comunidad.</span>
+                    <span
+                      *ngIf="comunidadForm.get('tipoVotacion')?.value?.nombre == 'persona' && detalleTipoVotacionAbierto">Permite
+                      definir votaciones donde todos los integrantes tienen el mismo porcentaje de participacion.</span>
+                  </div>
+                </div>
+                <mat-form-field>
+                  <mat-label>Detalle comunidad</mat-label>
+                  <textarea matInput maxlength="255" formControlName="detalle"></textarea>
+                  <mat-hint align="end">{{comunidadForm.get('detalle')?.value?.length ?? 0}}/255</mat-hint>
+                  <mat-error class="text-sm" *ngIf="comunidadForm.get('detalle')?.errors?.['minlength']">
+                    El detalle de la comunidad debe tener al menos 3 caracteres.
+                  </mat-error>
+                  <mat-error class="text-sm" *ngIf="comunidadForm.get('detalle')?.errors?.['maxlength']">
+                    El detalle de la comunidad debe tener como maximo 255 caracteres.
+                  </mat-error>
+                </mat-form-field>
+                <div class="flex flex-col justify-around py-2 items-center">
+                  <button class="w-24" (click)="continuarPrimerPaso()" mat-button mat-raised-button
+                    [color]="colorPrimerContinuar" matStepperNext>Continuar</button>
+                </div>
+              </form>
+            </mat-step>
+            <mat-step [stepControl]="participantesForm">
+              <ng-template matStepLabel>Selección de los participantes</ng-template>
+              <form #formDirective="ngForm" [formGroup]="participantesForm"
+                (ngSubmit)="agregandoParticipante ? agregarIntegrante(formDirective) : editarIntegrante(formDirective)">
+                <div class="flex flex-col justify-around">
+                  <h5 class="text-center">Nuevo integrante de la Comunidad</h5>
+                  <mat-form-field
+                    [ngClass]="{'mb-5': !participantesForm.get('email')?.valid && (participantesForm.get('email')?.dirty || participantesForm.get('email')?.touched)}"
+                    class="mt-1">
+                    <input matInput placeholder="Correo electronico" formControlName="email">
+                    <mat-icon matSuffix>mail</mat-icon>
+                    <mat-error class="text-sm" *ngIf="participantesForm.get('email')?.errors?.['required']">
+                      El correo electronico del participante es requerido.
+                    </mat-error>
+                    <mat-error class="text-sm" *ngIf="participantesForm.get('email')?.errors?.['email']">
+                      El correo electronico del participante debe ser uno valido.
+                    </mat-error>
+                    <mat-error class="text-sm"
+                      *ngIf="participantesForm.get('email')?.errors?.['yaSeEncuentraIngresado']">
+                      Un usuario con este email ya se encuentra agregado a la comunidad.
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field
+                    [ngClass]="{'mb-6': !participantesForm.get('participacion')?.valid && (participantesForm.get('participacion')?.dirty || participantesForm.get('participacion')?.touched)}"
+                    class="mt-1" floatLabel="always">
+                    <input class="text-right" matInput placeholder="Participacion" formControlName="participacion"
+                      type="number">
+                    <span matTextPrefix>%&nbsp;</span>
+                    <mat-error class="text-sm" *ngIf="participantesForm.get('participacion')?.errors?.['required']">
+                      La participacion del participante es requerida.
+                    </mat-error>
+                    <mat-error class="text-sm" *ngIf="participantesForm.get('participacion')?.errors?.['min']">
+                      La participacion del participante debe ser 0 como minimo.
+                    </mat-error>
+                    <mat-error class="text-sm"
+                      *ngIf="participantesForm.get('participacion')?.errors?.['participacionInvalida']">
+                      Se supero la participacion en total de los participantes de la comunidad.
+                    </mat-error>
+                  </mat-form-field>
+                  <div class="py-2 flex flex-col">
+                    <label>Puede crear votaciones</label>
+                    <mat-slide-toggle
+                      [ngClass]="{'mb-5': !participantesForm.get('crearVotacion')?.valid && (participantesForm.get('crearVotacion')?.dirty || participantesForm.get('crearVotacion')?.touched)}"
+                      class="mt-2 text-center" formControlName="crearVotacion" color="primary">
+                      {{participantesForm.get('crearVotacion')?.value == true ? 'Si' : 'No'}}
+                    </mat-slide-toggle>
+                    <mat-error class="text-sm" *ngIf="participantesForm.get('crearVotacion')?.errors?.['required']">
+                      La opcion para permitir que el integrante pueda crear una votacion es requerida.
+                    </mat-error>
+                  </div>
+                  <button type="submit" class="uppercase" color="primary" mat-raised-button>
+                    {{agregandoParticipante ? 'Agregar integrante' : 'Editar integrante'}}
+                  </button><br>
+                  <h4 class="text-center padding-2">Detalle de los integrantes</h4>
+                  <div class="scrollable max-h-42 flex flex-col items-around">
+                    <ng-container *ngFor="let integrante of participantes">
+                      <app-detalle-integrante (editarIntegranteEvent)="mostrarIntegrante($event)"
+                        (eliminarIntegranteEvent)="eliminarIntegrante($event)" [integrante]="integrante" />
+                    </ng-container>
+                  </div>
+                </div>
+              </form>
+              <div class="flex flex-col justify-center items-center py-3">
+                <button type="button" class="self-center" mat-button mat-raised-button [color]="colorCrearComunidad" matStepperNext
+                  [disabled]="crearComunidadDeshabilitado" (click)="crearNuevaComunidad()">Confirmar y enviar
+                  invitaciones</button>
+              </div>
+            </mat-step>
+          </mat-vertical-stepper>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-content>
+</div>

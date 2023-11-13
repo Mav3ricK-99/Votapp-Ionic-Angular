@@ -1,0 +1,14 @@
+<mat-card *ngIf="mostrar" [@toggleDetalle] class="cardIntegrante my-1">
+  <mat-card-header class="grow">
+    <mat-card-title>{{integrante.email}}</mat-card-title>
+    <mat-card-subtitle>{{integrante.participacion}}%</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-actions class="accionesCard" align="end">
+    <button type="button" (click)="editarIntegrante()" mat-fab class="botonAccion" color="darkPrimary">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button type="button" (click)="eliminarIntegrante()" mat-fab class="botonAccion" color="warn">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>
