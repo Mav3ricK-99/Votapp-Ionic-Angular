@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -17,15 +17,13 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { UserService } from './services/user/user.service';
 import { VotacionService } from './services/votacion/votacion.service';
 import { ParametrosService } from './services/parametros/parametros.service';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { MenuComponent } from './components/util/menu/menu/menu.component';
 import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSidenavModule } from '@angular/material/sidenav';
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
 }
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, MenuComponent],
   imports: [
     AuthenticationModule,
     HttpClientModule,
@@ -43,7 +41,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     ReactiveFormsModule,
     IonicStorageModule.forRoot(),
     JwtModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatIconModule
   ],
   providers: [TranslateStore, AuthenticationService, UserService, VotacionService, ParametrosService, { provide: HTTP_INTERCEPTORS, useClass: AuthorizationRequestInterceptor, multi: true },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],

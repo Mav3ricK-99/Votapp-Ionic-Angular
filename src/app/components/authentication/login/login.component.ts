@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
       email: new FormControl('', { validators: [Validators.required, Validators.email, Validators.max(60)], updateOn: 'blur' }),
-      password: new FormControl('', { validators: [Validators.required, Validators.minLength(6)]}),
+      password: new FormControl('', { validators: [Validators.required, Validators.minLength(6)] }),
     });
 
     Preferences.get({ key: 'parametros' }).then((data: any) => {
@@ -50,6 +50,7 @@ export class LoginComponent implements OnInit {
     let password = this.loginForm.get('password')?.value;
     this.authService.authenticate(email, password).subscribe({
       next: (obj: any) => {
+        this.loginForm.reset();
         const helper = new JwtHelperService();
         let jwt: JWT = {
           access_token: obj.access_token,
@@ -61,7 +62,13 @@ export class LoginComponent implements OnInit {
         this.router.navigateByUrl('/mis-votapps');
       },
       error: err => {
+        this.loginForm.reset();
         switch (err.status) {
+          case 400: {
+            this.router.navigate([`/completar-perfil`], {
+              state: { email: email },
+            });
+          }; break;
           case 401: {
             let mensajeError: string = err.error?.message ?? err.error?.mensajeError ?? '';
 

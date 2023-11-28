@@ -12,11 +12,11 @@ import { AuthenticationService } from 'src/app/services/authentication/authentic
 import { InfoDialogComponent } from '../../util/info-dialog/info-dialog.component';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss'],
+  selector: 'app-completar-perfil',
+  templateUrl: './completar-perfil.component.html',
+  styleUrls: ['./completar-perfil.component.scss'],
 })
-export class RegisterComponent {
+export class CompletarPerfilComponent {
 
   public hidePassword: boolean = true;
   public hideRepeatPassword: boolean = true;
@@ -24,10 +24,14 @@ export class RegisterComponent {
   langs: Observable<any>;
   countries: Observable<Country[]>;
 
-  public signUpForm: FormGroup;
+  public perfilForm: FormGroup;
   constructor(formBuilder: FormBuilder, private authService: AuthenticationService, private router: Router, public dialog: MatDialog, private _translate: TranslateService) {
-    this.signUpForm = formBuilder.group({
-      email: new FormControl('', { validators: [Validators.required, Validators.email, Validators.maxLength(60)], updateOn: 'blur' }),
+    
+    const navigation = this.router.getCurrentNavigation();
+    const state = navigation?.extras.state as { email: string };
+    
+    this.perfilForm = formBuilder.group({
+      email: new FormControl(state.email, { validators: [Validators.required, Validators.email, Validators.maxLength(60)], updateOn: 'blur' },),
       name: new FormControl('', { validators: [Validators.required, Validators.minLength(3), Validators.maxLength(45)], updateOn: 'blur' }),
       surname: new FormControl('', { validators: [Validators.required, Validators.minLength(3), Validators.maxLength(45)], updateOn: 'blur' }),
       residenceCountry: new FormControl('Argentina', { validators: [Validators.required], updateOn: 'blur' }),
@@ -40,7 +44,7 @@ export class RegisterComponent {
     this.countries = this._translate.get('countries');
     this.langs = this._translate.get('languages');
 
-    this.signUpForm.get('language')?.valueChanges.subscribe(langValue => {
+    this.perfilForm.get('language')?.valueChanges.subscribe(langValue => {
       this.langs.forEach((lenguajes: any) => {
         lenguajes.forEach((lenguaje: any) => {
           if (lenguaje.language.toLowerCase() == langValue.toLowerCase()) {
@@ -53,20 +57,20 @@ export class RegisterComponent {
     });
   }
 
-  submitSignUpForm() {
-    this.signUpForm.markAllAsTouched();
-    if (!this.signUpForm.valid) return;
+  completarDatosPerfil() {
+    this.perfilForm.markAllAsTouched();
+    if (!this.perfilForm.valid) return;
 
-    let email = this.signUpForm.get('email')?.value;
-    let name = this.signUpForm.get('name')?.value;
-    let surname = this.signUpForm.get('surname')?.value;
-    let residenceCountry = this.signUpForm.get('residenceCountry')?.value;
-    let yearBirth = this.signUpForm.get('yearBirth')?.value;
-    let password = this.signUpForm.get('password')?.value;
+    let email = this.perfilForm.get('email')?.value;
+    let name = this.perfilForm.get('name')?.value;
+    let surname = this.perfilForm.get('surname')?.value;
+    let residenceCountry = this.perfilForm.get('residenceCountry')?.value;
+    let yearBirth = this.perfilForm.get('yearBirth')?.value;
+    let password = this.perfilForm.get('password')?.value;
 
     let newUser = new User(0, name, surname, email, residenceCountry, yearBirth)
 
-    this.authService.signUpUser(newUser, password).subscribe({
+    this.authService.completarDatos(newUser, password).subscribe({
       next: (obj: any) => {
         const helper = new JwtHelperService();
 
@@ -89,19 +93,14 @@ export class RegisterComponent {
         });
       },
       error: err => {
-        if (err.error?.detalleError?.includes('email_unique')) {
-          this.signUpForm.get('email')?.setErrors({
-            duplicateEmail: true,
-          });
-          this.signUpForm.markAllAsTouched();
-        }
+        console.log(err);
       }
-    })
+    });
   }
 
   validarIdioma(): ValidatorFn {
-    return (signUpForm: AbstractControl): ValidationErrors | null => {
-      let idioma = signUpForm.get('language');
+    return (perfilForm: AbstractControl): ValidationErrors | null => {
+      let idioma = perfilForm.get('language');
       if (idioma?.value) {
         let idiomaIngresado: string = idioma.value.toLowerCase();
         let idiomaInvalido: boolean = false;
@@ -110,7 +109,7 @@ export class RegisterComponent {
         }
 
         if (idiomaInvalido) {
-          this.signUpForm.get('language')?.setErrors({
+          this.perfilForm.get('language')?.setErrors({
             idiomaInvalido: true,
           });
         }
@@ -121,13 +120,13 @@ export class RegisterComponent {
   }
 
   validarContraseñas(): ValidatorFn {
-    return (signUpForm: AbstractControl): ValidationErrors | null => {
-      let password = signUpForm.get('password');
-      let repeatPassword = signUpForm.get('repeatPassword');
+    return (perfilForm: AbstractControl): ValidationErrors | null => {
+      let password = perfilForm.get('password');
+      let repeatPassword = perfilForm.get('repeatPassword');
 
       if (password?.value) {
         if (password.value !== repeatPassword?.value) {
-          this.signUpForm.get('repeatPassword')?.setErrors({
+          this.perfilForm.get('repeatPassword')?.setErrors({
             passwordsMustMatch: true,
           });
         }
@@ -136,4 +135,5 @@ export class RegisterComponent {
       return null;
     }
   }
+
 }

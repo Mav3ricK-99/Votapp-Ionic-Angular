@@ -7,14 +7,15 @@ import { TranslateModule } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
 import { InfoDialogComponent } from 'src/app/components/util/info-dialog/info-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MenuComponent } from 'src/app/components/util/menu/menu/menu.component';
 import { MatIconModule } from '@angular/material/icon';
-
+import {MatMenuModule} from '@angular/material/menu';
+import { ProcesandoDialogComponent } from 'src/app/components/util/procesando-dialog/procesando-dialog.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 @NgModule({
   declarations: [
     BotonesInicioComponent,
     InfoDialogComponent,
-    MenuComponent
+    ProcesandoDialogComponent
   ],
   imports: [
     CommonModule,
@@ -23,10 +24,11 @@ import { MatIconModule } from '@angular/material/icon';
     TranslateModule,
     MatDialogModule,
     MatIconModule,
+    MatMenuModule,
+    MatProgressBarModule,
     RouterModule
   ], exports: [
     BotonesInicioComponent,
-    MenuComponent
   ]
 })
 export class UtilSharedModule { }

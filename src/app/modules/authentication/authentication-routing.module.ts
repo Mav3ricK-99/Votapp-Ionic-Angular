@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { CompletarPerfilComponent } from 'src/app/components/authentication/completarPerfil/completar-perfil.component';
 import { LoginComponent } from 'src/app/components/authentication/login/login.component';
 import { PasswordResetTokenComponent } from 'src/app/components/authentication/passwordRestore/password-reset-token/password-reset-token.component';
 import { ResetPasswordComponent } from 'src/app/components/authentication/passwordRestore/reset-password/reset-password.component';
@@ -24,6 +25,10 @@ const routes: Routes = [
   {
     path: 'reset-password',
     component: ResetPasswordComponent
+  },
+  {
+    path: 'completar-perfil',
+    component: CompletarPerfilComponent
   }
 ];
 

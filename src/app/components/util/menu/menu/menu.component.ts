@@ -14,7 +14,6 @@ export class MenuComponent {
   cerrarSesion() {
     this.userService.cerrarSesion();
     this.router.navigateByUrl('auth/login');
-
   }
 }
 

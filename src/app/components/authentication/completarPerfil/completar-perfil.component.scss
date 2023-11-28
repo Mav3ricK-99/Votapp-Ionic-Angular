@@ -1,0 +1,14 @@
+.mat-form-field-valid {
+    color: green !important;
+    border-width: 2px;
+
+    &.mat-form-field-label {
+        color: green;
+    }
+
+}
+
+.botonCompletarPerfil {
+    width: 100%;
+    padding: 1rem 0rem 1rem 0rem;
+}

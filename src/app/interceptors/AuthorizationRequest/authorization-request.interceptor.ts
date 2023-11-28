@@ -12,6 +12,8 @@ import { EventBusService, EventData } from 'src/app/services/eventBus/event-bus.
 import { JWT } from 'src/app/interfaces/jwt/jwt';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { InfoDialogComponent } from 'src/app/components/util/info-dialog/info-dialog.component';
 
 @Injectable()
 export class AuthorizationRequestInterceptor implements HttpInterceptor {
@@ -19,7 +21,7 @@ export class AuthorizationRequestInterceptor implements HttpInterceptor {
   private isRefreshing = false;
   private AUTH_HEADER = "Authorization";
 
-  constructor(private authService: AuthenticationService, private eventBusService: EventBusService, private router: Router) { }
+  constructor(private authService: AuthenticationService, private eventBusService: EventBusService, private router: Router, public dialog: MatDialog) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     req = req.clone({
@@ -60,9 +62,17 @@ export class AuthorizationRequestInterceptor implements HttpInterceptor {
             //Error al refreshear token
             if (error.status == '403') {
               this.eventBusService.emit(new EventData('logout', null));
-              localStorage.removeItem('jwt');
-              localStorage.removeItem('current_user');
-              this.router.navigateByUrl('auth/login');
+              this.dialog.closeAll();
+              this.dialog.open(InfoDialogComponent, {
+                maxWidth: '90vw', data: {
+                  titulo: 'Se cerrara la sesion',
+                  mensaje: 'Por tu seguridad se cerrara la sesion, a continuacion vas a ser redirijido al ingreso.',
+                }
+              }).afterClosed().subscribe(() => {
+                localStorage.removeItem('jwt');
+                localStorage.removeItem('current_user');
+                this.router.navigateByUrl('auth/login');
+              });
             }
 
             return throwError(() => error);

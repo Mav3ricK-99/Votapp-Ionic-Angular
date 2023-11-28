@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { MisvotappsRoutingModule } from './misvotapps-routing.module';
 import { MisVotappsComponent } from 'src/app/components/mis-votapps/mis-votapps.component';
 import { IonicModule } from '@ionic/angular';
@@ -14,8 +13,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import {MatIconModule} from '@angular/material/icon';
 import { UtilSharedModule } from '../../shared/util-shared/util-shared.module';
 import {MatTabsModule} from '@angular/material/tabs';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatSidenavModule} from '@angular/material/sidenav';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -34,7 +32,8 @@ import {MatSidenavModule} from '@angular/material/sidenav';
     MatRippleModule,
     MatDialogModule,
     MatIconModule,
-    MatTabsModule
+    MatTabsModule,
+    MatInputModule
   ]
 })
 export class MisvotappsModule { }

@@ -9,6 +9,7 @@ import { UserService } from 'src/app/services/user/user.service';
 import { InfoDialogComponent } from '../../util/info-dialog/info-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { ProcesandoDialogComponent } from '../../util/procesando-dialog/procesando-dialog.component';
 
 @Component({
   selector: 'app-nueva-comunidad',
@@ -53,7 +54,7 @@ export class NuevaComunidadComponent implements OnInit {
 
     this.colorPrimerContinuar = 'white-g';
     this.colorCrearComunidad = 'green';
-    this.crearComunidadDeshabilitado = false;
+    this.crearComunidadDeshabilitado = true;
 
     this.comunidadForm = formBuilder.group({
       nombre: new FormControl<string>('', { validators: [Validators.required, Validators.minLength(3), Validators.maxLength(40)], updateOn: 'blur' }),
@@ -62,7 +63,7 @@ export class NuevaComunidadComponent implements OnInit {
     });
 
     this.participantesForm = formBuilder.group({
-      email: new FormControl<string>(this.userService.currentUser.email, { validators: [Validators.required, Validators.email], updateOn: 'blur' }),
+      email: new FormControl<string>(this.userService.currentUser.email, { validators: [Validators.required, Validators.email], updateOn: 'change' }),
       participacion: new FormControl<number | null>(null, { validators: [Validators.required, Validators.min(0), Validators.max(100)], updateOn: 'blur' }),
       crearVotacion: new FormControl<boolean>(true, { validators: [Validators.required], updateOn: 'change' }),
     }, { validators: [this.validarParticipacion(), this.validarSiYaParticipa()] });
@@ -96,6 +97,12 @@ export class NuevaComunidadComponent implements OnInit {
   }
 
   public agregarIntegrante(formDirective: FormGroupDirective) {
+    if (this.comunidadForm.get('tipoVotacion')?.value.nombre == 'porcentaje') {
+      this.participantesForm.markAllAsTouched();
+    } else {
+      this.participantesForm.get('email')?.markAllAsTouched();
+    }
+
     if (!this.participantesForm.valid) return;
     let email = this.participantesForm.get('email')?.value;
     let participacion = this.participantesForm.get('participacion')?.value;
@@ -106,6 +113,7 @@ export class NuevaComunidadComponent implements OnInit {
       participacion: participacion,
       crearVotacion: crearVotacion,
     });
+    this.crearComunidadDeshabilitado = false;
 
     let votacionTipoComunidad = this.comunidadForm.get('tipoVotacion')?.value;
     if (votacionTipoComunidad instanceof VotacionTipo && votacionTipoComunidad.nombre == 'persona') {
@@ -175,23 +183,59 @@ export class NuevaComunidadComponent implements OnInit {
       return participante.email != participanteEliminado.email ? participante : null;
     });
 
+    if (!this.participantes.length) {
+      this.crearComunidadDeshabilitado = true;
+    }
+
     this.agregandoParticipante = true;
   }
 
   public continuarPrimerPaso() {
     this.comunidadForm.markAllAsTouched();
+
+    let votacionTipo: VotacionTipo = this.comunidadForm.get('tipoVotacion')?.value;
+    if (votacionTipo.nombre.includes('persona') && !this.participantes.length) {
+      this.participantes.push({
+        email: this.userService.currentUser.email,
+        participacion: 100,
+        crearVotacion: true,
+      });
+      this.crearComunidadDeshabilitado = false;
+      this.participantesForm.get('email')?.setValue('');
+    }
   }
 
   public crearNuevaComunidad() {
+    this.participantesForm.disable();
     if (!this.comunidadForm.valid || !this.participantes.length) return;
 
-    //this.dialog.open(CreandoVotappDialog, { maxWidth: '90vw' });
+    this.crearComunidadDeshabilitado = true;
+    let participacionTotal = 0;
+    this.participantes.forEach((participante: EmailParticipacion) => {
+      participacionTotal += participante.participacion;
+    });
+    if (participacionTotal != 100) {
+      this.crearComunidadDeshabilitado = false;
+      this.participantesForm.enable();
+      this.participantesForm.markAsPristine();
+      this.participantesForm.markAsUntouched();
+      this.participantesForm.get('participacion')?.setErrors({
+        participacionInvalida: true,
+      });
+      return;
+    }
+
+    this.dialog.open(ProcesandoDialogComponent, {
+      maxWidth: '90vw', data: {
+        titulo: 'Creando nueva comunidad',
+        mensaje: 'Enviando notificaciones a los participantes...',
+      }
+    })
 
     let nombre: string = this.comunidadForm.get('nombre')?.value;
     let detalle: string = this.comunidadForm.get('detalle')?.value;
     let tipoVotacion: VotacionTipo = this.comunidadForm.get('tipoVotacion')?.value;
 
-    this.crearComunidadDeshabilitado = true;
     this.comunidadService.crearComunidad(nombre, detalle, tipoVotacion, this.participantes).subscribe({
       next: (obj: any) => {
 
@@ -209,9 +253,11 @@ export class NuevaComunidadComponent implements OnInit {
       },
       error: err => {
         this.dialog.closeAll();
+        this.participantesForm.enable();
         this.crearComunidadDeshabilitado = false;
         console.log(err);
       }, complete: () => {
+        this.participantesForm.enable();
         this.crearComunidadDeshabilitado = false;
       }
     });
@@ -221,14 +267,17 @@ export class NuevaComunidadComponent implements OnInit {
     return (participantesForm: AbstractControl): ValidationErrors | null => {
       if (this.participantes.length != 0) {
         let participacion = <number>participantesForm.get('participacion')?.value;
+        let email = participantesForm.get('email')?.value;
         let participacionTotal = 0;
         this.participantes.forEach((participante: EmailParticipacion) => {
-          participacionTotal += participante.participacion;
+          if (this.agregandoParticipante && this.editandoParticipante?.email !== email) {
+            participacionTotal += participante.participacion;
+          }
         });
 
         if ((participacionTotal + participacion) > 100) {
           participantesForm.get('participacion')?.setErrors({
-            participacionInvalida: true,
+            participacionExcedida: true,
           });
         }
       }

@@ -17,12 +17,14 @@ import { PasswordResetTokenComponent } from 'src/app/components/authentication/p
 import { ResetPasswordComponent } from 'src/app/components/authentication/passwordRestore/reset-password/reset-password.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { UtilSharedModule } from '../shared/util-shared/util-shared.module';
+import { CompletarPerfilComponent } from 'src/app/components/authentication/completarPerfil/completar-perfil.component';
 @NgModule({
   declarations: [
     LoginComponent,
     RegisterComponent,
     PasswordResetTokenComponent,
     ResetPasswordComponent,
+    CompletarPerfilComponent
   ],
   imports: [
     IonicModule,

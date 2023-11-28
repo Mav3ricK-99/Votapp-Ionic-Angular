@@ -1,4 +1,3 @@
-<app-menu></app-menu>
 <div class="ion-page" id="main-content">
   <ion-header>
     <ion-toolbar>
@@ -32,14 +31,14 @@
                       <ng-container *ngFor="let comunidad of comunidadesFiltradas">
                         <button (click)="elejirComunidad(comunidad)" class="uppercase mb-2 min-height-2 justify-start"
                           mat-stroked-button mat-button
-                          *ngIf="comunidadForm.get('comunidad')?.value?.nombre != comunidad.nombre; else comunidadElejida">
-                          <mat-icon aria-hidden="false" aria-label="Porcentaje" fontIcon="percent"></mat-icon>
+                          *ngIf="comunidadForm.get('comunidad')?.value?.id != comunidad.id; else comunidadElejida">
+                          <mat-icon aria-hidden="false" [fontIcon]="comunidad.votacionTipo.nombre == 'porcentaje' ? 'percent' : 'groups'"></mat-icon>
                           {{comunidad.nombre}}
                         </button>
                         <ng-template #comunidadElejida>
                           <button class="uppercase mb-2 min-height-2 justify-start" mat-stroked-button mat-button
                             color="darkPrimary">
-                            <mat-icon aria-hidden="false" aria-label="Porcentaje" fontIcon="percent"></mat-icon>
+                            <mat-icon aria-hidden="false" [fontIcon]="comunidad.votacionTipo.nombre == 'porcentaje' ? 'percent' : 'groups'"></mat-icon>
                             {{comunidad.nombre}}
                           </button>
                         </ng-template>

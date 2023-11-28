@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-botones-inicio',
@@ -11,7 +12,7 @@ export class BotonesInicioComponent implements OnInit {
 
   public colorMisVotapps: string;
   public colorNuevaVotapp: string;
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
     if(this.botonPresionado.includes('misVotapps')) {

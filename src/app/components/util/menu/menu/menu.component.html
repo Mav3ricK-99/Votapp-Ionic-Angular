@@ -9,17 +9,28 @@
   </ion-header>
   <ion-content>
     <div class="flex h-full flex-col">
-      <div class="self-center grow">
-        <button class="boton-menu uppercase border-gradient border-gradient-purple py-2 my-2" [routerLink]="['/auth/password-reset-token']">
-          <mat-icon class="mb--5 me-1">vpn_key</mat-icon>
-          Cambiar contraseña
-        </button>
+      <div class="flex flex-col grow">
+        <ion-menu-toggle>
+          <button class="boton-menu uppercase border-gradient border-gradient-purple py-2 my-2"
+            [routerLink]="['/nueva-comunidad']">
+            <mat-icon class="mb--5 me-1">groups</mat-icon>
+            Crear comunidad
+          </button>
+          <button class="boton-menu uppercase border-gradient border-gradient-purple py-2 my-2"
+            [routerLink]="['/auth/password-reset-token']">
+            <mat-icon class="mb--5 me-1">vpn_key</mat-icon>
+            Cambiar contraseña
+          </button>
+        </ion-menu-toggle>
       </div>
-      <div class="self-center">
-        <button class="boton-menu uppercase border-gradient border-gradient-purple py-2 my-5" (click)="cerrarSesion()">
-          <mat-icon class="mb--5 me-1">logout</mat-icon>
-          Cerrar sesion
-        </button>
+      <div class="flex flex-col">
+        <ion-menu-toggle>
+          <button class="boton-menu uppercase border-gradient border-gradient-purple py-2 my-5"
+            (click)="cerrarSesion()">
+            <mat-icon class="mb--5 me-1">logout</mat-icon>
+            Cerrar sesion
+          </button>
+        </ion-menu-toggle>
       </div>
     </div>
   </ion-content>

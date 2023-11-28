@@ -1,5 +1,4 @@
-<app-menu></app-menu>
-<div class="ion-page" id="main-content">
+<div class="ion-page">
   <ion-header>
     <ion-toolbar>
       <ion-buttons slot="start">
@@ -73,8 +72,8 @@
                       Debe seleccionar un tipo de votacion para esta comunidad.
                     </mat-error>
                   </ng-container>
-                  <div [@abiertoCerrado]="detalleTipoVotacionAbierto ? 'abierto' : 'cerrado'"
-                    class="w-100 flex justify-center uppercase border-dashed my-2 p-2 border-2 text-xs border-primary bg-white">
+                  <div [@abiertoCerrado]="detalleTipoVotacionAbierto ? 'abierto' : 'cerrado'" id="infoTipoVotacion"
+                    class="w-100 flex justify-center uppercase my-2 p-2 border-2 text-xs">
                     <span
                       *ngIf="comunidadForm.get('tipoVotacion')?.value?.nombre == 'porcentaje' && detalleTipoVotacionAbierto">Permite
                       definir votaciones donde se puede establecer un porcentaje variable de participacion para cada
@@ -136,36 +135,43 @@
                       La participacion del participante debe ser 0 como minimo.
                     </mat-error>
                     <mat-error class="text-sm"
-                      *ngIf="participantesForm.get('participacion')?.errors?.['participacionInvalida']">
+                      *ngIf="participantesForm.get('participacion')?.errors?.['participacionExcedida']">
                       Se supero la participacion en total de los participantes de la comunidad.
                     </mat-error>
+                    <mat-error class="text-sm"
+                      *ngIf="participantesForm.get('participacion')?.errors?.['participacionInvalida']">
+                      La participacion total de los integrantes debe ser 100.
+                    </mat-error>
                   </mat-form-field>
-                  <div class="py-2 flex flex-col">
+                  <div class="py-3 flex flex-row justify-around items-center">
                     <label>Puede crear votaciones</label>
                     <mat-slide-toggle
                       [ngClass]="{'mb-5': !participantesForm.get('crearVotacion')?.valid && (participantesForm.get('crearVotacion')?.dirty || participantesForm.get('crearVotacion')?.touched)}"
-                      class="mt-2 text-center" formControlName="crearVotacion" color="primary">
+                      formControlName="crearVotacion" color="primary">
                       {{participantesForm.get('crearVotacion')?.value == true ? 'Si' : 'No'}}
                     </mat-slide-toggle>
                     <mat-error class="text-sm" *ngIf="participantesForm.get('crearVotacion')?.errors?.['required']">
                       La opcion para permitir que el integrante pueda crear una votacion es requerida.
                     </mat-error>
                   </div>
-                  <button type="submit" class="uppercase" color="primary" mat-raised-button>
+                  <button type="submit" class="uppercase" color="darkPrimary" mat-raised-button>
                     {{agregandoParticipante ? 'Agregar integrante' : 'Editar integrante'}}
                   </button><br>
-                  <h4 class="text-center padding-2">Detalle de los integrantes</h4>
-                  <div class="scrollable max-h-42 flex flex-col items-around">
-                    <ng-container *ngFor="let integrante of participantes">
-                      <app-detalle-integrante (editarIntegranteEvent)="mostrarIntegrante($event)"
-                        (eliminarIntegranteEvent)="eliminarIntegrante($event)" [integrante]="integrante" />
-                    </ng-container>
-                  </div>
+                  <ng-container *ngIf="participantes.length > 0">
+                    <h4 class="text-center padding-2">Detalle de los integrantes</h4>
+                    <div class="scrollable max-h-42 flex flex-col items-around">
+                      <ng-container *ngFor="let integrante of participantes">
+                        <app-detalle-integrante (editarIntegranteEvent)="mostrarIntegrante($event)"
+                          (eliminarIntegranteEvent)="eliminarIntegrante($event)" [integrante]="integrante" />
+                      </ng-container>
+                    </div>
+                  </ng-container>
                 </div>
               </form>
               <div class="flex flex-col justify-center items-center py-3">
-                <button type="button" class="self-center" mat-button mat-raised-button [color]="colorCrearComunidad" matStepperNext
-                  [disabled]="crearComunidadDeshabilitado" (click)="crearNuevaComunidad()">Confirmar y enviar
+                <button type="button" class="self-center" mat-button mat-raised-button [color]="colorCrearComunidad"
+                  matStepperNext [disabled]="crearComunidadDeshabilitado" (click)="crearNuevaComunidad()">Confirmar y
+                  enviar
                   invitaciones</button>
               </div>
             </mat-step>

@@ -30,6 +30,17 @@ export class AuthenticationService {
     });
   }
 
+  completarDatos(newUser: User, password: string) {
+    return this.httpClient.post(this.AUTH_API_URL + '/completar-datos', {
+      email: newUser.email,
+      nombre: newUser.name,
+      apellido: newUser.surname,
+      password: password,
+      paisResidencia: newUser.country,
+      fechaNacimiento: newUser.yearOfBirth
+    });
+  }
+
   refreshToken() {
     return this.httpClient.post(this.AUTH_API_URL + '/refresh-token', {});
   }

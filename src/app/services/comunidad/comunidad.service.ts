@@ -17,7 +17,6 @@ export class ComunidadService {
   constructor(private httpClient: HttpClient) { }
 
   crearComunidad(nombre: string, detalle: string, votacionTipo: VotacionTipo, participantes: Array<EmailParticipacion>) {
-    console.log(votacionTipo.id);
     return this.httpClient.post<Comunidad>(this.COMUNIDAD_API_URL + `/`, {
       nombre: nombre,
       descripcion: detalle,
