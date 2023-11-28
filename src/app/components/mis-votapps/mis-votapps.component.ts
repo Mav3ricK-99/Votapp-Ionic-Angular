@@ -26,6 +26,7 @@ export class MisVotappsComponent implements AfterViewInit {
   }
 
   ionViewDidEnter() {
+    this.votaciones = [];
     this.llamarVotapps(this.pagina);
   }
 
@@ -36,6 +37,7 @@ export class MisVotappsComponent implements AfterViewInit {
   handleRefresh(event: any) {
     setTimeout(() => {
       this.pagina = 0;
+      this.votaciones = [];
       this.llamarVotapps(this.pagina);
       event.target.complete();
     }, 500);
