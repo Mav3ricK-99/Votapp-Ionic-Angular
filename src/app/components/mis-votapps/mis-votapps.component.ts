@@ -60,7 +60,7 @@ export class MisVotappsComponent implements AfterViewInit {
         .subscribe(data => {
           this.filtrarVotacionesPorComunidad(data.toLocaleLowerCase());
         });
-    }, 750);
+    }, 1000);
   }
 
   private filtrarVotacionesPorComunidad(nombreComunidad: string) {

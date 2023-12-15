@@ -31,7 +31,7 @@ import { ProcesandoDialogComponent } from '../../util/procesando-dialog/procesan
     ]),
   ],
 })
-export class NuevaComunidadComponent implements OnInit {
+export class NuevaComunidadComponent {
 
   public comunidadForm: FormGroup;
   public participantesForm: FormGroup;
@@ -39,7 +39,7 @@ export class NuevaComunidadComponent implements OnInit {
   public colorPrimerContinuar: string;
   public colorCrearComunidad: string;
 
-  public votacionesTipo$: Observable<any>;
+  public votacionesTipo: VotacionTipo[];
 
   public detalleTipoVotacionAbierto = false;
 
@@ -48,13 +48,21 @@ export class NuevaComunidadComponent implements OnInit {
 
   public crearComunidadDeshabilitado: boolean;
 
-  public participantes: Array<EmailParticipacion> = [];
+  public participantes: EmailParticipacion[] = [];
+
+  public votacionTipo: string;
+  public votacionesTipoListas: boolean;
 
   constructor(formBuilder: FormBuilder, private _snackBar: MatSnackBar, private userService: UserService, private comunidadService: ComunidadService, public dialog: MatDialog, public router: Router) {
 
     this.colorPrimerContinuar = 'white-g';
     this.colorCrearComunidad = 'green';
     this.crearComunidadDeshabilitado = true;
+    this.votacionesTipoListas = false;
+
+    const navigation = this.router.getCurrentNavigation();
+    const queryParams = navigation?.finalUrl?.queryParams as { votacionTipo: string };
+    this.votacionTipo = queryParams.votacionTipo;
 
     this.comunidadForm = formBuilder.group({
       nombre: new FormControl<string>('', { validators: [Validators.required, Validators.minLength(3), Validators.maxLength(40)], updateOn: 'blur' }),
@@ -80,20 +88,18 @@ export class NuevaComunidadComponent implements OnInit {
       valid == 'VALID' ? this.colorPrimerContinuar = 'green' : this.colorPrimerContinuar = 'white-g';
     });
 
-    this.votacionesTipo$ = this.comunidadService.getTipoVotaciones();
-  }
-
-  ngOnInit() { }
-
-  public elejirVotacionTipo(votacionTipo: VotacionTipo) {
-    let formControl: any = this.comunidadForm.get('tipoVotacion');
-    if (votacionTipo.nombre != formControl.value?.nombre) {
-      this.detalleTipoVotacionAbierto = false;
-      setTimeout(() => {
-        this.detalleTipoVotacionAbierto = true;
-      }, 250);
-    }
-    formControl.setValue(votacionTipo);
+    this.comunidadService.getTipoVotaciones().subscribe((votacionesTipo: VotacionTipo[]) => {
+      this.votacionesTipo = votacionesTipo;
+      this.votacionesTipoListas = true;
+      votacionesTipo.forEach((votacionTipo: VotacionTipo) => {
+        if (votacionTipo.nombre == this.votacionTipo) {
+          this.comunidadForm.get('tipoVotacion')?.setValue(votacionTipo);
+          setTimeout(() => {
+            this.detalleTipoVotacionAbierto = true;
+          }, 250);
+        }
+      });
+    });
   }
 
   public agregarIntegrante(formDirective: FormGroupDirective) {

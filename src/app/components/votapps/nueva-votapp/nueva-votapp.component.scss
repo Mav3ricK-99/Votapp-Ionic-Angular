@@ -1,10 +1,3 @@
-#orangeButton {
-    --mdc-outlined-button-outline-color: #f44336 !important;
-}
-
-#blueButton {
-    --mdc-outlined-button-outline-color: #3f51b5 !important;
-}
 .justify-start {
     justify-content: start !important;
 }
@@ -14,11 +7,12 @@
     padding-right: 30px !important;
 }
 
-.colControlesHora {
-    margin-bottom: -1rem;
+.mat-mdc-outlined-button .mat-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 1.5rem;
 }
 
-ion-datetime {
-    --background: rgb(249 250 251);
-    --background-rgb: rgb(249 250 251);
+.colControlesHora {
+    margin-bottom: -1rem;
 }

@@ -29,16 +29,18 @@
                   <ng-container *ngIf="(comunidadesFiltradas$ | async) as comunidadesFiltradas; else loader">
                     <ng-container *ngIf="comunidadesFiltradas.length > 0; else noHayComunidades">
                       <ng-container *ngFor="let comunidad of comunidadesFiltradas">
-                        <button (click)="elejirComunidad(comunidad)" class="uppercase mb-2 min-height-2 justify-start"
+                        <button (click)="elejirComunidad(comunidad)" class="uppercase mb-2 min-height-2 justify-start text-base"
                           mat-stroked-button mat-button
                           *ngIf="comunidadForm.get('comunidad')?.value?.id != comunidad.id; else comunidadElejida">
-                          <mat-icon aria-hidden="false" [fontIcon]="comunidad.votacionTipo.nombre == 'porcentaje' ? 'percent' : 'groups'"></mat-icon>
+                          <mat-icon aria-hidden="false"
+                            [fontIcon]="comunidad.votacionTipo.nombre == 'porcentaje' ? 'percent' : 'groups'"></mat-icon>
                           {{comunidad.nombre}}
                         </button>
                         <ng-template #comunidadElejida>
-                          <button class="uppercase mb-2 min-height-2 justify-start" mat-stroked-button mat-button
+                          <button class="uppercase mb-2 min-height-2 justify-start text-base" mat-stroked-button mat-button
                             color="darkPrimary">
-                            <mat-icon aria-hidden="false" [fontIcon]="comunidad.votacionTipo.nombre == 'porcentaje' ? 'percent' : 'groups'"></mat-icon>
+                            <mat-icon aria-hidden="false"
+                              [fontIcon]="comunidad.votacionTipo.nombre == 'porcentaje' ? 'percent' : 'groups'"></mat-icon>
                             {{comunidad.nombre}}
                           </button>
                         </ng-template>
@@ -49,6 +51,10 @@
                         No hay comunidades para mostrar.
                       </h4>
                     </ng-template>
+                    <button class="uppercase mb-2 min-height-2 justify-start" [routerLink]="['/nueva-comunidad']"
+                      [queryParams]="{votacionTipo: votacionTipo}" color="primary" mat-raised-button>
+                      <mat-icon aria-hidden="false" fontIcon="add_circle"></mat-icon>Crear nueva
+                      Comunidad</button><br>
                   </ng-container>
                   <ng-template #loader>
                     <div role="status" class="text-center mt-1">
@@ -67,9 +73,6 @@
                   </ng-template>
                 </div>
                 <div class="flex flex-col justify-around pt-2 items-center">
-                  <button class="w-50 mb-1/[0.5] uppercase" [routerLink]="['/nueva-comunidad']" color="primary"
-                    mat-raised-button>Crear nueva
-                    Comunidad</button><br>
                   <button class="w-24" (click)="continuarPrimerPaso()" mat-button mat-raised-button
                     [color]="colorPrimerContinuar" matStepperNext>Continuar</button>
                 </div>

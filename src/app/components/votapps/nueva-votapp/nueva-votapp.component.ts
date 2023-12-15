@@ -42,6 +42,8 @@ export class NuevaVotappComponent {
 
   public fechaHoy: Date;
 
+  public votacionTipo: string;
+
   constructor(formBuilder: FormBuilder, private userService: UserService, private votacionService: VotacionService, public dialog: MatDialog, public router: Router, public platform: Platform) {
     for (let i = 0; i < 60; i++) {
       if (i < 24) {
@@ -49,8 +51,13 @@ export class NuevaVotappComponent {
       }
       this.minutos.push(i.toString().padStart(2, '0'));
     }
+
+    const navigation = this.router.getCurrentNavigation();
+    const queryParams = navigation?.finalUrl?.queryParams as { votacionTipo: string };
+    this.votacionTipo = queryParams.votacionTipo;
+
     this.fechaHoy = new Date();
-    this.comunidades$ = this.userService.getMisComunidades();
+    this.comunidades$ = this.userService.getMisComunidadesPorTipoVotacion(this.votacionTipo);
     this.comunidadesFiltradas$ = this.comunidades$;
     this.tipoDecisiones$ = this.votacionService.getTipoDecisiones();
     this.frecuenciasVotacion$ = this.votacionService.getFrecuencias();

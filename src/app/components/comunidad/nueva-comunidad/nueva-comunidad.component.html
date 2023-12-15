@@ -34,21 +34,11 @@
                 <div class="flex flex-col justify-around">
                   <h4 class="text-center padding-2">Tipo de Votación</h4>
                   <div class="flex justify-around padding-2">
-                    <ng-container *ngIf="(votacionesTipo$ | async) as votacionesTipo; else loader">
-                      <ng-container *ngIf="votacionesTipo.length > 0; else noHayTiposDeVotaciones">
-                        <ng-container *ngFor="let votacionTipo of votacionesTipo">
-                          <button type="button" (click)="elejirVotacionTipo(votacionTipo)" class="botonesVotacionTipo"
-                            mat-fab
-                            [color]="comunidadForm.get('tipoVotacion')?.value?.nombre == votacionTipo.nombre ? 'primary' : 'white'">
-                            <mat-icon>{{votacionTipo.nombre == 'porcentaje' ? 'percent' : 'groups'}}</mat-icon>
-                          </button>
-                        </ng-container>
-                      </ng-container>
-                      <ng-template #noHayTiposDeVotaciones>
-                        <h4 class="text-center">
-                          No tipos de votaciones para mostrar.
-                        </h4>
-                      </ng-template>
+                    <ng-container *ngIf="votacionesTipoListas; else loader">
+                      <button type="button" class="botonesVotacionTipo"
+                        mat-fab color="primary">
+                        <mat-icon>{{comunidadForm.get('tipoVotacion')?.value?.nombre == 'porcentaje' ? 'percent' : 'groups'}}</mat-icon>
+                      </button>
                     </ng-container>
                     <ng-template #loader>
                       <div role="status" class="text-center mt-1">
