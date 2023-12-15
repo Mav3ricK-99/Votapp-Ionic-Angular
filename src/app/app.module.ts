@@ -19,6 +19,7 @@ import { VotacionService } from './services/votacion/votacion.service';
 import { ParametrosService } from './services/parametros/parametros.service';
 import { MenuComponent } from './components/util/menu/menu/menu.component';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
 }
@@ -42,6 +43,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     IonicStorageModule.forRoot(),
     JwtModule,
     BrowserAnimationsModule,
+    MatMenuModule,
     MatIconModule
   ],
   providers: [TranslateStore, AuthenticationService, UserService, VotacionService, ParametrosService, { provide: HTTP_INTERCEPTORS, useClass: AuthorizationRequestInterceptor, multi: true },

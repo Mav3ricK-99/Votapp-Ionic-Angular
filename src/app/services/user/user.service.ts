@@ -87,6 +87,23 @@ export class UserService {
     }));
   }
 
+  getMisComunidadesPorTipoVotacion(tipoVotacion: string) {
+    return this.httpClient.get(this.USER_API_URL + `/${this.currentUser.id}/comunidades/${tipoVotacion}`).pipe(map((data: any) => {
+      return data.comunidades.map((comunidad: any) => {
+        let votacionTipoComunidad: VotacionTipo = new VotacionTipo(comunidad.votacionTipo.id, comunidad.votacionTipo.nombre, comunidad.votacionTipo.habilitado);
+
+        let comunidadIntegrantes: ComunidadIntegrantes[] = [];
+        comunidad.comunidadIntegrantes.forEach((comunidadIntegrante: any) => {
+          let nuevaComunidadIntegrante: ComunidadIntegrantes = new ComunidadIntegrantes(comunidadIntegrante.id, comunidadIntegrante.votar, comunidadIntegrante.user, comunidadIntegrante.crearVotacion, comunidadIntegrante.porcentaje, comunidadIntegrante.requiereAceptacion, comunidadIntegrante.fEnvioInvitacion, comunidadIntegrante.fDecision, comunidadIntegrante.aceptacion, comunidadIntegrante.habilitado, comunidadIntegrante.created_at);
+          comunidadIntegrantes.push(nuevaComunidadIntegrante);
+        });
+
+        let nuevaComunidad: Comunidad = new Comunidad(comunidad.id, comunidad.nombre, comunidad.descripcion, votacionTipoComunidad, comunidadIntegrantes, new Date(comunidad.created_at));
+        return nuevaComunidad;
+      })
+    }));
+  }
+
   getLocalUser() {
     let currentUserStr = localStorage.getItem('current_user');
     if (currentUserStr) {
