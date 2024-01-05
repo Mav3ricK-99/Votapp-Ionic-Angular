@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, HostListener, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TipoVoto } from 'src/app/classes/tipoVoto/tipo-voto';
 import { Votacion } from 'src/app/classes/votacion/votacion';
@@ -9,7 +9,7 @@ import { VotacionService } from 'src/app/services/votacion/votacion.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { Preferences } from '@capacitor/preferences';
 import { MatIcon } from '@angular/material/icon';
-import { Observable } from 'rxjs';
+import { RegistroEventosService } from 'src/app/services/registroEventos/registro-eventos.service';
 @Component({
   selector: 'app-votapp-detail',
   templateUrl: './votapp-detail.component.html',
@@ -37,7 +37,7 @@ export class VotappDetailComponent implements OnInit, AfterViewInit {
 
   public votacionLista: boolean;
 
-  constructor(private router: ActivatedRoute, public dialog: MatDialog, public userService: UserService, private votacionService: VotacionService) {
+  constructor(private router: ActivatedRoute, public dialog: MatDialog, public userService: UserService, private votacionService: VotacionService, private registroEventosService: RegistroEventosService) {
     this.mostrarIconoDetalle = false;
     this.votacionLista = false;
     this.tipoDeVotos = [];
@@ -128,13 +128,15 @@ export class VotappDetailComponent implements OnInit, AfterViewInit {
       .afterClosed().subscribe(dialogResult => {
         if (dialogResult) {
           this.votacionService.changeVote(this.votapp.id, voto.nombre).subscribe({
-            next: (obj: any) => {
+            next: () => {
               this.cambiarVoto(voto);
             },
             error: err => {
               console.error(err);
             }
           });
+        } else {
+          this.registroEventosService.registroConfirmacionVoto(this.votapp.id, voto, false).subscribe();
         }
       });
   }

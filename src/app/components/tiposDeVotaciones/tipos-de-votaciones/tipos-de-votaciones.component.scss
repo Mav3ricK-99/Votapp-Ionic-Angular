@@ -1,0 +1,33 @@
+.mat-icon {
+    margin: 0 !important;
+    width: 1.9rem;
+    height: 1.9rem;
+    font-size: 1.9rem;
+
+    transition: all .15s linear;
+}
+
+.divTipoDeVotacion {
+    transition: all .15s linear;
+}
+
+.divTipoDeVotacion:active {
+    width: 3.15rem;
+    height: 3.15rem;
+
+    .mat-icon {
+        width: 2rem;
+        height: 2rem;
+        font-size: 2rem;
+    }
+}
+
+
+
+.leyendaTiposDeVotacion {
+    font-size: .70rem;
+}
+
+.colTipoVotacion {
+    flex: auto !important;
+}

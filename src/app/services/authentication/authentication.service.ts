@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from 'src/app/classes/user/user';
+import { JWT } from 'src/app/interfaces/jwt/jwt';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -42,7 +43,17 @@ export class AuthenticationService {
   }
 
   refreshToken() {
-    return this.httpClient.post(this.AUTH_API_URL + '/refresh-token', {});
+    let jwtStr = localStorage.getItem('jwt');
+    let jwt: JWT | null = null;
+    if (jwtStr) {
+      jwt = JSON.parse(jwtStr);
+    }
+
+    return this.httpClient.post(this.AUTH_API_URL + '/refresh-token', {}, {
+      headers: {
+        Authorization: "Bearer " + jwt?.access_token
+      }
+    });
   }
 
   solicitarTokenRecuperoContrasenia(email: string) {

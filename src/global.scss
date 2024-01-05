@@ -84,6 +84,26 @@ ion-grid {
     border: 2px solid darken(#4ade80, 5%) !important;
 }
 
+.mat-green-300 {
+    color: rgb(134 239 172);
+    background-color: transparent !important;
+}
+
+.mat-sky-300 {
+    color: rgb(125 211 252);
+    background-color: transparent !important;
+}
+
+.mat-yellow-300 {
+    color: rgb(253 224 71);
+    background-color: transparent !important;
+}
+
+.mat-gray-300 {
+    color: rgb(209 213 219);
+    background-color: transparent !important;
+}
+
 .border-primary {
     border-color: #3f51b5 !important;
 }
@@ -129,7 +149,15 @@ ion-grid {
     --mat-stepper-container-color: rgb(249 250 251) !important;
 }
 
-.mat-mdc-tab-header{
+.mat-vertical-content-container {
+    margin-left: 24px !important;
+}
+
+.mat-vertical-stepper-header {
+    padding-left: 12px !important;
+}
+
+.mat-mdc-tab-header {
     z-index: 0 !important;
 }
 

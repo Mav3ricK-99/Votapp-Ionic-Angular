@@ -12,10 +12,10 @@ export class BotonesInicioComponent implements OnInit {
 
   public colorMisVotapps: string;
   public colorNuevaVotapp: string;
-  constructor(private router: Router) { }
+  constructor() { }
 
   ngOnInit() {
-    if(this.botonPresionado.includes('misVotapps')) {
+    if (this.botonPresionado.includes('misVotapps')) {
       this.colorMisVotapps = 'darkPrimary';
       this.colorNuevaVotapp = 'white';
     } else {
@@ -23,5 +23,4 @@ export class BotonesInicioComponent implements OnInit {
       this.colorNuevaVotapp = 'darkPrimary';
     }
   }
-
 }

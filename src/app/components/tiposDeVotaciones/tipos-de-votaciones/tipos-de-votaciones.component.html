@@ -1,0 +1,53 @@
+<div class="ion-page" id="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title class="text-sm"> SELECCIONA UN TIPO DE VOTACION </ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content [scrollEvents]="true">
+    <section class="bg-gray-50 flex flex-col justify-evenly h-full">
+      <article [@bounceInLeft]="estadoAnimacion" [routerLink]="['/nueva-votapp']"
+        [queryParams]="{votacionTipo: 'persona'}"
+        class="mx-4 mb-1 rounded-md bg-sky-300 flex flex-col justify-evenly items-center shadow shadow-[#0EA5E9]">
+        <h2 class="text-lg text-white my-1">Comunidad personas</h2>
+        <div class="w-12 h-12 rounded-xl bg-sky-200 flex justify-center items-center divTipoDeVotacion" matRipple
+          matRippleColor="sky-300">
+          <mat-icon color="sky-300">groups</mat-icon>
+        </div>
+        <p class="text-center text-white px-2 leyendaTiposDeVotacion">Permite
+          definir votaciones donde todos los integrantes tienen el mismo porcentaje de participacion.</p>
+      </article>
+      <article [@bounceInRight]="estadoAnimacion" [routerLink]="['/nueva-votapp']"
+        [queryParams]="{votacionTipo: 'porcentaje'}"
+        class="mx-4 mb-1 rounded-md bg-green-300 flex flex-col justify-evenly items-center shadow shadow-[#22C55E]">
+        <h2 class="text-lg text-white my-1">Comunidad %</h2>
+        <div class="w-12 h-12 rounded-xl bg-green-200 flex justify-center items-center divTipoDeVotacion" matRipple
+          matRippleColor="green-300">
+          <mat-icon color="green-300">percent</mat-icon>
+        </div>
+        <p class="text-center text-white px-2 leyendaTiposDeVotacion">Permite
+          definir votaciones donde se puede establecer un porcentaje variable de participacion para cada
+          integrante de la comunidad.</p>
+      </article>
+      <article [@bounceInLeft]="estadoAnimacion"
+        class="mx-4 mb-1 rounded-md bg-gray-300 flex flex-col justify-evenly items-center">
+        <h2 class="text-lg text-white my-1">Gobierno</h2>
+        <div disabled class="w-12 h-12 rounded-xl bg-gray-200 flex justify-center items-center">
+          <mat-icon color="gray-300">account_balance</mat-icon>
+        </div>
+        <p class="text-center text-white px-2 leyendaTiposDeVotacion">-</p>
+      </article>
+      <article [@bounceInRight]="estadoAnimacion"
+        class="mx-4 rounded-md bg-gray-300 flex flex-col justify-evenly items-center">
+        <h2 class="text-lg text-white my-1">Contrato bilateral</h2>
+        <div class="w-12 h-12 rounded-xl bg-gray-200 flex justify-center items-center">
+          <mat-icon color="gray-300">social_distance</mat-icon>
+        </div>
+        <p class="text-center text-white px-2 leyendaTiposDeVotacion">-</p>
+      </article>
+    </section>
+  </ion-content>
+</div>

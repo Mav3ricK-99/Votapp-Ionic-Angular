@@ -7,12 +7,6 @@
 
   <ion-col size="6">
     <button class="my-1 botonesInicio text-base font-medium border-radius-1r" mat-raised-button
-      [color]="colorNuevaVotapp" [matMenuTriggerFor]="opcionesVotacion">{{'app.dashboard.buttons.newVotapp' | translate | uppercase}}</button>
-    <mat-menu #opcionesVotacion="matMenu" xPosition="before">
-      <button mat-menu-item [routerLink]="['/nueva-votapp']" [queryParams]="{votacionTipo: 'porcentaje'}"><mat-icon>percent</mat-icon></button>
-      <button mat-menu-item [routerLink]="['/nueva-votapp']" [queryParams]="{votacionTipo: 'persona'}"><mat-icon>groups</mat-icon></button>
-      <button mat-menu-item disabled><mat-icon>account_balance</mat-icon></button>
-      <button mat-menu-item disabled><mat-icon>social_distance</mat-icon></button>
-    </mat-menu>
+    [routerLink]="['/tipos-de-votaciones']" [color]="colorNuevaVotapp">{{'app.dashboard.buttons.newVotapp' | translate | uppercase}}</button>
   </ion-col>
 </ion-row>

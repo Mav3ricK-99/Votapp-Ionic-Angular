@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "434203041262",
+    "project_id": "votapp-test",
+    "storage_bucket": "votapp-test.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:434203041262:android:fa3569f9f093d045ae42ff",
+        "android_client_info": {
+          "package_name": "com.votapp.votapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuR_vtwdyUrgSGby_mcCPLJ3QGOBqv4vo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

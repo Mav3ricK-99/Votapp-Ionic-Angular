@@ -10,9 +10,9 @@ import { MatCardModule } from '@angular/material/card';
 import { VotappDetailComponent } from 'src/app/components/votapps/votapp-detail/votapp-detail.component';
 import { MatRippleModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
-import {MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { UtilSharedModule } from '../../shared/util-shared/util-shared.module';
-import {MatTabsModule} from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatInputModule } from '@angular/material/input';
 
 @NgModule({

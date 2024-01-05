@@ -4,7 +4,7 @@
       <ion-buttons slot="start">
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
-      <ion-title> {{'app.dashboard.buttons.newVotapp' | translate | uppercase}} </ion-title>
+      <ion-title> NUEVA COMUNIDAD </ion-title>
     </ion-toolbar>
   </ion-header>
   <ion-content [scrollEvents]="true">
@@ -112,7 +112,7 @@
                       Un usuario con este email ya se encuentra agregado a la comunidad.
                     </mat-error>
                   </mat-form-field>
-                  <mat-form-field
+                  <mat-form-field *ngIf="comunidadForm.get('tipoVotacion')?.value?.nombre == 'porcentaje'"
                     [ngClass]="{'mb-6': !participantesForm.get('participacion')?.valid && (participantesForm.get('participacion')?.dirty || participantesForm.get('participacion')?.touched)}"
                     class="mt-1" floatLabel="always">
                     <input class="text-right" matInput placeholder="Participacion" formControlName="participacion"

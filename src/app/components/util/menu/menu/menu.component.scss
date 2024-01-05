@@ -25,3 +25,12 @@
 .mb--5 {
     margin-bottom: -5px;
 }
+
+.mat-mdc-menu-item {
+    .mat-icon {
+        margin: 0 !important;
+        width: 32px;
+        height: 32px;
+        font-size: 32px;
+    }
+}

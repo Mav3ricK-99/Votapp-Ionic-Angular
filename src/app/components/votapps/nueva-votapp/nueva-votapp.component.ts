@@ -3,7 +3,7 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors,
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, map } from 'rxjs';
 import { Comunidad } from 'src/app/classes/comunidad/comunidad';
 import { User } from 'src/app/classes/user/user';
@@ -44,7 +44,7 @@ export class NuevaVotappComponent {
 
   public votacionTipo: string;
 
-  constructor(formBuilder: FormBuilder, private userService: UserService, private votacionService: VotacionService, public dialog: MatDialog, public router: Router, public platform: Platform) {
+  constructor(formBuilder: FormBuilder, private userService: UserService, private votacionService: VotacionService, public dialog: MatDialog, public router: Router, public platform: Platform, private route: ActivatedRoute) {
     for (let i = 0; i < 60; i++) {
       if (i < 24) {
         this.horas.push(i.toString().padStart(2, '0'));
@@ -57,8 +57,6 @@ export class NuevaVotappComponent {
     this.votacionTipo = queryParams.votacionTipo;
 
     this.fechaHoy = new Date();
-    this.comunidades$ = this.userService.getMisComunidadesPorTipoVotacion(this.votacionTipo);
-    this.comunidadesFiltradas$ = this.comunidades$;
     this.tipoDecisiones$ = this.votacionService.getTipoDecisiones();
     this.frecuenciasVotacion$ = this.votacionService.getFrecuencias();
     this.mostrarNuevaVotacion = false;
@@ -131,7 +129,14 @@ export class NuevaVotappComponent {
         this.parametrosForm.get('frecuenciaVotacion')?.setValue(porUnicaVez[0].id);
       }
     });
+  }
 
+  ionViewDidEnter() {
+    this.route.queryParams.subscribe((queryParams: any) => {
+      this.votacionTipo = queryParams['votacionTipo'];
+      this.comunidades$ = this.userService.getMisComunidadesPorTipoVotacion(this.votacionTipo);
+      this.comunidadesFiltradas$ = this.comunidades$;
+    });
     this.comunidadForm.get('buscarComunidad')?.valueChanges.subscribe(comunidad => {
       if (comunidad != '') {
         this.comunidadesFiltradas$ = this.comunidades$.pipe(

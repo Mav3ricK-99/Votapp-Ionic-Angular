@@ -66,7 +66,7 @@ export class AuthorizationRequestInterceptor implements HttpInterceptor {
               this.dialog.open(InfoDialogComponent, {
                 maxWidth: '90vw', data: {
                   titulo: 'Se cerrara la sesion',
-                  mensaje: 'Por tu seguridad se cerrara la sesion, a continuacion vas a ser redirijido al ingreso.',
+                  mensaje: 'Por tu seguridad se cerrara la sesion, a continuacion vas a ser redirigido al ingreso.',
                 }
               }).afterClosed().subscribe(() => {
                 localStorage.removeItem('jwt');
@@ -85,12 +85,12 @@ export class AuthorizationRequestInterceptor implements HttpInterceptor {
   }
 
   private addAuthenticationToken(request: HttpRequest<any>, jwt: JWT): HttpRequest<any> {
-    if (!request.url.includes(environment.BASE_API_URL)) {
+    if (!request.url.includes(environment.BASE_API_URL) || request.url.includes('refresh-token')) {
       return request;
     }
 
     return request = request.clone({
-      headers: request.headers.set(this.AUTH_HEADER, "Bearer " + jwt.refresh_token)
+      headers: request.headers.set(this.AUTH_HEADER, "Bearer " + jwt.access_token)
     });
   }
 }

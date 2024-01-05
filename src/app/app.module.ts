@@ -20,11 +20,14 @@ import { ParametrosService } from './services/parametros/parametros.service';
 import { MenuComponent } from './components/util/menu/menu/menu.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { RegistroEventosService } from './services/registroEventos/registro-eventos.service';
+import { TiposDeVotacionesComponent } from './components/tiposDeVotaciones/tipos-de-votaciones/tipos-de-votaciones.component';
+import { MatRippleModule } from '@angular/material/core';
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
 }
 @NgModule({
-  declarations: [AppComponent, MenuComponent],
+  declarations: [AppComponent, MenuComponent, TiposDeVotacionesComponent],
   imports: [
     AuthenticationModule,
     HttpClientModule,
@@ -44,9 +47,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     JwtModule,
     BrowserAnimationsModule,
     MatMenuModule,
+    MatRippleModule,
     MatIconModule
   ],
-  providers: [TranslateStore, AuthenticationService, UserService, VotacionService, ParametrosService, { provide: HTTP_INTERCEPTORS, useClass: AuthorizationRequestInterceptor, multi: true },
+  providers: [TranslateStore, AuthenticationService, UserService, VotacionService, ParametrosService, RegistroEventosService, { provide: HTTP_INTERCEPTORS, useClass: AuthorizationRequestInterceptor, multi: true },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

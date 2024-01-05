@@ -76,13 +76,11 @@ export class NuevaComunidadComponent {
       crearVotacion: new FormControl<boolean>(true, { validators: [Validators.required], updateOn: 'change' }),
     }, { validators: [this.validarParticipacion(), this.validarSiYaParticipa()] });
 
-    this.comunidadForm.valueChanges.subscribe((comunidadForm: any) => {
-      if (comunidadForm.tipoVotacion?.nombre == 'persona') {
-        this.participantesForm.get('participacion')?.disable();
-      } else {
-        this.participantesForm.get('participacion')?.enable();
-      }
-    })
+    if (this.votacionTipo == 'persona') {
+      this.participantesForm.get('participacion')?.disable();
+    } else {
+      this.participantesForm.get('participacion')?.enable();
+    }
 
     this.comunidadForm.statusChanges.subscribe((valid: string) => {
       valid == 'VALID' ? this.colorPrimerContinuar = 'green' : this.colorPrimerContinuar = 'white-g';
@@ -253,6 +251,7 @@ export class NuevaComunidadComponent {
           }
         }).afterClosed().subscribe(() => {
           this.router.navigate([`/nueva-votapp`], {
+            queryParams: { votacionTipo: this.votacionTipo },
             state: { refresh: true },
           });
         });
@@ -296,7 +295,7 @@ export class NuevaComunidadComponent {
       if (this.participantes.length != 0) {
         let email = participantesForm.get('email')?.value;
         let yaExisteParticipante = this.participantes.filter((participante: EmailParticipacion) => {
-          if (participante.email == email) {
+          if (participante.email.toLocaleLowerCase() == email?.toLocaleLowerCase()) {
             if (!this.agregandoParticipante && this.editandoParticipante?.email == email) {
               return null;
             }

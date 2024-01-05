@@ -62,7 +62,6 @@ export class LoginComponent implements OnInit {
         this.router.navigateByUrl('/mis-votapps');
       },
       error: err => {
-        this.loginForm.reset();
         switch (err.status) {
           case 400: {
             this.router.navigate([`/completar-perfil`], {

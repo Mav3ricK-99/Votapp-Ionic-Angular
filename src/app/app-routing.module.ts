@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { UsuarioPuedeAccederGuard } from './guards/usuarioPuedeAcceder/usuario-puede-acceder.guard';
+import { TiposDeVotacionesComponent } from './components/tiposDeVotaciones/tipos-de-votaciones/tipos-de-votaciones.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,11 @@ const routes: Routes = [
     path: 'nueva-comunidad',
     loadChildren: () => import('./modules/comunidad/nueva-comunidad/nueva-comunidad.module').then(m => m.NuevaComunidadModule),
     canActivate: [UsuarioPuedeAccederGuard],
+  },
+  {
+    path: 'tipos-de-votaciones',
+    component: TiposDeVotacionesComponent,
+    pathMatch: 'full'
   },
   {
     path: '',
