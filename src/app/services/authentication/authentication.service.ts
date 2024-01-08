@@ -51,7 +51,7 @@ export class AuthenticationService {
 
     return this.httpClient.post(this.AUTH_API_URL + '/refresh-token', {}, {
       headers: {
-        Authorization: "Bearer " + jwt?.access_token
+        Authorization: "Bearer " + jwt?.refresh_token
       }
     });
   }

@@ -14,6 +14,7 @@ import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { InfoDialogComponent } from 'src/app/components/util/info-dialog/info-dialog.component';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable()
 export class AuthorizationRequestInterceptor implements HttpInterceptor {
@@ -52,8 +53,17 @@ export class AuthorizationRequestInterceptor implements HttpInterceptor {
       //Aca tambien se manda el authorization bearer
       if (localStorage.getItem('jwt')) {
         return this.authService.refreshToken().pipe(
-          switchMap(() => {
+          switchMap((obj: any) => {
             this.isRefreshing = false;
+            const helper = new JwtHelperService();
+            let jwt: JWT = {
+              access_token: obj.access_token,
+              refresh_token: obj.refresh_token,
+            }
+            let currentUser = helper.decodeToken(jwt.access_token);
+            localStorage.setItem('jwt', JSON.stringify(jwt));
+            localStorage.setItem('current_user', JSON.stringify(currentUser));
+            request = this.addAuthenticationToken(request, jwt);
 
             return next.handle(request);
           }),
