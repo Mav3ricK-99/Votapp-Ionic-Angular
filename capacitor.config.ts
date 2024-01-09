@@ -6,9 +6,9 @@ const config: CapacitorConfig = {
   webDir: 'www',
   bundledWebRuntime: false,
   server: {
-    "androidScheme": 'http',
-    "cleartext": true
-  }
+    androidScheme: 'http',
+    cleartext: true
+  },
 };
 
 export default config;

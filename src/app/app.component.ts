@@ -5,6 +5,9 @@ import { ParametrosService } from './services/parametros/parametros.service';
 import { UserService } from './services/user/user.service';
 import { Preferences } from '@capacitor/preferences';
 import { Platform } from '@ionic/angular';
+import { Channel, PushNotifications } from '@capacitor/push-notifications';
+import { Capacitor } from '@capacitor/core';
+import { FCM } from "@capacitor-community/fcm";
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -26,7 +29,27 @@ export class AppComponent implements OnInit {
           value: JSON.stringify(params),
         });
       });
-    })
+    });
+
+    const isPushNotificationsAvailable = Capacitor.isPluginAvailable('PushNotifications');
+
+    if (isPushNotificationsAvailable) {
+      this.registerNotifications().then(() => {
+        FCM.subscribeTo({ topic: "userLoggedIn" });
+        PushNotifications.createChannel({
+          id: 'userLoggedIn',
+          name: 'userLoggedIn',
+          description: 'eso',
+          importance: 4,
+          visibility: -1,
+          lights: true,
+          lightColor: "green",
+          vibration: true,
+        });
+      });
+      this.getDeliveredNotifications();
+      this.addListeners();
+    }
   }
 
   public changeLanguage(): void {
@@ -57,5 +80,42 @@ export class AppComponent implements OnInit {
         this._initTranslate(res)
       }).catch(e => { console.log(e); });
     }
+  }
+  //Mandar todo al 'dashboard'
+  addListeners = async () => {
+    await PushNotifications.addListener('registration', token => {
+      console.info('Registration token: ', token.value);
+    });
+
+    await PushNotifications.addListener('registrationError', err => {
+      console.error('Registration error: ', err.error);
+    });
+
+    await PushNotifications.addListener('pushNotificationReceived', notification => {
+      console.log('Push notification received: ', notification);
+    });
+
+    await PushNotifications.addListener('pushNotificationActionPerformed', notification => {
+      console.log('Push notification action performed', notification.actionId, notification.inputValue);
+    });
+  }
+
+  registerNotifications = async () => {
+    let permStatus = await PushNotifications.checkPermissions();
+
+    if (permStatus.receive === 'prompt') {
+      permStatus = await PushNotifications.requestPermissions();
+    }
+
+    if (permStatus.receive !== 'granted') {
+      throw new Error('User denied permissions!');
+    }
+
+    await PushNotifications.register();
+  }
+
+  getDeliveredNotifications = async () => {
+    const notificationList = await PushNotifications.getDeliveredNotifications();
+    console.log('delivered notifications', notificationList);
   }
 }
