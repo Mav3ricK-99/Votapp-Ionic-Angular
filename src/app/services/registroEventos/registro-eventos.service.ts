@@ -19,4 +19,15 @@ export class RegistroEventosService {
       confirmado: confirmado,
     });
   };
+
+  registroConsultaVotantesPorOpcion(votacion_id: number, tipoVoto: string) {
+    return this.httpClient.post(this.REGISTRO_EVENTOS_API_URL + `/consultaVotantesPorOpcion`, {
+      votacion_id: votacion_id,
+      opcionConsultada: tipoVoto,
+    });
+  };
+
+  registroEnvioInvitacionesNuevaVotacion() {
+    return this.httpClient.post(this.REGISTRO_EVENTOS_API_URL + `/envioInvitacionesNuevaVotacion`, {});
+  };
 }

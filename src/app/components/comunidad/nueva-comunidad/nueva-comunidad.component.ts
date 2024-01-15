@@ -15,21 +15,6 @@ import { ProcesandoDialogComponent } from '../../util/procesando-dialog/procesan
   selector: 'app-nueva-comunidad',
   templateUrl: './nueva-comunidad.component.html',
   styleUrls: ['./nueva-comunidad.component.scss'],
-  animations: [
-    trigger('abiertoCerrado', [
-      state('abierto', style({
-        height: '100px',
-        opacity: 1,
-      })),
-      state('cerrado', style({
-        height: '20px',
-        opacity: 0,
-      })),
-      transition('abierto => cerrado, cerrado => abierto', [
-        animate('0.2s')
-      ]),
-    ]),
-  ],
 })
 export class NuevaComunidadComponent {
 
@@ -40,8 +25,6 @@ export class NuevaComunidadComponent {
   public colorCrearComunidad: string;
 
   public votacionesTipo: VotacionTipo[];
-
-  public detalleTipoVotacionAbierto = false;
 
   public agregandoParticipante: boolean = true;
   public editandoParticipante: EmailParticipacion | null;
@@ -92,9 +75,6 @@ export class NuevaComunidadComponent {
       votacionesTipo.forEach((votacionTipo: VotacionTipo) => {
         if (votacionTipo.nombre == this.votacionTipo) {
           this.comunidadForm.get('tipoVotacion')?.setValue(votacionTipo);
-          setTimeout(() => {
-            this.detalleTipoVotacionAbierto = true;
-          }, 250);
         }
       });
     });

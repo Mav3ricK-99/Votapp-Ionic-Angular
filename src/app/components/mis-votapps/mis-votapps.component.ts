@@ -9,18 +9,17 @@ import { debounce, debounceTime, distinctUntilChanged, fromEvent, map } from 'rx
   templateUrl: './mis-votapps.component.html',
   styleUrls: ['./mis-votapps.component.scss'],
 })
-export class MisVotappsComponent implements AfterViewInit {
+export class MisVotappsComponent {
 
   @ViewChild('infiniteScrollAbiertas') infiniteScrollAbiertas: IonInfiniteScroll;
   @ViewChild('infiniteScrollCerradas') infiniteScrollCerradas: IonInfiniteScroll;
-  @ViewChild('inputBusqueda') inputBusqueda: ElementRef;
   public votacionesAbiertas: Votacion[] = [];
   public votacionesCerradas: Votacion[] = [];
   public votaciones: Votacion[] = [];
   public pagina: number;
   public votacionesListas: boolean;
 
-  constructor(private userService: UserService, private router: Router, private menuCtrl: MenuController) {
+  constructor(private userService: UserService, private router: Router) {
     this.pagina = 0;
     this.votacionesListas = false;
   }
@@ -49,18 +48,6 @@ export class MisVotappsComponent implements AfterViewInit {
       this.llamarVotapps(this.pagina);
       (ev as InfiniteScrollCustomEvent).target.complete();
     }, 1850);
-  }
-
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      fromEvent(this.inputBusqueda.nativeElement, 'input')
-        .pipe(map((event: any) => (event.target as HTMLInputElement).value))
-        .pipe(debounceTime(1500))
-        .pipe(distinctUntilChanged())
-        .subscribe(data => {
-          this.filtrarVotacionesPorComunidad(data.toLocaleLowerCase());
-        });
-    }, 1000);
   }
 
   private filtrarVotacionesPorComunidad(nombreComunidad: string) {

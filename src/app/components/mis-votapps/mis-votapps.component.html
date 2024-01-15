@@ -13,10 +13,10 @@
       <ion-row class="ion-justify-content-center ion-align-items-center">
         <ion-col class="bg-gray-100 ion-no-top-padding fit-height" size-lg="8" size-md="11" size-xs="12">
           <ng-container *ngIf='votacionesListas; else loader'>
-            <mat-form-field>
+            <!-- <mat-form-field>
               <input #inputBusqueda matInput placeholder="Nombre de la comunidad">
               <mat-hint>Filtrar por nombre de comunidad</mat-hint>
-            </mat-form-field>
+            </mat-form-field> -->
             <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
               <mat-tab label="Abiertas">
                 <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">

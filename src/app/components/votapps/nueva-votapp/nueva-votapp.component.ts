@@ -13,6 +13,7 @@ import { VotacionFrecuencia } from 'src/app/classes/votacionFrecuencia/votacion-
 import { UserService } from 'src/app/services/user/user.service';
 import { VotacionService } from 'src/app/services/votacion/votacion.service';
 import { Platform } from '@ionic/angular';
+import { RegistroEventosService } from 'src/app/services/registroEventos/registro-eventos.service';
 @Component({
   selector: 'app-nueva-votapp',
   templateUrl: './nueva-votapp.component.html',
@@ -44,7 +45,7 @@ export class NuevaVotappComponent {
 
   public votacionTipo: string;
 
-  constructor(formBuilder: FormBuilder, private userService: UserService, private votacionService: VotacionService, public dialog: MatDialog, public router: Router, public platform: Platform, private route: ActivatedRoute) {
+  constructor(formBuilder: FormBuilder, private userService: UserService, private votacionService: VotacionService, public dialog: MatDialog, public router: Router, public platform: Platform, private route: ActivatedRoute, private registroEventosService: RegistroEventosService) {
     for (let i = 0; i < 60; i++) {
       if (i < 24) {
         this.horas.push(i.toString().padStart(2, '0'));
@@ -198,6 +199,8 @@ export class NuevaVotappComponent {
     if (!this.comunidadForm.valid || !this.parametrosForm.valid || !this.puntoAVotarForm.valid) return;
 
     this.dialog.open(CreandoVotappDialog, { maxWidth: '90vw' });
+
+    this.registroEventosService.registroEnvioInvitacionesNuevaVotacion().subscribe(() => {});
 
     let comunidad: Comunidad = this.comunidadForm.get('comunidad')?.value;
 

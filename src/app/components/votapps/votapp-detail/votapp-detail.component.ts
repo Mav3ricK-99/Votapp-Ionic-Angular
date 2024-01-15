@@ -84,6 +84,8 @@ export class VotappDetailComponent implements OnInit, AfterViewInit {
 
   public mostrarVotos(nombreTipoVoto: string) {
     let tipoVoto: TipoVoto | null = null;
+    this.registroEventosService.registroConsultaVotantesPorOpcion(this.votapp.id, nombreTipoVoto).subscribe(() => {});
+    
     this.viendoVotosTipo = 'pendiente';
     if (nombreTipoVoto !== 'pendiente') {
       tipoVoto = TipoVoto.getVoteType(nombreTipoVoto);
