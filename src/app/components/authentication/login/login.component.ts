@@ -7,6 +7,8 @@ import { JWT } from 'src/app/interfaces/jwt/jwt';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { App } from '@capacitor/app';
 import { Preferences } from '@capacitor/preferences';
+import { Capacitor } from '@capacitor/core';
+import { PushNotifications } from '@capacitor/push-notifications';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -51,6 +53,13 @@ export class LoginComponent implements OnInit {
     this.authService.authenticate(email, password).subscribe({
       next: (obj: any) => {
         this.loginForm.reset();
+
+        const pushNotificationsDisponible: boolean = Capacitor.isPluginAvailable('PushNotifications');
+        if (pushNotificationsDisponible) {
+          this.registrarseParaNotificaciones();
+          this.getNotificaciones();
+        }
+
         const helper = new JwtHelperService();
         let jwt: JWT = {
           access_token: obj.access_token,
@@ -89,5 +98,17 @@ export class LoginComponent implements OnInit {
         }
       }
     });
+  }
+
+  registrarseParaNotificaciones = async () => {
+    let permStatus = await PushNotifications.checkPermissions();
+
+    if (permStatus.receive === 'granted') {
+      await PushNotifications.register();
+    }
+  }
+
+  getNotificaciones = async () => {
+    await PushNotifications.getDeliveredNotifications();
   }
 }

@@ -31,24 +31,10 @@ export class AppComponent implements OnInit {
       });
     });
 
-    const isPushNotificationsAvailable = Capacitor.isPluginAvailable('PushNotifications');
+    const pushNotificationsDisponible: boolean = Capacitor.isPluginAvailable('PushNotifications');
 
-    if (isPushNotificationsAvailable) {
-      this.registerNotifications().then(() => {
-        FCM.subscribeTo({ topic: "userLoggedIn" });
-        PushNotifications.createChannel({
-          id: 'userLoggedIn',
-          name: 'userLoggedIn',
-          description: 'eso',
-          importance: 4,
-          visibility: -1,
-          lights: true,
-          lightColor: "green",
-          vibration: true,
-        });
-      });
-      this.getDeliveredNotifications();
-      this.addListeners();
+    if (pushNotificationsDisponible) {
+      this.pedirPermisosNotificaciones();
     }
   }
 
@@ -81,41 +67,25 @@ export class AppComponent implements OnInit {
       }).catch(e => { console.log(e); });
     }
   }
-  //Mandar todo al 'dashboard'
-  addListeners = async () => {
-    await PushNotifications.addListener('registration', token => {
-      console.info('Registration token: ', token.value);
-    });
 
-    await PushNotifications.addListener('registrationError', err => {
-      console.error('Registration error: ', err.error);
-    });
-
-    await PushNotifications.addListener('pushNotificationReceived', notification => {
-      console.log('Push notification received: ', notification);
-    });
-
-    await PushNotifications.addListener('pushNotificationActionPerformed', notification => {
-      console.log('Push notification action performed', notification.actionId, notification.inputValue);
-    });
-  }
-
-  registerNotifications = async () => {
+  async pedirPermisosNotificaciones() {
     let permStatus = await PushNotifications.checkPermissions();
 
     if (permStatus.receive === 'prompt') {
       permStatus = await PushNotifications.requestPermissions();
     }
 
-    if (permStatus.receive !== 'granted') {
-      throw new Error('User denied permissions!');
+    if (permStatus.receive === 'granted') {
+      await PushNotifications.addListener('registration', token => {
+        this.userService.guardarFMCToken(token.value);
+        PushNotifications.createChannel({
+          id: 'nueva votacion',
+          name: 'nueva votacion',
+          description: 'Notificacion de aviso al crearse una nueva votacion en una comunidad.',
+          vibration: true,
+          importance: 4
+        });
+      });
     }
-
-    await PushNotifications.register();
-  }
-
-  getDeliveredNotifications = async () => {
-    const notificationList = await PushNotifications.getDeliveredNotifications();
-    console.log('delivered notifications', notificationList);
   }
 }

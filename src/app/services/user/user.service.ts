@@ -104,6 +104,12 @@ export class UserService {
     }));
   }
 
+  guardarFMCToken(fmc_token: string) {
+    return this.httpClient.post(this.USER_API_URL + `/${this.currentUser.id}/fmc_token`, {
+      fmc_token: fmc_token
+    }).subscribe(() => {});
+  }
+
   getLocalUser() {
     let currentUserStr = localStorage.getItem('current_user');
     if (currentUserStr) {
