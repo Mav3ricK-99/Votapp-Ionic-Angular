@@ -16,7 +16,7 @@ export class TiposDeVotacionesComponent {
 
   constructor() { }
 
-  ionViewDidEnter () {
-    this.estadoAnimacion = !this.estadoAnimacion;
+  ionViewDidEnter() {
+    this.estadoAnimacion = true;
   }
 }
