@@ -88,10 +88,11 @@ export class NuevaComunidadComponent {
     }
 
     if (!this.participantesForm.valid) return;
-    let email = this.participantesForm.get('email')?.value;
+    let email: string = this.participantesForm.get('email')?.value;
     let participacion = this.participantesForm.get('participacion')?.value;
     let crearVotacion = this.participantesForm.get('crearVotacion')?.value;
 
+    email = email.toLocaleLowerCase();
     this.participantes.push({
       email: email,
       participacion: participacion,
