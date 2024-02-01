@@ -13,7 +13,8 @@
       <ion-row class="bg-gray-50 h-100">
         <ion-col class="bg-gray-50 ion-no-padding" size-xs="12">
           <div class="flex flex-col justify-around mb-1">
-            <h4 class="text-center">Tipo de Votación - Comunidad {{comunidadForm.get('tipoVotacion')?.value?.nombre}}</h4>
+            <h4 class="text-center">Tipo de Votación - Comunidad {{comunidadForm.get('tipoVotacion')?.value?.nombre}}
+            </h4>
             <div class="flex justify-around">
               <ng-container *ngIf="votacionesTipoListas; else loader">
                 <button type="button" class="botonesVotacionTipo" mat-fab color="primary">
@@ -117,13 +118,15 @@
                       La participacion total de los integrantes debe ser 100.
                     </mat-error>
                   </mat-form-field>
-                  <div class="py-3 flex flex-row justify-around items-center">
-                    <label>Puede crear votaciones</label>
-                    <mat-slide-toggle
-                      [ngClass]="{'mb-5': !participantesForm.get('crearVotacion')?.valid && (participantesForm.get('crearVotacion')?.dirty || participantesForm.get('crearVotacion')?.touched)}"
-                      formControlName="crearVotacion" color="primary">
-                      {{participantesForm.get('crearVotacion')?.value == true ? 'Si' : 'No'}}
-                    </mat-slide-toggle>
+                  <div class="py-3">
+                    <div class="flex flex-row justify-around items-center">
+                      <label>Puede crear votaciones</label>
+                      <mat-slide-toggle
+                        [ngClass]="{'mb-5': !participantesForm.get('crearVotacion')?.valid && (participantesForm.get('crearVotacion')?.dirty || participantesForm.get('crearVotacion')?.touched)}"
+                        formControlName="crearVotacion" color="primary">
+                        {{participantesForm.get('crearVotacion')?.value == true ? 'Si' : 'No'}}
+                      </mat-slide-toggle>
+                    </div>
                     <mat-error class="text-sm" *ngIf="participantesForm.get('crearVotacion')?.errors?.['required']">
                       La opcion para permitir que el integrante pueda crear una votacion es requerida.
                     </mat-error>

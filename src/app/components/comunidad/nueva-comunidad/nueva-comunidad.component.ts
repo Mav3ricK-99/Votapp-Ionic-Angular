@@ -1,14 +1,12 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, FormGroupDirective, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable } from 'rxjs';
 import { VotacionTipo } from 'src/app/classes/votacionTipo/votacion-tipo';
 import { ComunidadService } from 'src/app/services/comunidad/comunidad.service';
 import { UserService } from 'src/app/services/user/user.service';
-import { InfoDialogComponent } from '../../util/info-dialog/info-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { InfoDialogComponent } from '../../util/info-dialog/info-dialog.component';
 import { ProcesandoDialogComponent } from '../../util/procesando-dialog/procesando-dialog.component';
 
 @Component({
@@ -191,7 +189,8 @@ export class NuevaComunidadComponent {
   }
 
   public crearNuevaComunidad() {
-    this.participantesForm.disable();
+    this.participantesForm.get('email')?.setErrors(null);
+    this.participantesForm.get('participacion')?.setErrors(null);
     if (!this.comunidadForm.valid || !this.participantes.length) return;
 
     this.crearComunidadDeshabilitado = true;
