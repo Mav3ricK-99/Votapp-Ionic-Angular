@@ -16,10 +16,11 @@ export class ComunidadService {
 
   constructor(private httpClient: HttpClient) { }
 
-  crearComunidad(nombre: string, detalle: string, votacionTipo: VotacionTipo, participantes: Array<EmailParticipacion>) {
+  crearComunidad(nombre: string, detalle: string, logoBase64: string, votacionTipo: VotacionTipo, participantes: Array<EmailParticipacion>) {
     return this.httpClient.post<Comunidad>(this.COMUNIDAD_API_URL + `/`, {
       nombre: nombre,
       descripcion: detalle,
+      logoComunidadEncoded: logoBase64,
       votacionTipo: votacionTipo.id,
       emailParticipacion: participantes
     }).pipe(map((data: any) => {

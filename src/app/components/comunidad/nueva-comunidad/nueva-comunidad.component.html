@@ -69,7 +69,15 @@
                     El detalle de la comunidad debe tener como maximo 255 caracteres.
                   </mat-error>
                 </mat-form-field>
-                <div class="flex flex-col justify-around py-2 items-center">
+                <div class="flex flex-col mt-1 items-center justify-between">
+                  <button type="button" mat-button mat-raised-button (click)="seleccionarLogoComunidad()"
+                    color="darkPrimary">Seleccionar logo comunidad</button>
+                  <mat-error class="text-sm text-center"
+                    *ngIf="comunidadForm.get('logoBase64')?.errors?.['maxFileSizeExceeded']">
+                    La imagen de la comunidad debe ser como maximo 5MB.
+                  </mat-error>
+                </div>
+                <div class="flex flex-col justify-around pt-3 items-center">
                   <button class="w-24" (click)="continuarPrimerPaso()" mat-button mat-raised-button
                     [color]="colorPrimerContinuar" matStepperNext>Continuar</button>
                 </div>
@@ -147,7 +155,7 @@
               </form>
               <div class="flex flex-col justify-center items-center py-3">
                 <button type="button" class="self-center" mat-button mat-raised-button [color]="colorCrearComunidad"
-                  matStepperNext [disabled]="crearComunidadDeshabilitado" (click)="crearNuevaComunidad()">Confirmar y
+                  [disabled]="crearComunidadDeshabilitado" (click)="crearNuevaComunidad()">Confirmar y
                   enviar
                   invitaciones</button>
               </div>

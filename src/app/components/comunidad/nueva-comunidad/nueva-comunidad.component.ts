@@ -8,7 +8,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { InfoDialogComponent } from '../../util/info-dialog/info-dialog.component';
 import { ProcesandoDialogComponent } from '../../util/procesando-dialog/procesando-dialog.component';
-
+import { Camera, CameraResultType } from '@capacitor/camera';
+import { Device, DeviceInfo } from '@capacitor/device';
 @Component({
   selector: 'app-nueva-comunidad',
   templateUrl: './nueva-comunidad.component.html',
@@ -48,6 +49,7 @@ export class NuevaComunidadComponent {
     this.comunidadForm = formBuilder.group({
       nombre: new FormControl<string>('', { validators: [Validators.required, Validators.minLength(3), Validators.maxLength(40)], updateOn: 'blur' }),
       detalle: new FormControl<string | null>(null, { validators: [Validators.minLength(3), Validators.maxLength(255)] }),
+      logoBase64: new FormControl<string | null>(null, {}),
       tipoVotacion: new FormControl<VotacionTipo | null>(null, { validators: [Validators.required] }),
     });
 
@@ -218,9 +220,10 @@ export class NuevaComunidadComponent {
 
     let nombre: string = this.comunidadForm.get('nombre')?.value;
     let detalle: string = this.comunidadForm.get('detalle')?.value;
+    let logoBase64: string = this.comunidadForm.get('logoBase64')?.value;
     let tipoVotacion: VotacionTipo = this.comunidadForm.get('tipoVotacion')?.value;
 
-    this.comunidadService.crearComunidad(nombre, detalle, tipoVotacion, this.participantes).subscribe({
+    this.comunidadService.crearComunidad(nombre, detalle, logoBase64, tipoVotacion, this.participantes).subscribe({
       next: (obj: any) => {
 
         this.dialog.closeAll();
@@ -248,7 +251,32 @@ export class NuevaComunidadComponent {
     });
   }
 
-  validarParticipacion(): ValidatorFn {
+  public seleccionarLogoComunidad() {
+
+    let web: boolean = false;
+    const maxFileSize = 5 * 1000 * 1000;
+
+    Device.getInfo().then((deviceInfo: DeviceInfo) => {
+      web = deviceInfo.platform.toLocaleLowerCase() == 'web' ? true : false;
+
+      Camera.getPhoto({ resultType: CameraResultType.Base64, webUseInput: web }).then((logo: any) => {
+
+        var photoSize = (4 * Math.ceil((logo.base64String.length / 3)) * 0.5624896334383812);
+
+        if (photoSize > maxFileSize) {
+          this.comunidadForm.get('logoBase64')?.setErrors({
+            maxFileSizeExceeded: true,
+          });
+        } else {
+          this.comunidadForm.get('logoBase64')?.reset();
+          this.comunidadForm.get('logoBase64')?.setValue(logo.base64String);
+        }
+      });
+    });
+
+  }
+
+  private validarParticipacion(): ValidatorFn {
     return (participantesForm: AbstractControl): ValidationErrors | null => {
       if (this.participantes.length != 0) {
         let participacion = <number>participantesForm.get('participacion')?.value;
@@ -270,7 +298,7 @@ export class NuevaComunidadComponent {
     }
   }
 
-  validarSiYaParticipa(): ValidatorFn {
+  private validarSiYaParticipa(): ValidatorFn {
     return (participantesForm: AbstractControl): ValidationErrors | null => {
       if (this.participantes.length != 0) {
         let email = participantesForm.get('email')?.value;
