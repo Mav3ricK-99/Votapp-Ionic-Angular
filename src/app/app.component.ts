@@ -5,9 +5,8 @@ import { ParametrosService } from './services/parametros/parametros.service';
 import { UserService } from './services/user/user.service';
 import { Preferences } from '@capacitor/preferences';
 import { Platform } from '@ionic/angular';
-import { Channel, PushNotifications } from '@capacitor/push-notifications';
+import { PushNotifications } from '@capacitor/push-notifications';
 import { Capacitor } from '@capacitor/core';
-import { FCM } from "@capacitor-community/fcm";
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',

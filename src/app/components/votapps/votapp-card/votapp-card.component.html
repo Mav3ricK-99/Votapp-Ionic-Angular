@@ -1,4 +1,4 @@
-<mat-card class="px-1 my-2 mx-4">
+<mat-card class="px-1 my-2 mx-4 mat-card" (focus)="xd()">
   <mat-card-header class="flex justify-start items-center">
     <div *ngIf="votapp.comunidad.logo; else noTieneLogo" mat-card-avatar class="self-start logo"
       style="background-image: url('data:image/png;base64,{{votapp.comunidad.logo}}')"></div>
@@ -40,12 +40,17 @@
         <ion-grid>
           <ion-row>
             <ion-col size-xs="6" size-md="12" class="md:flex md:justify-start">
-              <ion-button class="mb-2 md:mb-1 block" shape="round" [color]="pocosDiasRestantes > votapp.diasRestantes() ? 'warning' : 'medium'">Dias
-                restantes<br>{{votapp.diasRestantes()}}</ion-button>
-              <ion-button shape="round" size="medium" class="block" color="medium">Total
-                votantes<br>{{votapp.totalMiembros()}}</ion-button>
+              <div class="flex flex-col">
+                <ion-button class="block" shape="round"
+                  [color]="pocosDiasRestantes > votapp.diasRestantes() ? 'warning' : 'medium'">Dias
+                  restantes<br>{{votapp.diasRestantes()}}</ion-button>
+                <ion-button shape="round" size="medium" class="block" color="medium">Total
+                  votantes<br>{{votapp.totalMiembros()}}</ion-button>
+              </div>
               <div class="ocultarBotones">
-                <ion-button class="text-wrap" shape="round" [color]="votapp.estadoVotoParticipante(this.userService.currentUser) == 'pendiente' ? 'danger' : 'medium'">Mi voto
+                <ion-button class="text-wrap" shape="round"
+                  [color]="votapp.estadoVotoParticipante(this.userService.currentUser) == 'pendiente' ? 'danger' : 'medium'">Mi
+                  voto
                   {{'app.votes.states.'+
                   votapp.estadoVotoParticipantePretty(this.userService.currentUser)
                   | translate
@@ -55,7 +60,9 @@
               </div>
             </ion-col>
             <ion-col class="md:hidden" size-xs="6">
-              <ion-button class="mb-2 text-wrap" shape="round" expand="block" [color]="votapp.estadoVotoParticipante(this.userService.currentUser) == 'pendiente' ? 'danger' : 'medium'">Mi voto
+              <ion-button class="mb-2 text-wrap" shape="round" expand="block"
+                [color]="votapp.estadoVotoParticipante(this.userService.currentUser) == 'pendiente' ? 'danger' : 'medium'">Mi
+                voto
                 {{'app.votes.states.'+
                 votapp.estadoVotoParticipantePretty(this.userService.currentUser)
                 | translate

@@ -1,6 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { Preferences } from '@capacitor/preferences';
-import { Comunidad } from 'src/app/classes/comunidad/comunidad';
 import { Votacion } from 'src/app/classes/votacion/votacion';
 import { UserService } from 'src/app/services/user/user.service';
 
@@ -20,9 +19,8 @@ export class VotappCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     Preferences.get({ key: 'parametros' }).then((data: any) => {
-      if (data.value) {
+      if (data.value) { //Aca obtengo por cada card (optimizar(?))
         let paramDiasRestantes = JSON.parse(data.value).parametros.filter((parametro: any) => {
           return parametro.codigo == 'PARAM003' ? parametro : null;
         });
@@ -31,4 +29,7 @@ export class VotappCardComponent implements OnInit {
     });
   }
 
+  xd() {
+    console.log("XD");
+  }
 }

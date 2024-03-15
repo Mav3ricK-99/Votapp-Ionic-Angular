@@ -2,8 +2,9 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { UsuarioPuedeAccederGuard } from './guards/usuarioPuedeAcceder/usuario-puede-acceder.guard';
 import { TiposDeVotacionesComponent } from './components/tiposDeVotaciones/tipos-de-votaciones/tipos-de-votaciones.component';
+import { ExpComponent } from './components/exp/exp/exp.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: 'auth',
     loadChildren: () => import('./modules/authentication/authentication.module').then(m => m.AuthenticationModule),
@@ -12,6 +13,7 @@ const routes: Routes = [
     path: 'mis-votapps',
     loadChildren: () => import('./modules/votapps/misvotapps/misvotapps.module').then(m => m.MisvotappsModule),
     canActivate: [UsuarioPuedeAccederGuard],
+    pathMatch: 'full'
   },
   {
     path: 'nueva-votapp',
@@ -29,6 +31,10 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: 'exp',
+    component: ExpComponent,
+  },
+  {
     path: '',
     redirectTo: 'auth/login',
     pathMatch: 'full'
@@ -37,7 +43,7 @@ const routes: Routes = [
 ];
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules, enableViewTransitions: true })
   ],
   exports: [RouterModule]
 })

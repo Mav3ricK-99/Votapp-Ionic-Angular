@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TipoVoto } from 'src/app/classes/tipoVoto/tipo-voto';
 import { Votacion } from 'src/app/classes/votacion/votacion';
 import { VotacionIntegrantes } from 'src/app/classes/votacionIntegrantes/votacion-integrantes';
@@ -84,8 +84,8 @@ export class VotappDetailComponent implements OnInit, AfterViewInit {
 
   public mostrarVotos(nombreTipoVoto: string) {
     let tipoVoto: TipoVoto | null = null;
-    this.registroEventosService.registroConsultaVotantesPorOpcion(this.votapp.id, nombreTipoVoto).subscribe(() => {});
-    
+    this.registroEventosService.registroConsultaVotantesPorOpcion(this.votapp.id, nombreTipoVoto).subscribe(() => { });
+
     this.viendoVotosTipo = 'pendiente';
     if (nombreTipoVoto !== 'pendiente') {
       tipoVoto = TipoVoto.getVoteType(nombreTipoVoto);

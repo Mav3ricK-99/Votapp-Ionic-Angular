@@ -1,0 +1,9 @@
+::view-transition-old(preview) {
+  display: none;
+}
+
+
+::view-transition-new(preview) {
+  animation: none;
+  z-index: var(--index-preview);
+}

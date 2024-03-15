@@ -51,10 +51,50 @@ mat-card-subtitle {
         justify-content: center !important
     }
 }
- 
+
 
 @media not all and (min-width: 768px) {
     .ocultarBotones {
         display: none !important;
     }
+}
+
+
+@media (max-width: 540px) {
+
+    mat-card:not(.fullscreen) {
+        mat-card {
+            max-width: 150px;
+        }
+
+        mat-card-title {
+            font-size: .65rem;
+        }
+
+        mat-card-subtitle {
+            font-size: .6rem;
+            margin-bottom: 2px;
+        }
+
+        .icon-logo {
+            width: 32px;
+            height: 32px;
+            font-size: 32px;
+        }
+
+        ion-button {
+            font-size: 0.4rem;
+        }
+
+        .mat-mdc-card-header {
+            padding: 3px 5px 3px 5px;
+        }
+
+        mat-card-actions {
+            ion-col {
+                padding: 0 !important;
+            }
+        }
+    }
+
 }

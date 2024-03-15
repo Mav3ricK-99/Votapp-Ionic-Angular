@@ -23,11 +23,12 @@ import { MatMenuModule } from '@angular/material/menu';
 import { RegistroEventosService } from './services/registroEventos/registro-eventos.service';
 import { TiposDeVotacionesComponent } from './components/tiposDeVotaciones/tipos-de-votaciones/tipos-de-votaciones.component';
 import { MatRippleModule } from '@angular/material/core';
+import { ExpComponent } from './components/exp/exp/exp.component';
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
 }
 @NgModule({
-  declarations: [AppComponent, MenuComponent, TiposDeVotacionesComponent],
+  declarations: [AppComponent, MenuComponent, TiposDeVotacionesComponent, ExpComponent],
   imports: [
     AuthenticationModule,
     HttpClientModule,
