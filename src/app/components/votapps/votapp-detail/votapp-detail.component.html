@@ -12,6 +12,7 @@
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
     <ion-grid>
+      <button (click)="navigateBack()" #botonAtras>cerrar</button>
       <app-botones-inicio [botonPresionado]="'misVotapps'"></app-botones-inicio>
       <ion-row class="bg-gray-50 py-1" *ngIf="votacionLista; else loader">
         <ion-col size-xs="12">

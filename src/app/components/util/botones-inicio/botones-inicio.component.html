@@ -1,12 +1,12 @@
 <ion-row class="bg-gray-50">
   <ion-col size="6">
     <button class="my-1 botonesInicio text-base font-medium border-radius-1r" mat-raised-button
-      [routerLink]="['/mis-votapps']" [color]="colorMisVotapps">{{'app.dashboard.buttons.myVotapps' | translate |
+     routerDirection="forward" [routerLink]="['/mis-votapps']" [color]="colorMisVotapps">{{'app.dashboard.buttons.myVotapps' | translate |
       uppercase}}</button>
   </ion-col>
 
   <ion-col size="6">
     <button class="my-1 botonesInicio text-base font-medium border-radius-1r" mat-raised-button
-    [routerLink]="['/tipos-de-votaciones']" [color]="colorNuevaVotapp">{{'app.dashboard.buttons.newVotapp' | translate | uppercase}}</button>
+    routerDirection="forward" [routerLink]="['/tipos-de-votaciones']" [color]="colorNuevaVotapp">{{'app.dashboard.buttons.newVotapp' | translate | uppercase}}</button>
   </ion-col>
 </ion-row>

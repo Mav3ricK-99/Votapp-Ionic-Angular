@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { UsuarioPuedeAccederGuard } from './guards/usuarioPuedeAcceder/usuario-puede-acceder.guard';
 import { TiposDeVotacionesComponent } from './components/tiposDeVotaciones/tipos-de-votaciones/tipos-de-votaciones.component';
-import { ExpComponent } from './components/exp/exp/exp.component';
+import { HomeComponent } from './components/home/home.component';
 
 export const routes: Routes = [
   {
@@ -10,10 +10,15 @@ export const routes: Routes = [
     loadChildren: () => import('./modules/authentication/authentication.module').then(m => m.AuthenticationModule),
   },
   {
+    path: 'home',
+    component: HomeComponent,
+    pathMatch: 'full',
+    canActivate: [UsuarioPuedeAccederGuard],
+  },
+  {
     path: 'mis-votapps',
     loadChildren: () => import('./modules/votapps/misvotapps/misvotapps.module').then(m => m.MisvotappsModule),
     canActivate: [UsuarioPuedeAccederGuard],
-    pathMatch: 'full'
   },
   {
     path: 'nueva-votapp',
@@ -29,10 +34,6 @@ export const routes: Routes = [
     path: 'tipos-de-votaciones',
     component: TiposDeVotacionesComponent,
     pathMatch: 'full'
-  },
-  {
-    path: 'exp',
-    component: ExpComponent,
   },
   {
     path: '',

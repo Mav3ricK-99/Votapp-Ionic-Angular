@@ -28,6 +28,8 @@ export class VotappDetailComponent implements OnInit, AfterViewInit {
 
   public votosFiltrados: VotacionIntegrantes[];
 
+  @ViewChild('botonAtras') botonAtras: ElementRef;
+
   public tipoDeVotos: TipoVoto[];
   public opcionesTipoDeVotos: TipoVoto[];
 
@@ -36,8 +38,9 @@ export class VotappDetailComponent implements OnInit, AfterViewInit {
   public mostrarIconoDetalle: boolean;
 
   public votacionLista: boolean;
+  private readonly elementRef = inject(ElementRef);
 
-  constructor(private router: ActivatedRoute, public dialog: MatDialog, public userService: UserService, private votacionService: VotacionService, private registroEventosService: RegistroEventosService) {
+  constructor(private router: ActivatedRoute, public dialog: MatDialog, public userService: UserService, private votacionService: VotacionService, private registroEventosService: RegistroEventosService, private router2: Router) {
     this.mostrarIconoDetalle = false;
     this.votacionLista = false;
     this.tipoDeVotos = [];
@@ -60,18 +63,24 @@ export class VotappDetailComponent implements OnInit, AfterViewInit {
     });
   }
 
+  navigateBack() {
+    http://localhost:8100/mis-votapps/13
+    this.elementRef.nativeElement.classList.add('full-page-transition')
+    void this.router2.navigateByUrl('/mis-votapps');
+  }
+
   public ngAfterViewInit(): void {
     setTimeout(() => {
       let cincoPorcientoAltoPantalla = (this.altoPantalla * 5) / 100;
-      if (this.detalleVotacion.nativeElement.offsetHeight > cincoPorcientoAltoPantalla) {
+      /* if (this.detalleVotacion.nativeElement.offsetHeight > cincoPorcientoAltoPantalla) {
         this.mostrarIconoDetalle = true;
-      }
+      } */
     }, 250);
   }
 
   public toggleMostrarDetalle() {
-    let detalleVotacion: any = this.detalleVotacion.nativeElement;
-    if (detalleVotacion.classList.contains('detalleVotacionCerrado')) {
+    //let detalleVotacion: any = this.detalleVotacion.nativeElement;
+    /* if (detalleVotacion.classList.contains('detalleVotacionCerrado')) {
       detalleVotacion.classList.remove('detalleVotacionCerrado');
       detalleVotacion.classList.add('detalleVotacionAbierto');
       this.mostrarMas._elementRef.nativeElement.classList.add('rotate-90');
@@ -79,7 +88,7 @@ export class VotappDetailComponent implements OnInit, AfterViewInit {
       this.mostrarMas._elementRef.nativeElement.classList.remove('rotate-90');
       detalleVotacion.classList.remove('detalleVotacionAbierto');
       detalleVotacion.classList.add('detalleVotacionCerrado');
-    }
+    } */
   }
 
   public mostrarVotos(nombreTipoVoto: string) {

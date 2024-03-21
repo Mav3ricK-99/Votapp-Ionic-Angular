@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TranslateLoader, TranslateModule, TranslateStore } from '@ngx-translate/core';
@@ -23,17 +23,21 @@ import { MatMenuModule } from '@angular/material/menu';
 import { RegistroEventosService } from './services/registroEventos/registro-eventos.service';
 import { TiposDeVotacionesComponent } from './components/tiposDeVotaciones/tipos-de-votaciones/tipos-de-votaciones.component';
 import { MatRippleModule } from '@angular/material/core';
-import { ExpComponent } from './components/exp/exp/exp.component';
+import { customAnimation } from './animations/custom.animation';
+import { HomeComponent } from './components/home/home.component';
+import { VotappCardComponent } from './components/votapps/votapp-card/votapp-card.component';
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
 }
 @NgModule({
-  declarations: [AppComponent, MenuComponent, TiposDeVotacionesComponent, ExpComponent],
+  declarations: [AppComponent, MenuComponent, TiposDeVotacionesComponent, HomeComponent],
   imports: [
     AuthenticationModule,
     HttpClientModule,
     BrowserModule,
-    IonicModule.forRoot(),
+    IonicModule.forRoot({
+      navAnimation: customAnimation
+    }),
     AppRoutingModule,
     TranslateModule.forRoot({
       loader: {

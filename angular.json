@@ -31,6 +31,11 @@
                 "output": "./svg"
               }
             ],
+            "optimization": {
+              "styles": {
+                "inlineCritical": false
+              }
+            },
             "styles": [
               "src/theme/variables.scss",
               "src/global.scss"
@@ -48,7 +53,7 @@
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumError": "10kb"
                 }
               ],
               "fileReplacements": [
@@ -105,16 +110,16 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "app:build:production"
+              "buildTarget": "app:build:production"
             },
             "development": {
-              "browserTarget": "app:build:development"
+              "buildTarget": "app:build:development"
             },
             "dev-fg": {
-              "browserTarget": "app:build:dev-fg"
+              "buildTarget": "app:build:dev-fg"
             },
             "dev-leo": {
-              "browserTarget": "app:build:dev-leo"
+              "buildTarget": "app:build:dev-leo"
             },
             "ci": {
               "progress": false
@@ -125,7 +130,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "app:build"
+            "buildTarget": "app:build"
           }
         },
         "test": {
