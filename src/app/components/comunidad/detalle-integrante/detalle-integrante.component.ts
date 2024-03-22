@@ -4,6 +4,7 @@ import { EmailParticipacion } from '../nueva-comunidad/nueva-comunidad.component
 import { TranslateModule } from '@ngx-translate/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-detalle-integrante',
@@ -27,7 +28,7 @@ import { MatIconModule } from '@angular/material/icon';
     ]),
   ],
   standalone: true, 
-  imports: [TranslateModule, MatCardModule, MatIconModule]
+  imports: [TranslateModule, MatCardModule, MatIconModule, MatButtonModule]
 })
 export class DetalleIntegranteComponent implements OnInit {
   //Ver esto  ? https://angular.io/api/animations/stagger

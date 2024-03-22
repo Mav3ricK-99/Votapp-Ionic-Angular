@@ -3,10 +3,6 @@
     height: calc(100vh - 132px) !important;
 }
 
-.col-misVotapps {
-    container-type: inline-size;
-}
-
 .ion-page {
     container-type: inline-size
 }
@@ -23,11 +19,11 @@
         align-items: center;
     }
 
-    .botonesInicio {
-        font-size: 16px !important;
-    }
-
     .header {
         display: none;
     }
+}
+
+.enLibro {
+    font-size: 12px !important;
 }

@@ -12,11 +12,11 @@
       <ion-row class="ion-justify-content-center ion-align-items-center">
         <ion-col class="bg-gray-100 ion-no-top-padding fit-height col-misVotapps" size-lg="8" size-md="11" size-xs="12">
           <div class="flex flex-col items-center">
-            <button class="my-1 botonesInicio text-base font-medium" mat-raised-button
+            <button class="my-1 botonesInicio text-base font-medium" mat-raised-button [ngClass]="{'enLibro': enLibro}"
               [disabled]="enLibro" [routerLink]="['/tipos-de-votaciones']" color="darkPrimary">GENERAR NUEVA VOTACION</button>
           </div>
           <div class="flex flex-col items-center">
-            <button class="my-1 botonesInicio text-base font-medium" mat-raised-button color="white">VOTACIONES
+            <button class="my-1 botonesInicio text-base font-medium" mat-raised-button [ngClass]="{'enLibro': enLibro}" color="white">VOTACIONES
               ABIERTAS</button>
           </div>
           @if(votacionesListas) {
@@ -54,7 +54,7 @@
           </div>
           }
           <div class="flex flex-col items-center">
-            <button class="my-1 botonesInicio text-base font-medium" mat-raised-button color="white">VOTACIONES
+            <button class="my-1 botonesInicio text-base font-medium" mat-raised-button [ngClass]="{'enLibro': enLibro}" color="white">VOTACIONES
               CERRADAS</button>
           </div>
           @if(votacionesListas) {

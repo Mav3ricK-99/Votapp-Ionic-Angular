@@ -6,6 +6,7 @@ import { ComunidadService } from 'src/app/services/comunidad/comunidad.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { InfoDialogComponent } from '../../util/info-dialog/info-dialog.component';
 import { ProcesandoDialogComponent } from '../../util/procesando-dialog/procesando-dialog.component';
 import { Camera, CameraResultType } from '@capacitor/camera';
@@ -18,12 +19,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { DetalleIntegranteComponent } from '../detalle-integrante/detalle-integrante.component';
 import { MatButtonModule } from '@angular/material/button';
 import { NgClass } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
 @Component({
   selector: 'app-nueva-comunidad',
   templateUrl: './nueva-comunidad.component.html',
   styleUrls: ['./nueva-comunidad.component.scss'],
   standalone: true,
-  imports: [IonHeader, IonToolbar, IonButtons, IonMenuButton, IonContent, IonRow, IonCol, IonGrid, IonTitle, ReactiveFormsModule, MatIconModule, BotonesInicioComponent, MatStepperModule, MatFormFieldModule, DetalleIntegranteComponent, MatButtonModule, NgClass]
+  imports: [IonHeader, IonToolbar, IonButtons, IonMenuButton, IonContent, IonRow, IonCol, IonGrid, IonTitle, ReactiveFormsModule, MatSlideToggleModule, MatFormFieldModule, MatIconModule, BotonesInicioComponent, MatStepperModule, MatInputModule, DetalleIntegranteComponent, MatButtonModule, NgClass]
 })
 export class NuevaComunidadComponent {
 
