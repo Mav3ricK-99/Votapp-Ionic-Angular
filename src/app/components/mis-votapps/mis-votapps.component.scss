@@ -2,3 +2,32 @@
     height: -webkit-calc(100vh - 132px) !important;
     height: calc(100vh - 132px) !important;
 }
+
+.col-misVotapps {
+    container-type: inline-size;
+}
+
+.ion-page {
+    container-type: inline-size
+}
+
+.botonesInicio {
+    width: 90%;
+    padding: 1rem .2rem 1rem .2rem;
+}
+
+@container (max-width: 180px) {
+    .col-misVotapps {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .botonesInicio {
+        font-size: 16px !important;
+    }
+
+    .header {
+        display: none;
+    }
+}

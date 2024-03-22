@@ -1,5 +1,5 @@
 <div class="ion-page">
-  <ion-header>
+  <ion-header class="header">
     <ion-toolbar>
       <ion-buttons slot="start">
         <ion-menu-button></ion-menu-button>
@@ -9,50 +9,36 @@
   </ion-header>
   <ion-content [scrollEvents]="true">
     <ion-grid>
-      <app-botones-inicio [botonPresionado]="'misVotapps'"></app-botones-inicio>
       <ion-row class="ion-justify-content-center ion-align-items-center">
-        <ion-col class="bg-gray-100 ion-no-top-padding fit-height" size-lg="8" size-md="11" size-xs="12">
+        <ion-col class="bg-gray-100 ion-no-top-padding fit-height col-misVotapps" size-lg="8" size-md="11" size-xs="12">
+          <div class="flex flex-col items-center">
+            <button class="my-1 botonesInicio text-base font-medium" mat-raised-button
+              [disabled]="enLibro" [routerLink]="['/tipos-de-votaciones']" color="darkPrimary">GENERAR NUEVA VOTACION</button>
+          </div>
+          <div class="flex flex-col items-center">
+            <button class="my-1 botonesInicio text-base font-medium" mat-raised-button color="white">VOTACIONES
+              ABIERTAS</button>
+          </div>
           @if(votacionesListas) {
+          <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+            <ion-refresher-content></ion-refresher-content>
+          </ion-refresher>
           <!-- <mat-form-field>
               <input #inputBusqueda matInput placeholder="Nombre de la comunidad">
               <mat-hint>Filtrar por nombre de comunidad</mat-hint>
             </mat-form-field> -->
-          <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
-            <mat-tab label="Abiertas">
-              <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
-                <ion-refresher-content></ion-refresher-content>
-              </ion-refresher>
-              @if(votacionesAbiertas.length > 0) {
-              @for(votapp of votacionesAbiertas; track votapp.id) {
-              <app-votapp-card (click)="goToVotapp(votapp)" [votapp]="votapp" />
-              }
-              <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)" #infiniteScrollAbiertas>
-                <ion-infinite-scroll-content></ion-infinite-scroll-content>
-              </ion-infinite-scroll>
-              } @else {
-              <h5 class="text-center">
-                No hay votapps abiertas en las que hayas participado.
-              </h5>
-              }
-            </mat-tab>
-            <mat-tab label="Cerradas">
-              <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
-                <ion-refresher-content></ion-refresher-content>
-              </ion-refresher>
-              @if(votacionesCerradas.length > 0) {
-              @for(votapp of votacionesCerradas; track votapp.id) {
-              <app-votapp-card (click)="goToVotapp(votapp)" [votapp]="votapp" />
-              }
-              <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)" #infiniteScrollCerradas>
-                <ion-infinite-scroll-content></ion-infinite-scroll-content>
-              </ion-infinite-scroll>
-              } @else {
-              <h5 class="text-center">
-                No hay votapps cerradas en las que hayas participado.
-              </h5>
-              }
-            </mat-tab>
-          </mat-tab-group>
+          @if(votacionesAbiertas.length > 0) {
+          @for(votapp of votacionesAbiertas; track votapp.id) {
+          <app-votapp-card (click)="goToVotapp(votapp)" [votapp]="votapp" />
+          }
+          <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)" #infiniteScrollAbiertas>
+            <ion-infinite-scroll-content></ion-infinite-scroll-content>
+          </ion-infinite-scroll>
+          } @else {
+          <h5 class="text-center">
+            No hay votapps abiertas en las que hayas participado.
+          </h5>
+          }
           } @else {
           <div class="py-2 flex justify-center" role="status">
             <svg aria-hidden="true" class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
@@ -66,6 +52,24 @@
             </svg>
             <span class="sr-only">Loading...</span>
           </div>
+          }
+          <div class="flex flex-col items-center">
+            <button class="my-1 botonesInicio text-base font-medium" mat-raised-button color="white">VOTACIONES
+              CERRADAS</button>
+          </div>
+          @if(votacionesListas) {
+          @if(votacionesCerradas.length > 0) {
+          @for(votapp of votacionesCerradas; track votapp.id) {
+          <app-votapp-card (click)="goToVotapp(votapp)" [votapp]="votapp" />
+          }
+          <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)" #infiniteScrollCerradas>
+            <ion-infinite-scroll-content></ion-infinite-scroll-content>
+          </ion-infinite-scroll>
+          } @else {
+          <h5 class="text-center">
+            No hay votapps cerradas en las que hayas participado.
+          </h5>
+          }
           }
         </ion-col>
       </ion-row>

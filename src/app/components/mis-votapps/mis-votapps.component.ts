@@ -1,11 +1,11 @@
-import { Component, ViewChild, inject } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Votacion } from 'src/app/classes/votacion/votacion';
 import { UserService } from 'src/app/services/user/user.service';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatCardModule } from '@angular/material/card';
-import { UpperCasePipe } from '@angular/common';
+import { NgClass, UpperCasePipe } from '@angular/common';
 import { MatRippleModule } from '@angular/material/core';
 import { InfiniteScrollCustomEvent, IonInfiniteScroll as IonInfiniteScrollAngular } from '@ionic/angular';
 import { IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonInfiniteScroll, IonInfiniteScrollContent, IonMenuButton, IonRefresher, IonRefresherContent, IonRow, IonTitle, IonToolbar } from '@ionic/angular/standalone';
@@ -20,12 +20,14 @@ import { BotonesInicioComponent } from '../util/botones-inicio/botones-inicio.co
   templateUrl: './mis-votapps.component.html',
   styleUrls: ['./mis-votapps.component.scss'],
   standalone: true,
-  imports: [IonHeader, IonToolbar, IonContent, IonButtons, IonMenuButton, IonRefresherContent, IonRefresher, IonInfiniteScroll, IonInfiniteScrollContent, IonRow, IonCol, IonGrid, IonTitle, MatIconModule, MatTabsModule, MatRippleModule, MatCardModule, RouterLink, UpperCasePipe, MatButtonModule, TranslateModule, VotappCardComponent, BotonesInicioComponent]
+  imports: [IonHeader, IonToolbar, IonContent, IonButtons, IonMenuButton, IonRefresherContent, IonRefresher, IonInfiniteScroll, IonInfiniteScrollContent, IonRow, IonCol, IonGrid, IonTitle, MatIconModule, MatTabsModule, MatRippleModule, MatCardModule, RouterLink, UpperCasePipe, MatButtonModule, TranslateModule, NgClass, VotappCardComponent, BotonesInicioComponent]
 })
-export class MisVotappsComponent {
+export class MisVotappsComponent implements OnInit {
 
   private userService: UserService = inject(UserService);
   private router: Router = inject(Router);
+
+  @Input('enLibro') enLibro: boolean;
 
   @ViewChild('infiniteScrollAbiertas') infiniteScrollAbiertas: IonInfiniteScrollAngular;
   @ViewChild('infiniteScrollCerradas') infiniteScrollCerradas: IonInfiniteScrollAngular;
@@ -40,13 +42,15 @@ export class MisVotappsComponent {
     this.votacionesListas = false;
   }
 
-  ionViewDidEnter() {
+  ngOnInit() {
     this.votaciones = [];
     this.llamarVotapps(this.pagina);
   }
 
   public goToVotapp(votapp: Votacion) {
-    this.router.navigate([`mis-votapps/${votapp.id}`]);
+    if (!this.enLibro) {
+      this.router.navigate([`mis-votapps/${votapp.id}`]);
+    }
   }
 
   handleRefresh(event: any) {

@@ -100,7 +100,7 @@ export class RegisterComponent {
             mensaje: 'Lo importante es tu voto, que nadie decida por vos.',
           }
         }).afterClosed().subscribe(() => {
-          this.router.navigate([`/mis-votapps`]);
+          this.router.navigate([`/inicio`]);
         });
       },
       error: err => {

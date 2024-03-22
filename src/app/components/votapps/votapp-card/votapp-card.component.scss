@@ -1,6 +1,7 @@
 mat-card {
     margin-top: .8rem;
     border-radius: 1rem !important;
+    container-type: inline-size;
 }
 
 .logo {
@@ -51,10 +52,46 @@ mat-card-subtitle {
         justify-content: center !important
     }
 }
- 
 
 @media not all and (min-width: 768px) {
     .ocultarBotones {
         display: none !important;
+    }
+}
+
+@container (max-width: 180px) {
+    mat-card {
+        width: 160px;
+    }
+
+    mat-card-title {
+        font-size: .65rem;
+    }
+
+    mat-card-subtitle {
+        font-size: .6rem;
+        margin-bottom: 2px;
+    }
+
+    .icon-logo {
+        width: 32px;
+        height: 32px;
+        font-size: 32px;
+    }
+
+    ion-button {
+        font-size: 0.4rem;
+    }
+
+    .mat-mdc-card-header {
+        padding: 3px;
+    }
+
+    mat-card-actions {
+        ion-col {
+            padding: 0 !important;
+        }
+
+        padding: 0 !important;
     }
 }

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges, inject } from '@angular/core';
 import { Preferences } from '@capacitor/preferences';
 import { Votacion } from 'src/app/classes/votacion/votacion';
 import { UserService } from 'src/app/services/user/user.service';
@@ -7,7 +7,7 @@ import { RouterLink } from '@angular/router';
 import { IonButton, IonCol, IonGrid, IonRow } from '@ionic/angular/standalone';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatCardModule } from '@angular/material/card';
-import { UpperCasePipe } from '@angular/common';
+import { NgClass, UpperCasePipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
@@ -15,7 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './votapp-card.component.html',
   styleUrls: ['./votapp-card.component.scss'],
   standalone: true,
-  imports: [IonGrid, IonButton, MatCardModule, IonRow, IonCol, RouterLink, UpperCasePipe, MatIconModule, MatButtonModule, TranslateModule]
+  imports: [IonGrid, IonButton, MatCardModule, IonRow, IonCol, RouterLink, UpperCasePipe, MatIconModule, MatButtonModule, TranslateModule, NgClass]
 })
 export class VotappCardComponent implements OnInit {
 
@@ -30,7 +30,6 @@ export class VotappCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     Preferences.get({ key: 'parametros' }).then((data: any) => {
       if (data.value) {
         let paramDiasRestantes = JSON.parse(data.value).parametros.filter((parametro: any) => {

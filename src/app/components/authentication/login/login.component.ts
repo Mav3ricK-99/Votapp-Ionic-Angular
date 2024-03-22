@@ -82,7 +82,7 @@ export class LoginComponent implements OnInit {
         let currentUser = helper.decodeToken(jwt.access_token); //Este en realidad es el payload
         localStorage.setItem('jwt', JSON.stringify(jwt));
         localStorage.setItem('current_user', JSON.stringify(currentUser));
-        this.router.navigateByUrl('/mis-votapps');
+        this.router.navigateByUrl('/inicio');
       },
       error: err => {
         console.log(err);

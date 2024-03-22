@@ -11,6 +11,7 @@ import { VotappDetailComponent } from './components/votapps/votapp-detail/votapp
 import { NuevaComunidadComponent } from './components/comunidad/nueva-comunidad/nueva-comunidad.component';
 import { NuevaVotappComponent } from './components/votapps/nueva-votapp/nueva-votapp.component';
 import { TiposDeVotacionesComponent } from './components/tiposDeVotaciones/tipos-de-votaciones.component';
+import { InicioComponent } from './components/inicio/inicio.component';
 
 const authRoutes: Routes = [
   {
@@ -63,20 +64,29 @@ export const routes: Routes = [
     loadChildren: () => authRoutes
   },
   {
+    path: 'inicio',
+    loadComponent: () => InicioComponent,
+    canActivate: [UsuarioPuedeAccederGuard],
+  },
+  {
     path: 'mis-votapps',
-    loadChildren: () => misVotapps
+    loadChildren: () => misVotapps,
+    canActivate: [UsuarioPuedeAccederGuard],
   },
   {
     path: 'nueva-votapp',
-    loadChildren: () => nuevaVotapp
+    loadChildren: () => nuevaVotapp,
+    canActivate: [UsuarioPuedeAccederGuard],
   },
   {
     path: 'nueva-comunidad',
-    loadChildren: () => nuevaComunidad
+    loadChildren: () => nuevaComunidad,
+    canActivate: [UsuarioPuedeAccederGuard],
   },
   {
     path: 'tipos-de-votaciones',
     loadComponent: () => TiposDeVotacionesComponent,
+    canActivate: [UsuarioPuedeAccederGuard],
     pathMatch: 'full'
   },
   {
@@ -84,5 +94,8 @@ export const routes: Routes = [
     redirectTo: 'auth/login',
     pathMatch: 'full'
   },
-  /* { path: '**', redirectTo: 'auth/login' }, */
+  {
+    path: '**',
+    redirectTo: 'inicio'
+  },
 ];
