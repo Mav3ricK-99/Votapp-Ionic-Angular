@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { User } from 'src/app/classes/user/user';
 import { JWT } from 'src/app/interfaces/jwt/jwt';
 import { environment } from 'src/environments/environment';
@@ -11,7 +11,9 @@ export class AuthenticationService {
 
   private AUTH_API_URL: string = `${environment.BASE_API_URL}/auth`;
 
-  constructor(private httpClient: HttpClient) { }
+  private httpClient: HttpClient = inject(HttpClient);
+
+  constructor() { }
 
   authenticate(email: string, password: string) {
     return this.httpClient.post(this.AUTH_API_URL + '/login', {

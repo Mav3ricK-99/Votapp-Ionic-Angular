@@ -1,6 +1,6 @@
 import { formatDate } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { map } from 'rxjs';
 import { Comunidad } from 'src/app/classes/comunidad/comunidad';
 import { ComunidadIntegrantes } from 'src/app/classes/comunidadIntegrantes/comunidad-integrantes';
@@ -19,9 +19,11 @@ import { environment } from 'src/environments/environment';
 })
 export class VotacionService {
 
+  private httpClient: HttpClient = inject(HttpClient);
+  private comunidadService: ComunidadService = inject(ComunidadService);
+  
   private VOTAPP_API_URL: string = `${environment.BASE_API_URL}/votapp/`;
-
-  constructor(private httpClient: HttpClient, private comunidadService: ComunidadService) { }
+  constructor() { }
 
   newVotapp(votapp: Votacion) {
     return this.httpClient.post(this.VOTAPP_API_URL, {

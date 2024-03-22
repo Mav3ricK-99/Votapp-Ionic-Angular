@@ -1,20 +1,23 @@
 <mat-card class="px-1 my-2 mx-4">
   <mat-card-header class="flex justify-start items-center">
-    <div *ngIf="votapp.comunidad.logo; else noTieneLogo" mat-card-avatar class="self-start logo"
+    @if(votapp.comunidad.logo) {
+    <div mat-card-avatar class="self-start logo"
       style="background-image: url('data:image/png;base64,{{votapp.comunidad.logo}}')"></div>
-    <ng-template #noTieneLogo>
-      <mat-icon class="self-start icon-logo" mat-card-avatar aria-hidden="false" aria-label="Comunidad"
-        fontIcon="groups"></mat-icon>
-    </ng-template>
+    } @else {
+    <mat-icon class="self-start icon-logo" mat-card-avatar aria-hidden="false" aria-label="Comunidad"
+      fontIcon="groups"></mat-icon>
+    }
     <mat-card-title>{{ votapp.comunidad.nombre | uppercase }}</mat-card-title>
     <mat-card-subtitle>{{ votapp.votacionPunto }}</mat-card-subtitle>
   </mat-card-header>
   <div class="card-content-box">
-    <mat-card-actions *ngIf="votapp.estaFinalizada(); else openVotappCard">
+    <mat-card-actions>
+      @if(votapp.estaFinalizada()) {
       <ion-grid>
         <ion-row>
           <ion-col size-xs="6" size-md="12" class="md:flex md:justify-start">
-            <ion-button class="mb-2 md:mb-1 text-wrap" shape="round" expand="block" color="green">Mi voto {{'app.votes.states.'+
+            <ion-button class="mb-2 md:mb-1 text-wrap" shape="round" expand="block" color="green">Mi voto
+              {{'app.votes.states.'+
               votapp.estadoVotoParticipantePretty(this.userService.currentUser) | translate
               }}</ion-button>
             <ion-button class="rounded-xl" shape="round" expand="block" color="medium">{{votapp.totalVotos()}}
@@ -34,38 +37,41 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-    </mat-card-actions>
-    <ng-template #openVotappCard>
-      <mat-card-actions>
-        <ion-grid>
-          <ion-row>
-            <ion-col size-xs="6" size-md="12" class="md:flex md:justify-start">
-              <ion-button class="mb-2 md:mb-1 block" shape="round" [color]="pocosDiasRestantes > votapp.diasRestantes() ? 'warning' : 'medium'">Dias
-                restantes<br>{{votapp.diasRestantes()}}</ion-button>
-              <ion-button shape="round" size="medium" class="block" color="medium">Total
-                votantes<br>{{votapp.totalMiembros()}}</ion-button>
-              <div class="ocultarBotones">
-                <ion-button class="text-wrap" shape="round" [color]="votapp.estadoVotoParticipante(this.userService.currentUser) == 'pendiente' ? 'danger' : 'medium'">Mi voto
-                  {{'app.votes.states.'+
-                  votapp.estadoVotoParticipantePretty(this.userService.currentUser)
-                  | translate
-                  }}</ion-button>
-                <ion-button color="medium" shape="round">{{votapp.totalVotos()}}
-                  votos<br>{{votapp.porcentajeVotosEmitidosPorPorcentaje()}}%</ion-button>
-              </div>
-            </ion-col>
-            <ion-col class="md:hidden" size-xs="6">
-              <ion-button class="mb-2 text-wrap" shape="round" expand="block" [color]="votapp.estadoVotoParticipante(this.userService.currentUser) == 'pendiente' ? 'danger' : 'medium'">Mi voto
+      } @else {
+      <ion-grid>
+        <ion-row>
+          <ion-col size-xs="6" size-md="12" class="md:flex md:justify-start">
+            <ion-button class="mb-2 md:mb-1 block" shape="round"
+              [color]="pocosDiasRestantes > votapp.diasRestantes() ? 'warning' : 'medium'">Dias
+              restantes<br>{{votapp.diasRestantes()}}</ion-button>
+            <ion-button shape="round" size="medium" class="block" color="medium">Total
+              votantes<br>{{votapp.totalMiembros()}}</ion-button>
+            <div class="ocultarBotones">
+              <ion-button class="text-wrap" shape="round"
+                [color]="votapp.estadoVotoParticipante(this.userService.currentUser) == 'pendiente' ? 'danger' : 'medium'">Mi
+                voto
                 {{'app.votes.states.'+
                 votapp.estadoVotoParticipantePretty(this.userService.currentUser)
                 | translate
                 }}</ion-button>
-              <ion-button expand="block" shape="round" color="medium">{{votapp.totalVotos()}}
+              <ion-button color="medium" shape="round">{{votapp.totalVotos()}}
                 votos<br>{{votapp.porcentajeVotosEmitidosPorPorcentaje()}}%</ion-button>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </mat-card-actions>
-    </ng-template>
+            </div>
+          </ion-col>
+          <ion-col class="md:hidden" size-xs="6">
+            <ion-button class="mb-2 text-wrap" shape="round" expand="block"
+              [color]="votapp.estadoVotoParticipante(this.userService.currentUser) == 'pendiente' ? 'danger' : 'medium'">Mi
+              voto
+              {{'app.votes.states.'+
+              votapp.estadoVotoParticipantePretty(this.userService.currentUser)
+              | translate
+              }}</ion-button>
+            <ion-button expand="block" shape="round" color="medium">{{votapp.totalVotos()}}
+              votos<br>{{votapp.porcentajeVotosEmitidosPorPorcentaje()}}%</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      }
+    </mat-card-actions>
   </div>
 </mat-card>

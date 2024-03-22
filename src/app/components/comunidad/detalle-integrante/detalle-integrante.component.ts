@@ -1,6 +1,9 @@
-import { animate, keyframes, state, style, transition, trigger } from '@angular/animations';
+import { animate, keyframes, style, transition, trigger } from '@angular/animations';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { EmailParticipacion } from '../nueva-comunidad/nueva-comunidad.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-detalle-integrante',
@@ -23,6 +26,8 @@ import { EmailParticipacion } from '../nueva-comunidad/nueva-comunidad.component
       ]),
     ]),
   ],
+  standalone: true, 
+  imports: [TranslateModule, MatCardModule, MatIconModule]
 })
 export class DetalleIntegranteComponent implements OnInit {
   //Ver esto  ? https://angular.io/api/animations/stagger

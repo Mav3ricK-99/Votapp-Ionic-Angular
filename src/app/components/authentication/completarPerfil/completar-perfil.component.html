@@ -16,21 +16,24 @@
         <form [formGroup]="perfilForm">
           <ion-row class="ion-justify-content-center">
             <ion-col size="12">
-              <mat-form-field [ngClass]="{'mb-3': !perfilForm.get('email')?.valid && (perfilForm.get('email')?.dirty || perfilForm.get('email')?.touched)}" appearance="outline">
+              <mat-form-field
+                [ngClass]="{'mb-3': !perfilForm.get('email')?.valid && (perfilForm.get('email')?.dirty || perfilForm.get('email')?.touched)}"
+                appearance="outline">
                 <mat-label>{{'app.forms.auth.email' | translate | titlecase}}</mat-label>
-                <input type="email" readonly formControlName="email" matInput placeholder="Ingresa su correo electronico">
-                <mat-error class="text-sm"
-                  *ngIf="perfilForm.get('email')?.errors?.['email'] && !perfilForm.get('email')?.errors?.['required'] && !perfilForm.get('email')?.errors?.['maxlength']">
+                <input type="email" readonly formControlName="email" matInput
+                  placeholder="Ingresa su correo electronico">
+                <mat-error class="text-sm">
+                  @if(perfilForm.get('email')?.errors?.['email'] && !perfilForm.get('email')?.errors?.['required'] &&
+                  !perfilForm.get('email')?.errors?.['maxlength']) {
                   El correo electronico debe ser valido.
-                </mat-error>
-                <mat-error class="text-sm" *ngIf="perfilForm.get('email')?.errors?.['required'] && !perfilForm.get('email')?.errors?.['maxlength']">
+                  } @else if(perfilForm.get('email')?.errors?.['required'] &&
+                  !perfilForm.get('email')?.errors?.['maxlength']) {
                   El correo electronico es requerido.
-                </mat-error>
-                <mat-error class="text-sm" *ngIf="perfilForm.get('email')?.errors?.['maxlength']">
+                  } @else if(perfilForm.get('email')?.errors?.['maxlength']) {
                   El correo electronico debe tener como maximo 60 caracteres.
-                </mat-error>
-                <mat-error class="text-sm" *ngIf="perfilForm.get('email')?.errors?.['duplicateEmail']">
+                  } @else if (perfilForm.get('email')?.errors?.['duplicateEmail']) {
                   El correo electronico ya en uso.
+                  }
                 </mat-error>
               </mat-form-field>
             </ion-col>
@@ -38,18 +41,20 @@
 
           <ion-row class="ion-justify-content-center mb-1">
             <ion-col size="12">
-              <mat-form-field [ngClass]="{'mb-3': !perfilForm.get('name')?.valid && (perfilForm.get('name')?.dirty || perfilForm.get('name')?.touched)}" appearance="outline">
+              <mat-form-field
+                [ngClass]="{'mb-3': !perfilForm.get('name')?.valid && (perfilForm.get('name')?.dirty || perfilForm.get('name')?.touched)}"
+                appearance="outline">
                 <mat-label>{{'app.userInfo.name' | translate | titlecase}}</mat-label>
                 <input formControlName="name" matInput placeholder="Ingresa tu nombre">
-                <mat-error class="text-sm"
-                  *ngIf="perfilForm.get('name')?.errors?.['required'] && !perfilForm.get('name')?.errors?.['maxlength'] && !perfilForm.get('name')?.errors?.['minlength']">
+                <mat-error class="text-sm">
+                  @if(perfilForm.get('name')?.errors?.['required'] && !perfilForm.get('name')?.errors?.['maxlength'] &&
+                  !perfilForm.get('name')?.errors?.['minlength']) {
                   El nombre es requerido.
-                </mat-error>
-                <mat-error class="text-sm" *ngIf="perfilForm.get('name')?.errors?.['maxlength']">
+                  } @else if(perfilForm.get('name')?.errors?.['maxlength']) {
                   El nombre debe tener como maximo 45 caracteres.
-                </mat-error>
-                <mat-error class="text-sm" *ngIf="perfilForm.get('name')?.errors?.['minlength']">
+                  } @else if(perfilForm.get('name')?.errors?.['minlength']) {
                   El nombre debe tener al menos 6 caracteres.
+                  }
                 </mat-error>
               </mat-form-field>
             </ion-col>
@@ -57,18 +62,21 @@
 
           <ion-row class="ion-justify-content-center mb-1">
             <ion-col size="12">
-              <mat-form-field [ngClass]="{'mb-3': !perfilForm.get('surname')?.valid && (perfilForm.get('surname')?.dirty || perfilForm.get('surname')?.touched)}" appearance="outline">
+              <mat-form-field
+                [ngClass]="{'mb-3': !perfilForm.get('surname')?.valid && (perfilForm.get('surname')?.dirty || perfilForm.get('surname')?.touched)}"
+                appearance="outline">
                 <mat-label>{{'app.userInfo.surname' | translate | titlecase}}</mat-label>
                 <input formControlName="surname" matInput placeholder="Ingresa tu apellido">
-                <mat-error class="text-sm"
-                  *ngIf="perfilForm.get('surname')?.errors?.['required'] && !perfilForm.get('surname')?.errors?.['maxlength'] && !perfilForm.get('surname')?.errors?.['minlength']">
+                <mat-error class="text-sm">
+                  @if(perfilForm.get('surname')?.errors?.['required'] &&
+                  !perfilForm.get('surname')?.errors?.['maxlength'] &&
+                  !perfilForm.get('surname')?.errors?.['minlength']) {
                   El apellido es requerido.
-                </mat-error>
-                <mat-error class="text-sm" *ngIf="perfilForm.get('surname')?.errors?.['maxlength']">
+                  } @else if(perfilForm.get('surname')?.errors?.['maxlength']) {
                   El apellido debe tener como maximo 45 caracteres.
-                </mat-error>
-                <mat-error class="text-sm" *ngIf="perfilForm.get('surname')?.errors?.['minlength']">
+                  } @else if(perfilForm.get('surname')?.errors?.['minlength']) {
                   El apellido debe tener al menos 6 caracteres.
+                  }
                 </mat-error>
               </mat-form-field>
             </ion-col>
@@ -76,19 +84,29 @@
 
           <ion-row class="ion-justify-content-center mb-1">
             <ion-col size="12">
-              <mat-form-field [ngClass]="{'mb-2': !perfilForm.get('residenceCountry')?.valid && (perfilForm.get('residenceCountry')?.dirty || perfilForm.get('residenceCountry')?.touched)}" appearance="outline">
+              <mat-form-field
+                [ngClass]="{'mb-2': !perfilForm.get('residenceCountry')?.valid && (perfilForm.get('residenceCountry')?.dirty || perfilForm.get('residenceCountry')?.touched)}"
+                appearance="outline">
                 <mat-label>{{'app.userInfo.residenceCountry' | translate | titlecase}}</mat-label>
                 <input type="text" formControlName="residenceCountry" matInput placeholder="Elegi tu pais de residencia"
                   [matAutocomplete]="auto" autocomplete="disabled">
-                  <mat-error class="text-sm" *ngIf="perfilForm.get('residenceCountry')?.errors?.['required']">
-                    El pais de residencia es requerido.
-                  </mat-error>
+                <mat-error class="text-sm">
+                  @if(perfilForm.get('residenceCountry')?.errors?.['required']) {
+                  El pais de residencia es requerido.
+                  }
+                </mat-error>
                 <mat-autocomplete #auto="matAutocomplete">
-                  <mat-option *ngFor="let country of countries | async" [value]="country.name">
+                  @if(countries | async; as countries) {
+                  @for(country of countries; track country.name) {
+                  <mat-option [value]="country.name">
                     <span>{{country.name}}</span> |
-                    <img *ngIf="country.flagImage" alt="country.name" class="example-option-img"
+                    @if(country.flagImage) {
+                    <img alt="country.name" class="example-option-img"
                       src="https://flagcdn.com/48x36/{{country.flagImage | lowercase}}.png" height="25">
+                    }
                   </mat-option>
+                  }
+                  }
                 </mat-autocomplete>
               </mat-form-field>
             </ion-col>
@@ -100,16 +118,21 @@
                 <mat-label>{{'app.userInfo.language' | translate | titlecase}}</mat-label>
                 <input type="text" aria-label="Number" formControlName="language" matInput
                   placeholder="Elegi tu idioma preferido" [matAutocomplete]="auto2" autocomplete="disabled">
-                <mat-error class="text-sm" *ngIf="perfilForm.get('language')?.errors?.['required']">
-                  El idioma es requerido.
-                </mat-error>
-                <mat-error class="text-sm" *ngIf="perfilForm.get('language')?.errors?.['idiomaInvalido']">
+                <mat-error class="text-sm">
+                  @if(perfilForm.get('language')?.errors?.['required']) {
                   El idioma especificado no es valido.
+                  } @else if(perfilForm.get('language')?.errors?.['idiomaInvalido']) {
+                  El idioma especificado no es valido.
+                  }
                 </mat-error>
                 <mat-autocomplete autoActiveFirstOption #auto2="matAutocomplete">
-                  <mat-option *ngFor="let option of langs | async" [value]="option.language">
-                    {{option.language}}
+                  @if(langs | async; as langs) {
+                  @for(lang of langs; track lang.id) {
+                  <mat-option [value]="lang.language">
+                    {{lang.language}}
                   </mat-option>
+                  }
+                  }
                 </mat-autocomplete>
               </mat-form-field>
             </ion-col>
@@ -120,12 +143,12 @@
               <mat-form-field appearance="outline">
                 <mat-label>{{'app.userInfo.birthYear' | translate | titlecase}}</mat-label>
                 <input type="number" formControlName="yearBirth" matInput placeholder="Escribi tu año de nacimiento">
-                <mat-error class="text-sm" *ngIf="perfilForm.get('yearBirth')?.errors?.['required']">
+                <mat-error class="text-sm">
+                  @if(perfilForm.get('yearBirth')?.errors?.['required']) {
                   El año de nacimiento es requerido.
-                </mat-error>
-                <mat-error class="text-sm"
-                  *ngIf="perfilForm.get('yearBirth')?.errors?.['max']">
+                  } @else if(perfilForm.get('yearBirth')?.errors?.['max']) {
                   La año de nacimiento debe ser menor al año actual.
+                  }
                 </mat-error>
               </mat-form-field>
             </ion-col>
@@ -133,21 +156,23 @@
 
           <ion-row class="ion-justify-content-center mb-1">
             <ion-col size="12">
-              <mat-form-field [ngClass]="{'mb-3': !perfilForm.get('password')?.valid && (perfilForm.get('password')?.dirty || perfilForm.get('password')?.touched)}" appearance="outline">
+              <mat-form-field
+                [ngClass]="{'mb-3': !perfilForm.get('password')?.valid && (perfilForm.get('password')?.dirty || perfilForm.get('password')?.touched)}"
+                appearance="outline">
                 <mat-label>{{'app.forms.auth.password' | translate | titlecase}}</mat-label>
-                <input [type]="hidePassword ? 'password' : 'text'" formControlName="password" matInput autocomplete="true"
-                  placeholder="Escribi tu contraseña">
+                <input [type]="hidePassword ? 'password' : 'text'" formControlName="password" matInput
+                  autocomplete="true" placeholder="Escribi tu contraseña">
                 <button tabindex="-1" type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword"
                   [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
                   <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                 </button>
-                <mat-error class="text-sm"
-                  *ngIf="perfilForm.get('password')?.errors?.['required'] && !perfilForm.get('password')?.errors?.['minlength']">
+                <mat-error class="text-sm">
+                  @if(perfilForm.get('password')?.errors?.['required'] &&
+                  !perfilForm.get('password')?.errors?.['minlength']) {
                   La contraseña es requerida.
-                </mat-error>
-                <mat-error class="text-sm"
-                  *ngIf="perfilForm.get('password')?.errors?.['minlength']">
+                  } @else if(perfilForm.get('password')?.errors?.['minlength']) {
                   La contraseña debe tener como minimo 6 caracteres.
+                  }
                 </mat-error>
               </mat-form-field>
             </ion-col>
@@ -155,24 +180,28 @@
 
           <ion-row class="ion-justify-content-center mb-1">
             <ion-col size="12">
-              <mat-form-field [ngClass]="{'mb-3': !perfilForm.get('repeatPassword')?.valid && (perfilForm.get('repeatPassword')?.dirty || perfilForm.get('repeatPassword')?.touched)}" appearance="outline">
+              <mat-form-field
+                [ngClass]="{'mb-3': !perfilForm.get('repeatPassword')?.valid && (perfilForm.get('repeatPassword')?.dirty || perfilForm.get('repeatPassword')?.touched)}"
+                appearance="outline">
                 <mat-label>{{'app.forms.auth.signup.repeatPassword' | translate | titlecase}}</mat-label>
-                <input [type]="hideRepeatPassword ? 'password' : 'text'" autocomplete="true" 
-                (keydown.enter)="completarDatosPerfil()" formControlName="repeatPassword" matInput placeholder="Escribi tu contraseña">
+                <input [type]="hideRepeatPassword ? 'password' : 'text'" autocomplete="true"
+                  (keydown.enter)="completarDatosPerfil()" formControlName="repeatPassword" matInput
+                  placeholder="Escribi tu contraseña">
                 <button tabindex="-1" mat-icon-button matSuffix (click)="hideRepeatPassword = !hideRepeatPassword"
                   [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideRepeatPassword">
                   <mat-icon>{{hideRepeatPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                 </button>
-                <mat-error class="text-sm"
-                  *ngIf="perfilForm.get('repeatPassword')?.errors?.['required'] && !perfilForm.get('repeatPassword')?.errors?.['minlength']">
+                <mat-error class="text-sm">
+                  @if(perfilForm.get('repeatPassword')?.errors?.['required'] &&
+                  !perfilForm.get('repeatPassword')?.errors?.['minlength']) {
                   La campo repetir contraseña es requerido.
-                </mat-error>
-                <mat-error class="text-sm"
-                  *ngIf="perfilForm.get('repeatPassword')?.errors?.['minlength'] && !perfilForm.get('repeatPassword')?.errors?.['required']">
+                  } @else if(perfilForm.get('repeatPassword')?.errors?.['minlength'] &&
+                  !perfilForm.get('repeatPassword')?.errors?.['required']) {
                   La campo repetir contraseña debe tener como minimo 6 caracteres.
-                </mat-error>
-                <mat-error class="text-sm" *ngIf="perfilForm.get('repeatPassword')?.errors?.['passwordsMustMatch'] && !perfilForm.get('repeatPassword')?.errors?.['required']">
+                  } @else if (perfilForm.get('repeatPassword')?.errors?.['passwordsMustMatch'] &&
+                  !perfilForm.get('repeatPassword')?.errors?.['required']) {
                   Los campos contraseña y repetir contraseña deben coincidir.
+                  }
                 </mat-error>
               </mat-form-field>
             </ion-col>

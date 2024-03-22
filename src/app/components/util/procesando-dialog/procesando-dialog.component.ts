@@ -1,10 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-procesando-dialog',
   templateUrl: './procesando-dialog.component.html',
   styleUrls: ['./procesando-dialog.component.scss'],
+  standalone: true,
+  imports: [MatDialogModule, MatProgressBarModule]
 })
 export class ProcesandoDialogComponent  implements OnInit {
 

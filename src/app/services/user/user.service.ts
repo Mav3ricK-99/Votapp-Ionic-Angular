@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { Comunidad } from 'src/app/classes/comunidad/comunidad';
 import { ComunidadIntegrantes } from 'src/app/classes/comunidadIntegrantes/comunidad-integrantes';
@@ -17,11 +17,15 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class UserService {
+
+  private httpClient: HttpClient = inject(HttpClient);
+  private comunidadService: ComunidadService = inject(ComunidadService);
+
   private USER_API_URL: string = `${environment.BASE_API_URL}/user`;
 
   public currentUser: User;
 
-  constructor(private httpClient: HttpClient, private comunidadService: ComunidadService) {
+  constructor() {
     this.getLocalUser();
   }
 
@@ -107,7 +111,7 @@ export class UserService {
   guardarFMCToken(fmc_token: string) {
     return this.httpClient.post(this.USER_API_URL + `/${this.currentUser.id}/fmc_token`, {
       fmc_token: fmc_token
-    }).subscribe(() => {});
+    }).subscribe(() => { });
   }
 
   getLocalUser() {

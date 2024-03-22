@@ -1,4 +1,5 @@
-<mat-card *ngIf="mostrar" [@toggleDetalle] class="cardIntegrante my-1">
+@if(mostrar) {
+<mat-card [@toggleDetalle] class="cardIntegrante my-1">
   <mat-card-header class="grow">
     <mat-card-title>{{integrante.email}}</mat-card-title>
     <mat-card-subtitle>{{integrante.participacion}}%</mat-card-subtitle>
@@ -12,3 +13,4 @@
     </button>
   </mat-card-actions>
 </mat-card>
+}

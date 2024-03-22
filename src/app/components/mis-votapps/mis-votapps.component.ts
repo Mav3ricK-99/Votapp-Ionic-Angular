@@ -1,25 +1,41 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Votacion } from 'src/app/classes/votacion/votacion';
 import { UserService } from 'src/app/services/user/user.service';
-import { InfiniteScrollCustomEvent, IonInfiniteScroll, MenuController } from '@ionic/angular';
-import { debounce, debounceTime, distinctUntilChanged, fromEvent, map } from 'rxjs';
+import { RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatCardModule } from '@angular/material/card';
+import { UpperCasePipe } from '@angular/common';
+import { MatRippleModule } from '@angular/material/core';
+import { InfiniteScrollCustomEvent, IonInfiniteScroll as IonInfiniteScrollAngular } from '@ionic/angular';
+import { IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonInfiniteScroll, IonInfiniteScrollContent, IonMenuButton, IonRefresher, IonRefresherContent, IonRow, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { VotappCardComponent } from '../votapps/votapp-card/votapp-card.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { BotonesInicioComponent } from '../util/botones-inicio/botones-inicio.component';
+
 @Component({
   selector: 'app-mis-votapps',
   templateUrl: './mis-votapps.component.html',
   styleUrls: ['./mis-votapps.component.scss'],
+  standalone: true,
+  imports: [IonHeader, IonToolbar, IonContent, IonButtons, IonMenuButton, IonRefresherContent, IonRefresher, IonInfiniteScroll, IonInfiniteScrollContent, IonRow, IonCol, IonGrid, IonTitle, MatIconModule, MatTabsModule, MatRippleModule, MatCardModule, RouterLink, UpperCasePipe, MatButtonModule, TranslateModule, VotappCardComponent, BotonesInicioComponent]
 })
 export class MisVotappsComponent {
 
-  @ViewChild('infiniteScrollAbiertas') infiniteScrollAbiertas: IonInfiniteScroll;
-  @ViewChild('infiniteScrollCerradas') infiniteScrollCerradas: IonInfiniteScroll;
+  private userService: UserService = inject(UserService);
+  private router: Router = inject(Router);
+
+  @ViewChild('infiniteScrollAbiertas') infiniteScrollAbiertas: IonInfiniteScrollAngular;
+  @ViewChild('infiniteScrollCerradas') infiniteScrollCerradas: IonInfiniteScrollAngular;
   public votacionesAbiertas: Votacion[] = [];
   public votacionesCerradas: Votacion[] = [];
   public votaciones: Votacion[] = [];
   public pagina: number;
   public votacionesListas: boolean;
 
-  constructor(private userService: UserService, private router: Router) {
+  constructor() {
     this.pagina = 0;
     this.votacionesListas = false;
   }

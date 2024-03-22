@@ -1,8 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { TitleCasePipe, UpperCasePipe } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { Router } from '@angular/router';
+import { IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonImg, IonRow, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { TranslateModule } from '@ngx-translate/core';
 import { InfoDialogComponent } from 'src/app/components/util/info-dialog/info-dialog.component';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 
@@ -10,8 +16,15 @@ import { AuthenticationService } from 'src/app/services/authentication/authentic
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.scss'],
+  standalone: true,
+  imports: [IonHeader, IonToolbar, IonContent, IonRow, IonCol, IonGrid, IonFooter, IonImg, IonTitle, MatInputModule, MatButtonModule, ReactiveFormsModule, MatFormFieldModule, TranslateModule, MatIconModule, UpperCasePipe, TitleCasePipe]
 })
 export class ResetPasswordComponent {
+
+  private authService: AuthenticationService = inject(AuthenticationService);
+  private dialog: MatDialog = inject(MatDialog);
+  private formBuilder: FormBuilder = inject(FormBuilder);
+  private router: Router = inject(Router);
 
   public hidePassword: boolean = true;
   public hideRepeatPassword: boolean = true;
@@ -21,8 +34,8 @@ export class ResetPasswordComponent {
 
   public disabledButton: boolean;
 
-  constructor(formBuilder: FormBuilder, private authService: AuthenticationService, public dialog: MatDialog, private router: Router) {
-    this.passwordResetForm = formBuilder.group({
+  constructor() {
+    this.passwordResetForm = this.formBuilder.group({
       token: new FormControl('', { validators: [Validators.required], updateOn: 'blur' }),
       password: new FormControl('', { validators: [Validators.required, Validators.minLength(6)], updateOn: 'blur' }),
       repeatPassword: new FormControl('', { validators: [Validators.required, Validators.minLength(6)], updateOn: 'blur' }),

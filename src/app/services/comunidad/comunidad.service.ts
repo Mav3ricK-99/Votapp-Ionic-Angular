@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { map } from 'rxjs';
 import { Comunidad } from 'src/app/classes/comunidad/comunidad';
 import { ComunidadIntegrantes } from 'src/app/classes/comunidadIntegrantes/comunidad-integrantes';
@@ -12,9 +12,11 @@ import { environment } from 'src/environments/environment';
 })
 export class ComunidadService {
 
+  private httpClient: HttpClient = inject(HttpClient);
+
   private COMUNIDAD_API_URL: string = `${environment.BASE_API_URL}/comunidad`;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor() { }
 
   crearComunidad(nombre: string, detalle: string, logoBase64: string, votacionTipo: VotacionTipo, participantes: Array<EmailParticipacion>) {
     return this.httpClient.post<Comunidad>(this.COMUNIDAD_API_URL + `/`, {

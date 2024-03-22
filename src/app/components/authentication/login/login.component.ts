@@ -1,7 +1,7 @@
-import { Component, OnInit, Optional } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { IonRouterOutlet, Platform } from '@ionic/angular';
+import { Component, OnInit, Optional, inject } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { IonRouterOutlet, IonicModule, Platform } from '@ionic/angular';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { JWT } from 'src/app/interfaces/jwt/jwt';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
@@ -9,17 +9,31 @@ import { App } from '@capacitor/app';
 import { Preferences } from '@capacitor/preferences';
 import { Capacitor } from '@capacitor/core';
 import { PushNotifications } from '@capacitor/push-notifications';
+import { NgClass, TitleCasePipe, UpperCasePipe } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonImg, IonRow, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
+  standalone: true,
+  imports: [IonRow, IonHeader, IonCol, IonToolbar, IonTitle, IonContent, NgClass, IonImg, UpperCasePipe, TitleCasePipe, IonFooter, IonGrid, MatFormFieldModule, MatInputModule, ReactiveFormsModule, TranslateModule, RouterLink, MatIconModule, MatButtonModule]
 })
 export class LoginComponent implements OnInit {
+
+  private authService: AuthenticationService = inject(AuthenticationService);
+  private platform: Platform = inject(Platform);
+  private formBuilder: FormBuilder = inject(FormBuilder);
+  private router: Router = inject(Router);
 
   public hidePassword: boolean = true;
   public loginForm: FormGroup;
   public appVersion: string;
-  constructor(private formBuilder: FormBuilder, private authService: AuthenticationService, private router: Router, private platform: Platform, @Optional() private routerOutlet?: IonRouterOutlet) {
+  constructor(@Optional() private routerOutlet?: IonRouterOutlet) {
     this.appVersion = '';
     this.platform.backButton.subscribeWithPriority(-1, () => {
       if (this.routerOutlet && !this.routerOutlet.canGoBack()) {
@@ -71,6 +85,7 @@ export class LoginComponent implements OnInit {
         this.router.navigateByUrl('/mis-votapps');
       },
       error: err => {
+        console.log(err);
         switch (err.status) {
           case 400: {
             this.router.navigate([`/completar-perfil`], {

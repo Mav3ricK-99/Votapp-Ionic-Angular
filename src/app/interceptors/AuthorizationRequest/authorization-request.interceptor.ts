@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {
   HttpRequest,
   HttpHandler,
@@ -18,11 +18,15 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable()
 export class AuthorizationRequestInterceptor implements HttpInterceptor {
-
+  
+  private authService: AuthenticationService = inject(AuthenticationService);
+  private router: Router = inject(Router);
+  private eventBusService: EventBusService = inject(EventBusService);
+  
   private isRefreshing = false;
   private AUTH_HEADER = "Authorization";
 
-  constructor(private authService: AuthenticationService, private eventBusService: EventBusService, private router: Router, public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     req = req.clone({

@@ -5,9 +5,6 @@ import { filter, map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-@Injectable({
-  providedIn: 'root'
-})
 export class EventBusService {
   private subject$ = new Subject<EventData>();
 

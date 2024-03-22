@@ -1,21 +1,33 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { TitleCasePipe, UpperCasePipe } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { Router } from '@angular/router';
+import { IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonImg, IonRow, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { TranslateModule } from '@ngx-translate/core';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 
 @Component({
   selector: 'app-password-reset-token',
   templateUrl: './password-reset-token.component.html',
   styleUrls: ['./password-reset-token.component.scss'],
+  standalone: true,
+  imports: [IonHeader, IonToolbar, IonContent, IonRow, IonCol, IonGrid, IonFooter, IonImg, IonTitle, UpperCasePipe, MatInputModule, MatButtonModule, TitleCasePipe, TranslateModule, ReactiveFormsModule, MatFormFieldModule]
 })
 export class PasswordResetTokenComponent {
 
+  private authService: AuthenticationService = inject(AuthenticationService);
+  private dialog: MatDialog = inject(MatDialog);
+  private formBuilder: FormBuilder = inject(FormBuilder);
+  private router: Router = inject(Router);
+
   public recuperoContraseniaForm: FormGroup;
-  constructor(formBuilder: FormBuilder, private authService: AuthenticationService, public dialog: MatDialog, private router: Router) {
-    this.recuperoContraseniaForm = formBuilder.group({
+  constructor() {
+    this.recuperoContraseniaForm = this.formBuilder.group({
       email: new FormControl('', { validators: [Validators.required, Validators.email, Validators.max(60)], updateOn: 'blur' }),
     });
   }

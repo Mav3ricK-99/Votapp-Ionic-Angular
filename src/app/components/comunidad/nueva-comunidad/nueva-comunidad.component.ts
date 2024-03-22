@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, FormGroupDirective, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, FormGroupDirective, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { VotacionTipo } from 'src/app/classes/votacionTipo/votacion-tipo';
 import { ComunidadService } from 'src/app/services/comunidad/comunidad.service';
@@ -10,12 +10,29 @@ import { InfoDialogComponent } from '../../util/info-dialog/info-dialog.componen
 import { ProcesandoDialogComponent } from '../../util/procesando-dialog/procesando-dialog.component';
 import { Camera, CameraResultType } from '@capacitor/camera';
 import { Device, DeviceInfo } from '@capacitor/device';
+import { IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonMenuButton, IonRow, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { MatIconModule } from '@angular/material/icon';
+import { BotonesInicioComponent } from '../../util/botones-inicio/botones-inicio.component';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { DetalleIntegranteComponent } from '../detalle-integrante/detalle-integrante.component';
+import { MatButtonModule } from '@angular/material/button';
+import { NgClass } from '@angular/common';
 @Component({
   selector: 'app-nueva-comunidad',
   templateUrl: './nueva-comunidad.component.html',
   styleUrls: ['./nueva-comunidad.component.scss'],
+  standalone: true,
+  imports: [IonHeader, IonToolbar, IonButtons, IonMenuButton, IonContent, IonRow, IonCol, IonGrid, IonTitle, ReactiveFormsModule, MatIconModule, BotonesInicioComponent, MatStepperModule, MatFormFieldModule, DetalleIntegranteComponent, MatButtonModule, NgClass]
 })
 export class NuevaComunidadComponent {
+
+  private userService: UserService = inject(UserService);
+  private dialog: MatDialog = inject(MatDialog);
+  private formBuilder: FormBuilder = inject(FormBuilder);
+  private router: Router = inject(Router);
+  private _snackBar: MatSnackBar = inject(MatSnackBar);
+  private comunidadService: ComunidadService = inject(ComunidadService);
 
   public comunidadForm: FormGroup;
   public participantesForm: FormGroup;
@@ -35,7 +52,7 @@ export class NuevaComunidadComponent {
   public votacionTipo: string;
   public votacionesTipoListas: boolean;
 
-  constructor(formBuilder: FormBuilder, private _snackBar: MatSnackBar, private userService: UserService, private comunidadService: ComunidadService, public dialog: MatDialog, public router: Router) {
+  constructor() {
 
     this.colorPrimerContinuar = 'white-g';
     this.colorCrearComunidad = 'green';
@@ -46,14 +63,14 @@ export class NuevaComunidadComponent {
     const queryParams = navigation?.finalUrl?.queryParams as { votacionTipo: string };
     this.votacionTipo = queryParams.votacionTipo;
 
-    this.comunidadForm = formBuilder.group({
+    this.comunidadForm = this.formBuilder.group({
       nombre: new FormControl<string>('', { validators: [Validators.required, Validators.minLength(3), Validators.maxLength(40)], updateOn: 'blur' }),
       detalle: new FormControl<string | null>(null, { validators: [Validators.minLength(3), Validators.maxLength(255)] }),
       logoBase64: new FormControl<string | null>(null, {}),
       tipoVotacion: new FormControl<VotacionTipo | null>(null, { validators: [Validators.required] }),
     });
 
-    this.participantesForm = formBuilder.group({
+    this.participantesForm = this.formBuilder.group({
       email: new FormControl<string>(this.userService.currentUser.email, { validators: [Validators.required, Validators.email], updateOn: 'change' }),
       participacion: new FormControl<number | null>(null, { validators: [Validators.required, Validators.min(0), Validators.max(100)], updateOn: 'blur' }),
       crearVotacion: new FormControl<boolean>(true, { validators: [Validators.required], updateOn: 'change' }),

@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { Component, Query, inject } from '@angular/core';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { ActivatedRoute, Router } from '@angular/router';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Observable, map } from 'rxjs';
 import { Comunidad } from 'src/app/classes/comunidad/comunidad';
 import { User } from 'src/app/classes/user/user';
@@ -14,12 +15,34 @@ import { UserService } from 'src/app/services/user/user.service';
 import { VotacionService } from 'src/app/services/votacion/votacion.service';
 import { Platform } from '@ionic/angular';
 import { RegistroEventosService } from 'src/app/services/registroEventos/registro-eventos.service';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonMenuButton, IonRow, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatIconModule } from '@angular/material/icon';
+import { AsyncPipe, NgClass, TitleCasePipe, UpperCasePipe } from '@angular/common';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { BotonesInicioComponent } from '../../util/botones-inicio/botones-inicio.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatInputModule } from '@angular/material/input';
 @Component({
   selector: 'app-nueva-votapp',
   templateUrl: './nueva-votapp.component.html',
   styleUrls: ['./nueva-votapp.component.scss'],
+  standalone: true,
+  imports: [IonHeader, IonToolbar, IonButtons, MatNativeDateModule, MatInputModule, IonGrid, IonRow, IonContent, IonTitle, MatButtonModule, MatIconModule, MatFormFieldModule, NgClass, MatSelectModule, MatStepperModule, ReactiveFormsModule, MatDatepickerModule, MatAutocompleteModule, IonCol, IonMenuButton, TitleCasePipe, RouterLink, BotonesInicioComponent, TranslateModule, UpperCasePipe, AsyncPipe]
 })
 export class NuevaVotappComponent {
+
+  private formBuilder: FormBuilder = inject(FormBuilder);
+  private userService: UserService = inject(UserService);
+  private votacionService: VotacionService = inject(VotacionService);
+  public dialog: MatDialog = inject(MatDialog);
+  public router: Router = inject(Router);
+  public platform: Platform = inject(Platform);
+  private route: ActivatedRoute = inject(ActivatedRoute);
+  private registroEventosService: RegistroEventosService = inject(RegistroEventosService);
 
   comunidadForm: FormGroup;
   puntoAVotarForm: FormGroup;
@@ -45,7 +68,7 @@ export class NuevaVotappComponent {
 
   public votacionTipo: string;
 
-  constructor(formBuilder: FormBuilder, private userService: UserService, private votacionService: VotacionService, public dialog: MatDialog, public router: Router, public platform: Platform, private route: ActivatedRoute, private registroEventosService: RegistroEventosService) {
+  constructor() {
     for (let i = 0; i < 60; i++) {
       if (i < 24) {
         this.horas.push(i.toString().padStart(2, '0'));
@@ -68,18 +91,18 @@ export class NuevaVotappComponent {
 
     this.crearVotacionDeshabilitado = false;
 
-    this.comunidadForm = formBuilder.group({
+    this.comunidadForm = this.formBuilder.group({
       buscarComunidad: new FormControl<string>(''),
       comunidad: new FormControl<Comunidad | null>(null, { validators: [Validators.required] }),
     });
 
-    this.puntoAVotarForm = formBuilder.group({
+    this.puntoAVotarForm = this.formBuilder.group({
       tipoDecision: new FormControl<VotacionDecision | null>(null, { validators: [Validators.required], updateOn: 'blur' }),
       titulo: new FormControl('', { validators: [Validators.required, Validators.minLength(3), Validators.maxLength(255)], updateOn: 'blur' }),
       detalle: new FormControl('', { validators: [Validators.minLength(3), Validators.maxLength(255)] }),
     });
 
-    this.parametrosForm = formBuilder.group({
+    this.parametrosForm = this.formBuilder.group({
       aceptacionRequerida: new FormControl('', { validators: [Validators.required, Validators.min(0), Validators.max(100)], updateOn: 'blur' }),
       quorumRequerido: new FormControl('', { validators: [Validators.required, Validators.min(0), Validators.max(100)], updateOn: 'blur' }),
       fechaVencimiento: new FormControl<Date | null>(null, { validators: [Validators.required], updateOn: 'blur' }),

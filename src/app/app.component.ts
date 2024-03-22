@@ -5,13 +5,16 @@ import { ParametrosService } from './services/parametros/parametros.service';
 import { UserService } from './services/user/user.service';
 import { Preferences } from '@capacitor/preferences';
 import { Platform } from '@ionic/angular';
-import { Channel, PushNotifications } from '@capacitor/push-notifications';
+import { PushNotifications } from '@capacitor/push-notifications';
 import { Capacitor } from '@capacitor/core';
-import { FCM } from "@capacitor-community/fcm";
+import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { MenuComponent } from './components/util/menu/menu.component';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
+  standalone: true,
   styleUrls: ['app.component.scss'],
+  imports: [MenuComponent, IonApp, IonRouterOutlet]
 })
 export class AppComponent implements OnInit {
 

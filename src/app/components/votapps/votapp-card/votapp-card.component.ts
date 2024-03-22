@@ -1,21 +1,31 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { Preferences } from '@capacitor/preferences';
-import { Comunidad } from 'src/app/classes/comunidad/comunidad';
 import { Votacion } from 'src/app/classes/votacion/votacion';
 import { UserService } from 'src/app/services/user/user.service';
+import { MatButtonModule } from '@angular/material/button';
+import { RouterLink } from '@angular/router';
+import { IonButton, IonCol, IonGrid, IonRow } from '@ionic/angular/standalone';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatCardModule } from '@angular/material/card';
+import { UpperCasePipe } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-votapp-card',
   templateUrl: './votapp-card.component.html',
   styleUrls: ['./votapp-card.component.scss'],
+  standalone: true,
+  imports: [IonGrid, IonButton, MatCardModule, IonRow, IonCol, RouterLink, UpperCasePipe, MatIconModule, MatButtonModule, TranslateModule]
 })
 export class VotappCardComponent implements OnInit {
+
+  public userService: UserService = inject(UserService);
 
   @Input('votapp') votapp: Votacion;
 
   public pocosDiasRestantes: number;
 
-  constructor(public userService: UserService) {
+  constructor() {
     this.pocosDiasRestantes = 999;
   }
 

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { TipoVoto } from 'src/app/classes/tipoVoto/tipo-voto';
 import { environment } from 'src/environments/environment';
 
@@ -8,9 +8,11 @@ import { environment } from 'src/environments/environment';
 })
 export class RegistroEventosService {
 
+  private httpClient: HttpClient = inject(HttpClient);
+
   private REGISTRO_EVENTOS_API_URL: string = `${environment.BASE_API_URL}/eventos`;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor() { }
 
   registroConfirmacionVoto(votacion_id: number, tipoVoto: TipoVoto, confirmado: boolean) {
     return this.httpClient.post(this.REGISTRO_EVENTOS_API_URL + `/confirmacionVoto`, {

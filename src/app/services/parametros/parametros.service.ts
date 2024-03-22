@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -7,9 +7,11 @@ import { environment } from 'src/environments/environment';
 })
 export class ParametrosService {
 
+  private httpClient: HttpClient = inject(HttpClient);
+
   private PARAMETROS_API_URL: string = `${environment.BASE_API_URL}/parametros/`;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor() { }
 
   getParametros() {
     return this.httpClient.get(this.PARAMETROS_API_URL);

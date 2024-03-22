@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TipoVoto } from 'src/app/classes/tipoVoto/tipo-voto';
 import { Votacion } from 'src/app/classes/votacion/votacion';
@@ -8,14 +8,29 @@ import { MatButtonModule } from '@angular/material/button';
 import { VotacionService } from 'src/app/services/votacion/votacion.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { Preferences } from '@capacitor/preferences';
-import { MatIcon } from '@angular/material/icon';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { RegistroEventosService } from 'src/app/services/registroEventos/registro-eventos.service';
+import { RouterLink } from '@angular/router';
+import { IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonMenuButton, IonRefresher, IonRefresherContent, IonRow, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatCardModule } from '@angular/material/card';
+import { NgClass, UpperCasePipe } from '@angular/common';
+import { BotonesInicioComponent } from '../../util/botones-inicio/botones-inicio.component';
+import { MatRippleModule } from '@angular/material/core';
 @Component({
   selector: 'app-votapp-detail',
   templateUrl: './votapp-detail.component.html',
   styleUrls: ['./votapp-detail.component.scss'],
+  standalone: true,
+  imports: [IonHeader, IonContent, IonToolbar, IonButtons, IonTitle, IonRefresher, IonRefresherContent, MatIconModule, IonMenuButton, BotonesInicioComponent, MatRippleModule, IonGrid, IonButton, MatCardModule, IonRow, IonCol, RouterLink, UpperCasePipe, MatButtonModule, TranslateModule, NgClass]
 })
 export class VotappDetailComponent implements OnInit, AfterViewInit {
+
+  private registroEventosService: RegistroEventosService = inject(RegistroEventosService);
+  public userService: UserService = inject(UserService);
+  private votacionService: VotacionService = inject(VotacionService);
+  private dialog: MatDialog = inject(MatDialog);
+  private router: ActivatedRoute = inject(ActivatedRoute);
 
   @ViewChild('detalleVotacion', { read: ElementRef, static: false }) detalleVotacion: ElementRef;
   @ViewChild('mostrarMas') mostrarMas: MatIcon;
@@ -37,7 +52,7 @@ export class VotappDetailComponent implements OnInit, AfterViewInit {
 
   public votacionLista: boolean;
 
-  constructor(private router: ActivatedRoute, public dialog: MatDialog, public userService: UserService, private votacionService: VotacionService, private registroEventosService: RegistroEventosService) {
+  constructor() {
     this.mostrarIconoDetalle = false;
     this.votacionLista = false;
     this.tipoDeVotos = [];
@@ -84,8 +99,8 @@ export class VotappDetailComponent implements OnInit, AfterViewInit {
 
   public mostrarVotos(nombreTipoVoto: string) {
     let tipoVoto: TipoVoto | null = null;
-    this.registroEventosService.registroConsultaVotantesPorOpcion(this.votapp.id, nombreTipoVoto).subscribe(() => {});
-    
+    this.registroEventosService.registroConsultaVotantesPorOpcion(this.votapp.id, nombreTipoVoto).subscribe(() => { });
+
     this.viendoVotosTipo = 'pendiente';
     if (nombreTipoVoto !== 'pendiente') {
       tipoVoto = TipoVoto.getVoteType(nombreTipoVoto);
