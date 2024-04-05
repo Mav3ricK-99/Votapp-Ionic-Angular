@@ -252,7 +252,7 @@ export class NuevaComunidadComponent {
             mensaje: 'Se ha registrado la nueva comunidad, las invitaciones ya fueron enviadas.',
           }
         }).afterClosed().subscribe(() => {
-          this.router.navigate([`/nueva-votapp`], {
+          this.router.navigate([`/dashboard/nueva-votapp`], {
             queryParams: { votacionTipo: this.votacionTipo },
             state: { refresh: true },
           });

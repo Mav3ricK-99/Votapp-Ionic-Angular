@@ -44,7 +44,7 @@ export class InicioComponent implements OnInit {
 
       this.animacionLibro().then(() => {
         setTimeout(() => {
-          this.router.navigateByUrl('mis-votapps');
+          this.router.navigateByUrl('dashboard/mis-votapps');
         }, 3500);
       })
     }

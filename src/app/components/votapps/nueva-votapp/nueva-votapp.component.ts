@@ -256,7 +256,7 @@ export class NuevaVotappComponent {
       next: (obj: any) => {
         this.dialog.closeAll();
         this.dialog.open(NuevaVotappConfirmarDialog, { maxWidth: '90vw' }).afterClosed().subscribe(() => {
-          this.router.navigate([`/mis-votapps`], {
+          this.router.navigate([`/dashboard/mis-votapps`], {
             state: { refresh: true },
           });
         });

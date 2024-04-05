@@ -9,7 +9,7 @@
   </ion-header>
   <ion-content [scrollEvents]="true">
     <section class="bg-gray-50 flex flex-col justify-evenly h-full">
-      <article [@bounceInLeft]="estadoAnimacion" [routerLink]="['/nueva-votapp']"
+      <article [@bounceInLeft]="estadoAnimacion" [routerLink]="['/dashboard/nueva-votapp']"
         [queryParams]="{votacionTipo: 'persona'}" matRipple matRippleColor="sky-300"
         class="tipoDeVotacion h23p mx-4 mb-1 rounded-md bg-sky-300 flex flex-col justify-evenly items-center shadow shadow-[#0EA5E9]">
         <h2 class="text-lg text-white my-1">Comunidad personas</h2>
@@ -19,7 +19,7 @@
         <p class="text-center text-sky-500 px-1 leyendaTiposDeVotacion">Permite
           definir votaciones donde todos los integrantes tienen el mismo porcentaje de participacion.</p>
       </article>
-      <article [@bounceInRight]="estadoAnimacion" [routerLink]="['/nueva-votapp']"
+      <article [@bounceInRight]="estadoAnimacion" [routerLink]="['/dashboard/nueva-votapp']"
         [queryParams]="{votacionTipo: 'porcentaje'}" matRipple matRippleColor="green-300"
         class="tipoDeVotacion h23p mx-4 mb-1 rounded-md bg-green-300 flex flex-col justify-evenly items-center shadow shadow-[#22C55E]">
         <h2 class="text-lg text-white my-1">Comunidad %</h2>

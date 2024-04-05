@@ -12,6 +12,7 @@ import { NuevaComunidadComponent } from './components/comunidad/nueva-comunidad/
 import { NuevaVotappComponent } from './components/votapps/nueva-votapp/nueva-votapp.component';
 import { TiposDeVotacionesComponent } from './components/tiposDeVotaciones/tipos-de-votaciones.component';
 import { InicioComponent } from './components/inicio/inicio.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 const authRoutes: Routes = [
   {
@@ -69,25 +70,38 @@ export const routes: Routes = [
     canActivate: [UsuarioPuedeAccederGuard],
   },
   {
-    path: 'mis-votapps',
-    loadChildren: () => misVotapps,
+    path: 'dashboard',
+    component: DashboardComponent,
     canActivate: [UsuarioPuedeAccederGuard],
-  },
-  {
-    path: 'nueva-votapp',
-    loadChildren: () => nuevaVotapp,
-    canActivate: [UsuarioPuedeAccederGuard],
-  },
-  {
-    path: 'nueva-comunidad',
-    loadChildren: () => nuevaComunidad,
-    canActivate: [UsuarioPuedeAccederGuard],
-  },
-  {
-    path: 'tipos-de-votaciones',
-    loadComponent: () => TiposDeVotacionesComponent,
-    canActivate: [UsuarioPuedeAccederGuard],
-    pathMatch: 'full'
+    children: [
+      {
+        path: 'mis-votapps',
+        loadComponent: () => MisVotappsComponent,
+      },
+      {
+        path: 'mis-votapps/:id',
+        loadComponent: () => VotappDetailComponent,
+      },
+      {
+        path: 'tipos-de-votaciones',
+        loadComponent: () => TiposDeVotacionesComponent,
+      },
+      {
+        path: 'nueva-votapp',
+        loadComponent: () => NuevaVotappComponent,
+        canActivate: [UsuarioPuedeAccederGuard],
+      },
+      {
+        path: 'nueva-comunidad',
+        loadComponent: () => NuevaComunidadComponent,
+        canActivate: [UsuarioPuedeAccederGuard],
+      },
+      {
+        path: '**',
+        redirectTo: '/dashboard/mis-votapps',
+        pathMatch: 'full'
+      }
+    ],
   },
   {
     path: '',

@@ -14,7 +14,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { VotappCardComponent } from '../votapps/votapp-card/votapp-card.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { BotonesInicioComponent } from '../util/botones-inicio/botones-inicio.component';
-
 @Component({
   selector: 'app-mis-votapps',
   templateUrl: './mis-votapps.component.html',
@@ -49,7 +48,7 @@ export class MisVotappsComponent implements OnInit {
 
   public goToVotapp(votapp: Votacion) {
     if (!this.enLibro) {
-      this.router.navigate([`mis-votapps/${votapp.id}`]);
+      this.router.navigate([`dashboard/mis-votapps/${votapp.id}`]);
     }
   }
 

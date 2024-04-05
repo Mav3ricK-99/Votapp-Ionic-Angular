@@ -1,6 +1,6 @@
 .fit-height {
-    height: -webkit-calc(100vh - 132px) !important;
-    height: calc(100vh - 132px) !important;
+    height: -webkit-calc(100vh - 60px) !important;
+    height: calc(100vh - 60px) !important;
 }
 
 .ion-page {
@@ -9,6 +9,7 @@
 
 .botonesInicio {
     width: 90%;
+    font-size: 1.1rem;
     padding: 1rem .2rem 1rem .2rem;
 }
 
@@ -25,5 +26,5 @@
 }
 
 .enLibro {
-    font-size: 12px !important;
+    font-size: .75rem !important;
 }

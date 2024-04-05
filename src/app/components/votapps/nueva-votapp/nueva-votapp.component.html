@@ -9,7 +9,7 @@
   </ion-header>
   <ion-content [scrollEvents]="true">
     <ion-grid>
-      <app-botones-inicio [botonPresionado]="'nuevaVotapp'"></app-botones-inicio>
+      <!-- <app-botones-inicio [botonPresionado]="'nuevaVotapp'"></app-botones-inicio> -->
       <ion-row class="bg-gray-50 h-100">
         <ion-col class="bg-gray-50 ion-no-padding" size-xs="12">
           <mat-vertical-stepper class="bg-gray-50" #stepper [linear]="true">
@@ -67,7 +67,7 @@
                     <span class="sr-only">Loading...</span>
                   </div>
                   }
-                  <button class="uppercase mb-1 min-height-2 justify-start" [routerLink]="['/nueva-comunidad']"
+                  <button class="uppercase mb-1 min-height-2 justify-start" [routerLink]="['/dashboard/nueva-comunidad']"
                     [queryParams]="{votacionTipo: votacionTipo}" color="primary" mat-raised-button>
                     <mat-icon aria-hidden="false" fontIcon="add_circle"></mat-icon>Crear nueva
                     Comunidad</button><br>
