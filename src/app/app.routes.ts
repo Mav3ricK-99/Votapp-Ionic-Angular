@@ -39,26 +39,6 @@ const authRoutes: Routes = [
   }
 ]
 
-const misVotapps: Routes = [
-  {
-    path: '',
-    component: MisVotappsComponent,
-  }, {
-    path: ':id',
-    component: VotappDetailComponent,
-  }
-];
-
-const nuevaVotapp: Routes = [{
-  path: '',
-  component: NuevaVotappComponent,
-}];
-
-const nuevaComunidad: Routes = [{
-  path: '',
-  component: NuevaComunidadComponent,
-}];
-
 export const routes: Routes = [
   {
     path: 'auth',
