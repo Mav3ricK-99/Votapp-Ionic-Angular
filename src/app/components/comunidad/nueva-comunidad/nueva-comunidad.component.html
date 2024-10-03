@@ -13,8 +13,7 @@
       <ion-row class="bg-gray-50 h-100">
         <ion-col class="bg-gray-50 ion-no-padding" size-xs="12">
           <div class="flex flex-col justify-around mb-1">
-            <h4 class="text-center">Tipo de Votación - Comunidad {{comunidadForm.get('tipoVotacion')?.value?.nombre}}
-            </h4>
+            <h6 class="text-center">Tipo de Votación - Comunidad {{this.votacionTipo}}</h6>
             <div class="flex justify-around">
               @if(votacionesTipoListas) {
               <button type="button" class="botonesVotacionTipo" mat-fab color="primary">
@@ -113,7 +112,7 @@
                     <span matTextPrefix>%&nbsp;</span>
                     <mat-error class="text-sm">
                       @if(participantesForm.get('participacion')?.errors?.['required']) {
-                      El correo electronico del participante es requerido.
+                      El porcentaje de participacion es requerido.
                       } @else if(participantesForm.get('participacion')?.errors?.['min']) {
                       La participacion del participante debe ser 0 como minimo.
                       } @else if(participantesForm.get('participacion')?.errors?.['participacionExcedida']) {
