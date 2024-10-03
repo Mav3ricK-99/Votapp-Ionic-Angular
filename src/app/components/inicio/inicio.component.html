@@ -1,15 +1,19 @@
 <div class="ion-page">
-  <ion-header>
+  <!-- <ion-header>
     <ion-toolbar>
       <ion-buttons slot="start">
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
       <ion-title> {{'app.dashboard.buttons.myVotapps' | translate | uppercase}} </ion-title>
     </ion-toolbar>
-  </ion-header>
+  </ion-header> -->
   <ion-content [scrollEvents]="true">
-    <div class="flex justify-center align-stretch scene" #escena>
-      <div class="book-wrap" #bookWrap>
+    <div class="scene flex flex-col items-center" #escena>
+      <div class="divTitulo py-1 mt-7">
+        <h1 id="titulo">Votapp</h1>
+        <p id="version">V.x.x.x</p>
+      </div>
+      <!-- <div class="book-wrap" #bookWrap>
         <div class="left-side">
           <div class="book-cover-left" (click)="abrirLibro()" #tapaIzquierda></div>
           <div class="layer-text">
@@ -23,7 +27,7 @@
         <div class="center" #centroLibro></div>
         <div class="right-side" #derechaLibro>
           <div class="book-cover-right" #tapaDerecha></div>
-          <!-- <div class="layer1">
+          <div class="layer1">
                   <div class="page-right"></div>
               </div>
               <div class="layer2 right">
@@ -34,13 +38,117 @@
               </div>
               <div class="layer4 right">
                   <div class="page-right"></div>
-              </div> -->
+              </div> 
           <div class="layer-text right">
             <div class="page-right-2" [routerLink]="['/mis-votapps']" #pageText>
-              <app-mis-votapps [enLibro]="true"/>
+              <app-mis-votapps [enLibro]="true" />
             </div>
           </div>
         </div>
+      </div> -->
+
+      <div class="book">
+        <div class="page cover-front" id="primer" (click)="abrirPortada()">
+          <div class="coverImagen"></div>
+        </div>
+        <div class="page text-page"></div>
+        <div class="page text-page" (click)="irMisVotapps()">
+          <app-mis-votapps [enLibro]="true" />
+        </div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
       </div>
     </div>
   </ion-content>
