@@ -13,6 +13,8 @@ import { NuevaVotappComponent } from './components/votapps/nueva-votapp/nueva-vo
 import { TiposDeVotacionesComponent } from './components/tiposDeVotaciones/tipos-de-votaciones.component';
 import { InicioComponent } from './components/inicio/inicio.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { ListadoComponent } from './components/gobiernos/listado/listado.component';
+import { DetalleComponent } from './components/gobiernos/detalle/detalle.component';
 
 const authRoutes: Routes = [
   {
@@ -74,6 +76,16 @@ export const routes: Routes = [
       {
         path: 'nueva-comunidad',
         loadComponent: () => NuevaComunidadComponent,
+        canActivate: [UsuarioPuedeAccederGuard],
+      },
+      {
+        path: 'gobierno',
+        loadComponent: () => ListadoComponent,
+        canActivate: [UsuarioPuedeAccederGuard],
+      },
+      {
+        path: 'gobierno/detalle',
+        loadComponent: () => DetalleComponent,
         canActivate: [UsuarioPuedeAccederGuard],
       },
       {
