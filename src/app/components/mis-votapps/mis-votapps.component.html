@@ -1,4 +1,5 @@
 <div class="ion-page">
+  @if(!enLibro) {
   <ion-header class="header">
     <ion-toolbar>
       <ion-buttons slot="start">
@@ -7,6 +8,7 @@
       <ion-title> {{'app.dashboard.buttons.myVotapps' | translate | uppercase}} </ion-title>
     </ion-toolbar>
   </ion-header>
+  }
   <ion-content [scrollEvents]="true">
     <ion-grid class="fit-height">
       <ion-row class="ion-justify-content-center ion-align-items-center">
