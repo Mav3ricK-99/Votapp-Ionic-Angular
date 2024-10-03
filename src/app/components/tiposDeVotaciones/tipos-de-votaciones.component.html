@@ -14,7 +14,7 @@
         class="tipoDeVotacion h23p mx-4 mb-1 rounded-md bg-sky-300 flex flex-col justify-evenly items-center shadow shadow-[#0EA5E9]">
         <h2 class="text-lg text-white my-1">Comunidad personas</h2>
         <div class="w-1/5 h-12 rounded-xl bg-sky-200 flex justify-center items-center">
-          <mat-icon color="sky-300">groups</mat-icon>
+          <mat-icon class="text-sky-300">groups</mat-icon>
         </div>
         <p class="text-center text-sky-500 px-1 leyendaTiposDeVotacion">Permite
           definir votaciones donde todos los integrantes tienen el mismo porcentaje de participacion.</p>
@@ -24,19 +24,19 @@
         class="tipoDeVotacion h23p mx-4 mb-1 rounded-md bg-green-300 flex flex-col justify-evenly items-center shadow shadow-[#22C55E]">
         <h2 class="text-lg text-white my-1">Comunidad %</h2>
         <div class="w-1/5 h-12 rounded-xl bg-green-200 flex justify-center items-center">
-          <mat-icon color="green-300">percent</mat-icon>
+          <mat-icon class="text-green-300">percent</mat-icon>
         </div>
         <p class="text-center text-green-500 px-1 leyendaTiposDeVotacion">Permite
           definir votaciones donde se puede establecer un porcentaje variable de participacion para cada
           integrante.</p>
       </article>
       <article [@bounceInLeft]="estadoAnimacion"
-        class="h23p mx-4 mb-1 rounded-md bg-gray-300 flex flex-col justify-evenly items-center">
+        class="h23p mx-4 mb-1 rounded-md bg-red-300 flex flex-col justify-evenly items-center">
         <h2 class="text-lg text-white my-1">Gobierno</h2>
-        <div disabled class="w-1/5 h-12 rounded-xl bg-gray-200 flex justify-center items-center">
-          <mat-icon color="gray-300">account_balance</mat-icon>
+        <div class="w-1/5 h-12 rounded-xl bg-red-200 flex justify-center items-center">
+          <mat-icon class="text-red-300">account_balance</mat-icon>
         </div>
-        <p class="text-center text-white px-1 leyendaTiposDeVotacion">-</p>
+        <p class="text-center text-red-500 px-1 leyendaTiposDeVotacion">-</p>
       </article>
       <article [@bounceInRight]="estadoAnimacion"
         class="h23p mx-4 rounded-md bg-gray-300 flex flex-col justify-evenly items-center">
