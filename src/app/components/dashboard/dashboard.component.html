@@ -1,16 +1,16 @@
 <ion-tabs>
   <ion-tab-bar slot="bottom">
     <ion-tab-button (click)="cerrarSesion()">
-      <ion-icon name="log-out-outline"></ion-icon>
+      <ion-icon name="log-out-outline" class="-scale-x-1" aria-label="Cerrar Sesion"></ion-icon>
       Cerrar Sesion
     </ion-tab-button>
-    <ion-tab-button tab="mis-votapps" [routerLink]="['dashboard/mis-votapps']">
-      <ion-icon name="book-outline"></ion-icon>
+    <ion-tab-button tab="mis-votapps">
+      <ion-icon name="book-outline" aria-label="Mis Votapps"></ion-icon>
       Mis Votapps
     </ion-tab-button>
-    <ion-tab-button tab="tipos-de-votaciones">
-      <ion-icon name="reader-outline"></ion-icon>
-      Nueva Votapp
+    <ion-tab-button tab="gobierno">
+      <mat-icon class="material-symbols-outlined" aria-label="Gobierno" aria-hidden="false" fontIcon="account_balance"></mat-icon>
+      Gobierno
     </ion-tab-button>
   </ion-tab-bar>
 </ion-tabs>

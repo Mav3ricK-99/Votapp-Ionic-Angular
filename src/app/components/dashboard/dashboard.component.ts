@@ -1,4 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
+import { MatIcon } from '@angular/material/icon';
 import { Router, RouterLink } from '@angular/router';
 import { IonIcon, IonTabBar, IonTabButton, IonTabs } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -10,7 +11,7 @@ import { UserService } from 'src/app/services/user/user.service';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
   standalone: true,
-  imports: [IonTabs, IonTabBar, IonTabButton, IonIcon, RouterLink]
+  imports: [IonTabs, IonTabBar, IonTabButton, IonIcon, RouterLink, MatIcon]
 })
 export class DashboardComponent {
 
