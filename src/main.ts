@@ -1,7 +1,7 @@
 import { LOCALE_ID, Provider, enableProdMode, importProvidersFrom } from '@angular/core';
 import { environment } from './environments/environment';
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
-import { bootstrapApplication } from '@angular/platform-browser';
+import { bootstrapApplication, BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
 import { RouteReuseStrategy, provideRouter, withComponentInputBinding } from '@angular/router';
 import { provideIonicAngular, IonicRouteStrategy, AnimationController } from '@ionic/angular/standalone';
@@ -9,7 +9,7 @@ import { routes } from './app/app.routes';
 import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
 import { AuthorizationRequestInterceptor } from './app/interceptors/AuthorizationRequest/authorization-request.interceptor';
 import { DateAdapter, MAT_DATE_LOCALE, NativeDateAdapter } from '@angular/material/core';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
@@ -92,6 +92,7 @@ bootstrapApplication(AppComponent, {
         },
       }),
       TranslateModule,
+      BrowserModule,
       BrowserAnimationsModule
     ),]
 });

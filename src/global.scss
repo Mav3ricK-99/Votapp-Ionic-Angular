@@ -29,6 +29,46 @@
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
+@font-face {
+    font-family: 'Oleo Script';
+    src: url('OleoScript-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Oleo Script';
+    src: url('OleoScript-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+
+@-webkit-keyframes slide-fwd-center {
+    0% {
+      -webkit-transform: translateZ(0);
+              transform: translateZ(0);
+              clip-path: circle(0% at 0% 0%);
+    }
+    100% {
+      -webkit-transform: translateZ(860px);
+              transform: translateZ(860px);
+              clip-path: circle(100% at 0% 0%);
+    }
+  }
+  @keyframes slide-fwd-center {
+    0% {
+      -webkit-transform: translateZ(0);
+              transform: translateZ(0);
+              clip-path: circle(0% at 0% 0%);
+    }
+    100% {
+      -webkit-transform: translateZ(860px);
+              transform: translateZ(860px);
+              clip-path: circle(100% at 0% 0%);
+    }
+  }
+
 ion-grid {
     --ion-grid-padding: 0px;
 }
@@ -68,8 +108,9 @@ ion-grid {
     background-color: #ff6055 !important;
 }
 
-.mat-mdc-menu-content {
-    display: flex !important;
+.mat-error {
+    color: white !important;
+    background-color: rgb(239 68 68) !important;
 }
 
 .mat-white {
@@ -82,11 +123,6 @@ ion-grid {
     color: darken(#4ade80, 10%) !important;
     background-color: white !important;
     border: 2px solid darken(#4ade80, 5%) !important;
-}
-
-.mat-green-300 {
-    color: rgb(134 239 172);
-    background-color: transparent !important;
 }
 
 .mat-sky-300 {
@@ -175,4 +211,8 @@ ion-grid {
 
 .logo-votapp {
     width: 70vw;
+}
+
+.-scale-x-1 {
+    transform: scaleX(-1) !important;
 }
