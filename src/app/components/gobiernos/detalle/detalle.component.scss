@@ -1,0 +1,89 @@
+.album-gobierno::after {
+    -webkit-backdrop-filter: contrast(.70);
+    backdrop-filter: contrast(.70);
+
+    content: "";
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+}
+
+.album-gobierno {
+    position: relative;
+    background-image: url('https://material.angular.io/assets/img/examples/shiba2.jpg');
+}
+
+.sin-filtro {
+    position: relative;
+    z-index: 1;
+}
+
+.botonesInicio {
+    padding: .4rem .3rem .4rem .3rem;
+}
+
+.botonesFiltro {
+    font-size: .8rem;
+    width: 50vw;
+    padding: .3rem .5rem .3rem .5rem;
+    color: white;
+    background-color: rgba(59, 130, 246, .5);
+    border: 1px solid rgba(37, 99, 235, .6);
+    transition: all ease-in-out 233ms;
+
+    &:focus {
+        background-color: rgba(59, 130, 246, .6);
+    }
+}
+
+.botonesFiltro:first-of-type {
+    border-radius: 180px 0 0 180px;
+    background-color: rgba(59, 130, 246, .7)
+}
+
+.botonesFiltro:last-of-type {
+    border-radius: 0 180px 180px 0;
+}
+
+.card {
+    width: 100%;
+    height: 90px;
+    padding: 0 1rem 0 1rem;
+    display: flex;
+
+}
+
+.card-img {
+    display: flex;
+    align-items: center;
+
+    img {
+        width: 100px;
+        height: 75px;
+    }
+}
+
+.card-body {
+    width: 100%;
+    margin-left: .65rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    h5 {
+        line-height: 1rem;
+    }
+}
+
+.divider {
+    width: 90%;
+    height: 2px;
+    background: rgb(229 231 235);
+}
+
+.ver-mas {
+    width: 90%;
+    border-radius: 180px;
+}

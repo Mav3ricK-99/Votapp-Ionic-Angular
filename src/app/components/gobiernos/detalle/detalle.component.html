@@ -1,0 +1,125 @@
+<div class="ion-page">
+  <ion-content [scrollEvents]="true">
+    <ion-grid class="fit-height">
+      <ion-row class="ion-justify-content-center ion-align-items-center">
+        <ion-col class="ion-no-top-padding">
+          <div class="album-gobierno flex flex-col justify-between">
+            <div class="flex justify-between mt-2 mx-2 sin-filtro">
+              <button color="darkPrimary" mat-icon-button routerLink=".."
+                aria-label="Filtrar">
+                <mat-icon>arrow_back</mat-icon>
+              </button>
+              <button color="error" mat-icon-button (click)="abrirDialog()"
+                aria-label="Abandonar">
+                <mat-icon>logout</mat-icon>
+              </button>
+            </div>
+            <div class="ps-2 pb-1 sin-filtro">
+              <h2 class="mb-0 text-white">Comunidad</h2>
+              <p class="mt-0 text-white">Descripcion</p>
+              <mat-chip-set>
+                <mat-chip>
+                  <button matChipAvatar aria-label="Fecha crecion">
+                    <mat-icon color="primary">today</mat-icon>
+                  </button>
+                  Fecha creacion
+                </mat-chip>
+                <mat-chip>
+                  <button matChipAvatar aria-label="Fecha crecion">
+                    <mat-icon color="primary">groups</mat-icon>
+                  </button>
+                  Cantidad integrantes
+                </mat-chip>
+                <mat-chip>
+                  <button matChipAvatar aria-label="Fecha crecion">
+                    <mat-icon color="primary">speed</mat-icon>
+                  </button>
+                  Niveles
+                </mat-chip>
+              </mat-chip-set>
+            </div>
+          </div>
+          <div class="flex justify-between px-2 my-1">
+            <button class="botonesInicio font-medium" color="primary" mat-raised-button>
+              <mat-icon>edit</mat-icon>Agregar personas
+            </button>
+
+            <button class="botonesInicio font-medium" color="primary" mat-raised-button>
+              <mat-icon>edit</mat-icon>Iniciar votacion
+            </button>
+          </div>
+          <hr>
+          <div class="flex justify-center my-1 mx-3">
+            <button class="botonesFiltro font-medium flex justify-center items-center">
+              <mat-icon>check</mat-icon> Personas
+            </button>
+
+            <button class="botonesFiltro font-medium flex justify-center items-center">
+              Votaciones
+            </button>
+          </div>
+          <div class="flex flex-col items-center" style="min-height: 42.5vh;">
+            <div class="card my-1">
+              <div class="card-img">
+                <img class="rounded-xl" src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+                  alt="Photo of a Shiba Inu">
+              </div>
+              <div class="card-body">
+                <div class="card-title flex justify-between">
+                  <h5 class="font-normal">Nombre persona</h5>
+                  <button mat-icon-button aria-label="Opciones">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                </div>
+                <div class="card-desc text-gray-400 text-xs">
+                  Lorem impsum Lorem impsum Lorem impsum
+                </div>
+              </div>
+            </div>
+            <div class="divider"></div>
+            <div class="card my-1">
+              <div class="card-img">
+                <img class="rounded-xl" src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+                  alt="Photo of a Shiba Inu">
+              </div>
+              <div class="card-body">
+                <div class="card-title flex justify-between">
+                  <h5 class="font-normal">Nombre persona</h5>
+                  <button mat-icon-button aria-label="Opciones">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                </div>
+                <div class="card-desc text-gray-400 text-xs">
+                  Lorem impsum Lorem impsum Lorem impsum
+                </div>
+              </div>
+            </div>
+            <div class="divider"></div>
+            <div class="card my-1">
+              <div class="card-img">
+                <img class="rounded-xl" src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+                  alt="Photo of a Shiba Inu">
+              </div>
+              <div class="card-body">
+                <div class="card-title flex justify-between">
+                  <h5 class="font-normal">Nombre persona</h5>
+                  <button mat-icon-button aria-label="Opciones">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                </div>
+                <div class="card-desc text-gray-400 text-xs">
+                  Lorem impsum Lorem impsum Lorem impsum
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex justify-center">
+            <button class="ver-mas font-light" color="white" mat-raised-button>
+              Ver los 30 integrantes
+            </button>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-content>
+</div>

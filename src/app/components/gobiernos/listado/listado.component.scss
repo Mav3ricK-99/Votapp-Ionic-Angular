@@ -1,0 +1,43 @@
+.fit-height {
+    height: -webkit-calc(100vh - 60px) !important;
+    height: calc(100vh - 60px) !important;
+}
+
+.ion-page {
+    container-type: inline-size
+}
+
+.botonesInicio {
+    width: 90%;
+    font-size: 1.1rem;
+    padding: 1rem .2rem 1rem .2rem;
+}
+
+.cardInfo {
+    margin-left: 1rem;
+}
+
+.cardHeaderGobierno {
+    padding: 0;
+}
+
+mat-card-subtitle {
+    padding-top: .1rem !important;
+}
+
+.acordion-filtro {
+    width: 100%;
+}
+
+mat-slider {
+    width: 95%;
+    margin-top: 1.5rem;
+}
+
+.botonBuscar {
+    align-self: center;
+}
+
+::ng-deep .mdc-slider .mdc-slider__value-indicator {
+    transform: none !important;
+}

@@ -1,0 +1,132 @@
+<div class="ion-page">
+  <ion-header class="header">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title> GOBIERNO </ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content [scrollEvents]="true">
+    <ion-grid class="fit-height">
+      <ion-row class="ion-justify-content-center ion-align-items-center">
+        <ion-col class="bg-gray-100 ion-no-top-padding col-misVotapps">
+          <div class="flex flex-col items-center mt-3">
+            <button class="my-1 botonesInicio text-base font-medium" mat-raised-button
+              [routerLink]="['/dashboard/tipos-de-votaciones']" color="darkPrimary">
+              GENERAR NUEVA COMUNIDAD
+            </button>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-justify-content-center ion-align-items-center">
+        <ion-col class="bg-gray-100 ion-no-top-padding" size-lg="8" size-md="11" size-xs="12">
+          <div class="flex flex-col items-start justify-center mx-4">
+            <h4>Mi comunidad</h4>
+          </div>
+        </ion-col>
+        <ion-col class="bg-gray-100 ion-no-top-padding" size-lg="8" size-md="11" size-xs="12">
+          <div class="flex items-start mx-4">
+            <mat-card class="flex p-2 py-3 my-1 w-full justify-between items-center" style="flex-direction: row;"
+              appearance="outlined">
+              <mat-card-header class="flex items-center cardHeaderGobierno" (click)="irAlDetalle()">
+                <img mat-card-image class="rounded-xl" width="64" height="64"
+                  src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+                <div class="cardInfo">
+                  <mat-card-title>Comunidad 1</mat-card-title>
+                  <mat-card-subtitle>Detalle</mat-card-subtitle>
+                </div>
+              </mat-card-header>
+              <mat-card-actions class="self-start">
+                <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Opciones">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item>
+                    <mat-icon>manage_accounts</mat-icon>
+                    <span>Administrar</span>
+                  </button>
+                  <button mat-menu-item>
+                    <mat-icon>group_remove</mat-icon>
+                    <span>Eliminar</span>
+                  </button>
+                </mat-menu>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+        </ion-col>
+        <ion-col class="bg-gray-100 ion-no-top-padding" size-lg="8" size-md="11" size-xs="12">
+          <div class="flex flex-col items-start justify-center mx-4">
+            <h5 class="font-normal">Buscar Comunidades</h5>
+            <mat-accordion class="acordion-filtro">
+              <mat-expansion-panel>
+                <mat-expansion-panel-header class="acordion-header">
+                  <mat-panel-title> Filtros </mat-panel-title>
+                  <mat-panel-description>
+                    <mat-icon>tune</mat-icon>
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+
+                <mat-form-field>
+                  <mat-label>Nombre persona</mat-label>
+                  <input matInput />
+                  <mat-icon matSuffix>account_circle</mat-icon>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <mat-label>Direccion email</mat-label>
+                  <input matInput type="email" />
+                  <mat-icon matSuffix>mail</mat-icon>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <mat-label>Nombre comunidad</mat-label>
+                  <input matInput type="text" />
+                  <mat-icon matSuffix>account_balance</mat-icon>
+                </mat-form-field>
+
+                <h5 class="leading-3 mt-0">Distancia</h5>
+                <mat-slider min="1" max="35" step="1" showTickMarks discrete [displayWith]="formatLabel">
+                  <input matSliderThumb>
+                </mat-slider>
+
+                <div class="flex justify-end">
+                  <button class="botonBuscar" color="primary" mat-raised-button>
+                    Buscar
+                    <mat-icon>travel_explore</mat-icon>
+                  </button>
+                </div>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </div>
+        </ion-col>
+        <ion-col class="bg-gray-100 ion-no-top-padding" size-lg="8" size-md="11" size-xs="12">
+          <div class="flex items-start mx-4">
+            <mat-card class="flex p-2 py-3 my-1 w-full justify-between items-center" style="flex-direction: row;"
+              appearance="outlined">
+              <mat-card-header class="flex items-center cardHeaderGobierno" (click)="irAlDetalle()">
+                <img mat-card-image class="rounded-xl" width="64" height="64"
+                  src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+                <div class="cardInfo">
+                  <mat-card-title>Comunidad 1</mat-card-title>
+                  <mat-card-subtitle>Detalle</mat-card-subtitle>
+                </div>
+              </mat-card-header>
+              <mat-card-actions class="self-start">
+                <button mat-icon-button [matMenuTriggerFor]="menuBus" aria-label="Opciones">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menuBus="matMenu">
+                  <button mat-menu-item>
+                    <mat-icon>group_add</mat-icon>
+                    <span>Enviar Invitacion</span>
+                  </button>
+                </mat-menu>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-content>
+</div>
